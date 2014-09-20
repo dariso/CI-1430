@@ -8,8 +8,6 @@ public class PSGame extends Game {
 	SpriteBatch batch;
 	BitmapFont font;
     private Vector3 touchPos;
-
-	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();

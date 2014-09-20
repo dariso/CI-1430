@@ -21,7 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class MainMenuScreen implements Screen {
 
-   final PSGame game;
+	final PSGame game;
    
     OrthographicCamera camera;
     FileHandle filehandle;
@@ -34,67 +34,53 @@ public class MainMenuScreen implements Screen {
     private TextButton buttonExit;
     private Label title;
     public MainMenuScreen(final PSGame juego) {
-    	
-        game =juego;
-    
-        filehandle= Gdx.files.internal("skins/menuSkin.json");
-        textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
-        skin= new Skin(filehandle,textura);
-        
-      buttonPlay = new TextButton("Play", skin);
-                buttonExit = new TextButton("Exit", skin);
-      
-          title = new Label("Puddle Slide",skin);
-
-        
-        
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
-
+    game =juego;
+    filehandle= Gdx.files.internal("skins/menuSkin.json");
+    textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
+    skin= new Skin(filehandle,textura);
+    buttonPlay = new TextButton("Play", skin);
+    buttonExit = new TextButton("Exit", skin);
+    title = new Label("Puddle Slide",skin);
+    camera = new OrthographicCamera();
+    camera.setToOrtho(false, 800, 480);
     }
+    
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    
-  
         stage.act();
         stage.draw();
-
     }
+    
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
 	}
+	
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-		 buttonPlay.addListener(new ClickListener(){
-	            @Override
-	            public void clicked(InputEvent event, float x, float y) {
-	           
-	                ((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen(game));
-	            }
-	        });
-	        buttonExit.addListener(new ClickListener(){
-	            @Override
-	            public void clicked(InputEvent event, float x, float y) {
-	                Gdx.app.exit();
-
-	            }
-	        });
-
-
-	        table.add(title).padBottom(40).row();
-	        table.add(buttonPlay).size(150,60).padBottom(20).row();
-	        table.add(buttonExit).size(150,60).padBottom(20).row();
-
-	        table.setFillParent(true);
-	        stage.addActor(table);
-
-	        Gdx.input.setInputProcessor(stage);
 		
+		 buttonPlay.addListener(new ClickListener(){
+		        @Override
+		        public void clicked(InputEvent event, float x, float y) {
+		            ((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen(game));
+		        }
+		    });
+	    buttonExit.addListener(new ClickListener(){
+	    		@Override
+	        	public void clicked(InputEvent event, float x, float y) {
+	            Gdx.app.exit();
+	        }
+	    });
+		
+		
+	    table.add(title).padBottom(40).row();
+	    table.add(buttonPlay).size(150,60).padBottom(20).row();
+	    table.add(buttonExit).size(150,60).padBottom(20).row();
+	    table.setFillParent(true);
+	    stage.addActor(table);
+	    Gdx.input.setInputProcessor(stage);
 	}
 	@Override
 	public void hide() {
