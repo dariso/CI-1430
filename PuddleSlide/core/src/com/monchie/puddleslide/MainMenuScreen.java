@@ -1,5 +1,4 @@
 package com.monchie.puddleslide;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -21,36 +20,39 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class MainMenuScreen implements Screen {
 
-	final PSGame game;
-   
-    OrthographicCamera camera;
-    FileHandle filehandle;
-    TextureAtlas textura;
-  
-    private Skin skin;
-    private Stage stage = new Stage();
-    private Table table = new Table();
-    private TextButton buttonPlay;
-    private TextButton buttonExit;
-    private Label title;
+final PSGame game;
+OrthographicCamera camera;
+FileHandle filehandle;
+TextureAtlas textura;
+private Skin skin;
+private Stage stage = new Stage();
+private Table table = new Table();
+private TextButton buttonPlay;
+private TextButton buttonExit;
+private Label title;
+    
     public MainMenuScreen(final PSGame juego) {
-    game =juego;
-    filehandle= Gdx.files.internal("skins/menuSkin.json");
-    textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
-    skin= new Skin(filehandle,textura);
-    buttonPlay = new TextButton("Play", skin);
-    buttonExit = new TextButton("Exit", skin);
-    title = new Label("Puddle Slide",skin);
-    camera = new OrthographicCamera();
-    camera.setToOrtho(false, 800, 480);
+    	
+	    game =juego;
+	    filehandle= Gdx.files.internal("skins/menuSkin.json");
+	    textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
+	    skin= new Skin(filehandle,textura);
+	    buttonPlay = new TextButton("Play", skin);
+	    buttonExit = new TextButton("Exit", skin);
+	    title = new Label("Puddle Slide",skin);
+	    camera = new OrthographicCamera();
+	    camera.setToOrtho(false, 800, 480);
+	    
     }
     
     @Override
     public void render(float delta) {
+    	
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
+        
     }
     
 	@Override
@@ -81,7 +83,9 @@ public class MainMenuScreen implements Screen {
 	    table.setFillParent(true);
 	    stage.addActor(table);
 	    Gdx.input.setInputProcessor(stage);
+	    
 	}
+	
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub

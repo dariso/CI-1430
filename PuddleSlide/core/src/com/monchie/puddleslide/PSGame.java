@@ -5,23 +5,32 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
 public class PSGame extends Game {
-	SpriteBatch batch;
-	BitmapFont font;
-    private Vector3 touchPos;
+	
+SpriteBatch batch;
+BitmapFont font;
+private Vector3 touchPos;
+    
 	@Override
 	public void create () {
+		
 		batch = new SpriteBatch();
-        touchPos = new Vector3();
-        font = new BitmapFont();
+	    touchPos = new Vector3();
+	    font = new BitmapFont();
 		this.setScreen(new MainMenuScreen(this));
 	}
-
+	
 	@Override
 	public void render () {
+		
 		super.render();
+		
 	}
+	
 	public void dispose() {
+		
 		batch.dispose();
 		font.dispose();
+		
 	}
+
 }
