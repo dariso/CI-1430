@@ -68,6 +68,13 @@ public class MainMenuScreen implements Screen {
             }
         });
 
+        buttonOpciones.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new OptionsScreen(game));
+            }
+        });
+
         table.add(title).colspan(2).center().padBottom(40).row();
         table.add(buttonPlay).colspan(2).center().size(250,120).padBottom(20).row();
         table.add(buttonNiveles).size(250,80).padBottom(20).spaceRight(50.0f);
