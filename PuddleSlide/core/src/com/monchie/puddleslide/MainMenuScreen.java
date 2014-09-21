@@ -25,23 +25,22 @@ private Skin skin;
 private Stage stage = new Stage();
 private Table table = new Table();
 private TextButton buttonPlay;
-private TextButton buttonExit;
+private TextButton buttonNiveles;
 private TextButton buttonOpciones;
 private Label title;
     
     public MainMenuScreen(final PSGame juego) {
     	
-	    game =juego;
+	    game = juego;
 	    filehandle= Gdx.files.internal("skins/menuSkin.json");
 	    textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
 	    skin= new Skin(filehandle,textura);
 	    buttonPlay = new TextButton("Jugar", skin);
-	    buttonExit = new TextButton("Salir", skin);
+	    buttonNiveles = new TextButton("Escoger Nivel", skin);
         buttonOpciones = new TextButton("Opciones",skin);
 	    title = new Label("Puddle Slide",skin);
 	    camera = new OrthographicCamera();
 	    camera.setToOrtho(false, 800, 480);
-	    
     }
     
     @Override
@@ -63,23 +62,25 @@ private Label title;
 	public void show() {
 		
 		 buttonPlay.addListener(new ClickListener(){
-		        @Override
-		        public void clicked(InputEvent event, float x, float y) {
-		            ((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen(game));
-		        }
-		    });
-	    buttonExit.addListener(new ClickListener(){
-	    		@Override
-	        	public void clicked(InputEvent event, float x, float y) {
-	            Gdx.app.exit();
-	        }
-	    });
-		
-		
-	    table.add(title).padBottom(40).row();
-	    table.add(buttonPlay).size(150,60).padBottom(20).row();
-	    table.add(buttonExit).size(150,60).padBottom(20).row();
-        table.add(buttonOpciones).size(150,60).padBottom(20).row();
+		     @Override
+		     public void clicked(InputEvent event, float x, float y) {
+		         ((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen(game));
+		     }
+		 });
+
+         buttonOpciones.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new OptionsScreen(game));
+            }
+         });
+
+
+	    table.add(title).colspan(2).center().padBottom(40).row();
+	    table.add(buttonPlay).colspan(2).center().size(250,120).padBottom(20).row();
+        table.add(buttonNiveles).size(250,80).padBottom(20).spaceRight(50.0f);
+        table.add(buttonOpciones).size(250,80).padBottom(20).row();
+
 	    table.setFillParent(true);
 	    stage.addActor(table);
 	    Gdx.input.setInputProcessor(stage);
