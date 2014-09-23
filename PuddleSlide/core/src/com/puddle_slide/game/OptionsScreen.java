@@ -67,6 +67,22 @@ public class OptionsScreen implements Screen {
             }
         });
 
+        buttonSonido.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new ComingSoonScreen(new OptionsScreen(game)));
+            }
+        });
+
+        buttonVideo.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new ComingSoonScreen(new OptionsScreen(game)));
+            }
+        });
+
+
+
         table.add(title).colspan(2).center().padBottom(40).row();
         table.add(buttonVideo).size(150,60).padBottom(20).row();
         table.add(buttonSonido).size(150,60).padBottom(20).row();
