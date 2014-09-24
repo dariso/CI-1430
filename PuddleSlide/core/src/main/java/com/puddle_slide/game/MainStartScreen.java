@@ -31,7 +31,7 @@ public class MainStartScreen implements Screen {
         textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
         skin= new Skin(filehandle,textura);
         titulo = new Label("Puddle Slide",skin);
-        titulo2 = new Label("Press Start",skin);
+        titulo2 = new Label("Presione la Pantalla",skin);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
     }

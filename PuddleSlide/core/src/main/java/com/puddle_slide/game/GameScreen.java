@@ -38,7 +38,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class GameScreen extends InputAdapter implements Screen {
 
-    final Puddle_Slide game;
+    final com.puddle_slide.game.Puddle_Slide game;
     private OrthographicCamera camera;
     private FileHandle filehandle;
     private TextureAtlas textura;
@@ -70,7 +70,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     boolean PAUSE = false;
 
-    public GameScreen(final Puddle_Slide elJuego) {
+    public GameScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
