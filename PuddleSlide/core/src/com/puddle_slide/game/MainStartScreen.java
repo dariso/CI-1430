@@ -6,11 +6,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Scaling;
 
 public class MainStartScreen implements Screen {
     final MainMenuScreen menuScreen;
@@ -23,6 +27,9 @@ public class MainStartScreen implements Screen {
     private Table table = new Table();
     private Label titulo;
     private Label titulo2;
+    private TextureRegion textureRegion;
+    private Texture imagent;
+    private Image imagen;
 
     public MainStartScreen(final Puddle_Slide gam, final MainMenuScreen menu) {
         menuScreen = menu;
@@ -31,9 +38,11 @@ public class MainStartScreen implements Screen {
         textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
         skin= new Skin(filehandle,textura);
         titulo = new Label("Puddle Slide",skin);
-        titulo2 = new Label("Press Start",skin);
+        titulo2 = new Label("Presionar Pantalla",skin);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
+        imagent = new Texture(Gdx.files.internal("gotitaYagua_1.png"));
+        imagen = new Image(imagent);
     }
 
     @Override
@@ -55,7 +64,9 @@ public class MainStartScreen implements Screen {
 
     @Override
     public void show() {
-        table.add(titulo).colspan(2).center().padBottom(40).row();
+        imagen.setScaling(Scaling.fit);
+        table.add(imagen).colspan(2).center().padBottom(-40).row();
+        table.add(titulo).colspan(2).center().padBottom(20).row();
         titulo2.setFontScale((float) 0.7);
         table.add(titulo2).colspan(2).center().padBottom(40).row();
         table.setFillParent(true);
