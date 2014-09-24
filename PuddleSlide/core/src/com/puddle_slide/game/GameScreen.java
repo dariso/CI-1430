@@ -1,5 +1,4 @@
 package com.puddle_slide.game;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
@@ -29,7 +28,6 @@ public class GameScreen implements Screen {
 
     final Puddle_Slide game;
     private OrthographicCamera camera;
-
     private FileHandle filehandle;
     private TextureAtlas textura;
     private Skin skin;
@@ -53,9 +51,7 @@ public class GameScreen implements Screen {
     private Body hojaBody;
     private BodyDef gotaDef;
     private Body gotaBody;
-    boolean PAUSE=false;
-
-
+    boolean PAUSE = false;
 
     public GameScreen(final Puddle_Slide elJuego) {
 
@@ -63,19 +59,14 @@ public class GameScreen implements Screen {
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
         hojaImg = new Texture (Gdx.files.internal("bucket.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
-
         gotaSprite = new Sprite(gotaImage);
         hojaSprite = new Sprite(hojaImg);
-
         gotaSprite.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight()/2);
         hojaSprite.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/4, 0);
-
-
         filehandle= Gdx.files.internal("skins/menuSkin.json");
         textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
         skin= new Skin(filehandle,textura);
         buttonPause = new TextButton("Pausa", skin);
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
@@ -90,7 +81,7 @@ public class GameScreen implements Screen {
         Matrix4 cameraCopy = camera.combined.cpy();
 
         //Si no esta en pausa actualiza las posiciones
-        if(PAUSE==false){
+        if(PAUSE == false){
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1 / 60f, 6, 2);
         }
@@ -151,11 +142,6 @@ public class GameScreen implements Screen {
         fixtureDef.restitution = 0.4f;
         gotaBody.createFixture(fixtureDef);
         gotaShape.dispose();
-
-
-
-
-
         table.add(buttonPause).size(100,40).padBottom(400).padLeft(500);
         table.setFillParent(true);
         stage.addActor(table);
@@ -186,7 +172,7 @@ public class GameScreen implements Screen {
         backgroundImage.dispose();
     }
     public void pauseGame(){
-        if(PAUSE==true){
+        if(PAUSE == true){
             PAUSE=false;
             buttonPause.setText("Pausa");
         }else{
