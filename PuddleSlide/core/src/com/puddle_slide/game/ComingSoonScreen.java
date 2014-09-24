@@ -6,14 +6,17 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Scaling;
 
 
 public class ComingSoonScreen implements Screen {
@@ -28,6 +31,8 @@ public class ComingSoonScreen implements Screen {
     private Table table = new Table();
     private TextButton buttonReturn;
     private Label title;
+    private Texture imagent;
+    private Image imagen;
 
 
 
@@ -43,8 +48,10 @@ public class ComingSoonScreen implements Screen {
         title = new Label("Coming Soon :)",skin);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
+        imagent = new Texture(Gdx.files.internal("gottyCS.png"));
+        imagen = new Image(imagent);
 
-    }
+   }
 
     @Override
     public void render(float delta) {
@@ -62,15 +69,17 @@ public class ComingSoonScreen implements Screen {
     @Override
     public void show() {
 
+        imagen.setScaling(Scaling.fit);
+
         buttonReturn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ((Game)Gdx.app.getApplicationListener()).setScreen(pantallaRetorno);
             }
         });
-
+        table.add(imagen).colspan(2).center().padBottom(40).row();
         table.add(title).colspan(2).center().padBottom(40).row();
-        table.add(buttonReturn).size(150,60).padBottom(20).row();
+        table.add(buttonReturn).size(150,60).colspan(2).padBottom(20).row();
 
         table.setFillParent(true);
         stage.addActor(table);
