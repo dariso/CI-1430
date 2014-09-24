@@ -84,6 +84,8 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:1.2"
         compile "com.badlogicgames.ashley:ashley:1.1.0"
+
+        compile files(dir:'libs', include: '*.jar');
         
         testCompile 'junit:junit:4.+'
         testCompile "org.mockito:mockito-all:1.9.5"
