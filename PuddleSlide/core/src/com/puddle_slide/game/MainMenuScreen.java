@@ -45,12 +45,10 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
-
     }
 
     @Override
@@ -83,31 +81,28 @@ public class MainMenuScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
-
     }
 
     @Override
     public void hide() {
         // TODO Auto-generated method stub
         dispose();
-
     }
+
     @Override
     public void pause() {
         // TODO Auto-generated method stub
-
     }
+
     @Override
     public void resume() {
         // TODO Auto-generated method stub
-
     }
+
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
         stage.dispose();
         skin.dispose();
-
     }
-
 }
