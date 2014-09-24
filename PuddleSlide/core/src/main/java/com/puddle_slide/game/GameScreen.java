@@ -38,7 +38,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class GameScreen extends InputAdapter implements Screen {
 
-    final com.puddle_slide.game.Puddle_Slide game;
+    final Puddle_Slide game;
     private OrthographicCamera camera;
     private FileHandle filehandle;
     private TextureAtlas textura;
