@@ -1,4 +1,5 @@
 package com.puddle_slide.game;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
@@ -67,6 +68,7 @@ public class GameScreen implements Screen {
         textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
         skin= new Skin(filehandle,textura);
         buttonPause = new TextButton("Pausa", skin);
+        buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
@@ -117,7 +119,12 @@ public class GameScreen implements Screen {
                 pauseGame();
             }
         });
-
+        buttonRegresar.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
+            }
+        });
         // Definicion de la hoja
         hojaDef = new BodyDef();
         hojaDef.position.set(hojaSprite.getX(), hojaSprite.getY());
@@ -142,7 +149,8 @@ public class GameScreen implements Screen {
         fixtureDef.restitution = 0.4f;
         gotaBody.createFixture(fixtureDef);
         gotaShape.dispose();
-        table.add(buttonPause).size(100,40).padBottom(400).padLeft(500);
+        table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
+        table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
