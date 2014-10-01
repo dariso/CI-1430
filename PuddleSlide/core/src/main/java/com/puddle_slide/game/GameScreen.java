@@ -60,10 +60,6 @@ public class GameScreen extends InputAdapter implements Screen {
     //Objetos del mundo
     private World world;
     private Box2DDebugRenderer debugRenderer;
-    private BodyDef hojaDef;
-    private Body hojaBody;
-    private BodyDef gotaDef;
-    private Body gotaBody;
     private Body ground;
     private float vel = 5000;
     private Gota enki;
@@ -209,6 +205,7 @@ public class GameScreen extends InputAdapter implements Screen {
         stage.dispose();
         skin.dispose();
         gotaImage.dispose();
+        hojaImg.dispose();
         backgroundImage.dispose();
     }
 
