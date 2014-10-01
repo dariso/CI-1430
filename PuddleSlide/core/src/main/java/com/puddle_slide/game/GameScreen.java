@@ -103,7 +103,7 @@ public class GameScreen extends InputAdapter implements Screen {
         //Si no esta en pausa actualiza las posiciones
         if(!PAUSE){
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
-            world.step(1f / 60f, 6, 2);
+            world.step(1/45f, 6, 2);
             hoja.mover(vec);                            // En vec se va a actualizar la posicion del cuerpo de la hoja
         }
         this.repintar();
@@ -161,15 +161,24 @@ public class GameScreen extends InputAdapter implements Screen {
             }
         });
 
-        //Definicion del piso
-        EdgeShape groundShape = new EdgeShape();
-        groundShape.set(-150, -40, 400, -40);
-
+        //Definicion de Bordes de Pantalla de Juego
+        EdgeShape groundEdge = new EdgeShape();
         BodyDef groundDef = new BodyDef();
+        groundDef.position.set(new Vector2(0,0));
         groundDef.type = BodyDef.BodyType.StaticBody;
         ground = world.createBody(groundDef);
-        ground.createFixture(groundShape, 0);
-        groundShape.dispose();
+        //definicion borde Izquierdo
+        groundEdge.set(-180,-35,-180,camera.viewportHeight);
+        ground.createFixture(groundEdge,0);
+        //definicion Piso
+        groundEdge.set(-180,-35,camera.viewportWidth,-35);
+        ground.createFixture(groundEdge,0);
+        //definicion borde Derecho
+        groundEdge.set(camera.viewportWidth-40,-35,camera.viewportWidth-40,camera.viewportHeight);
+        ground.createFixture(groundEdge,0);
+
+
+        groundEdge.dispose();
 
         //Creacion de la hoja
         hoja = new Hoja(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
