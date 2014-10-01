@@ -167,11 +167,13 @@ public class GameScreen extends InputAdapter implements Screen {
         groundDef.position.set(new Vector2(0,0));
         groundDef.type = BodyDef.BodyType.StaticBody;
         ground = world.createBody(groundDef);
-
+        //definicion borde Izquierdo
         groundEdge.set(-180,-35,-180,camera.viewportHeight);
         ground.createFixture(groundEdge,0);
+        //definicion Piso
         groundEdge.set(-180,-35,camera.viewportWidth,-35);
         ground.createFixture(groundEdge,0);
+        //definicion borde Derecho
         groundEdge.set(camera.viewportWidth-40,-35,camera.viewportWidth-40,camera.viewportHeight);
         ground.createFixture(groundEdge,0);
 
