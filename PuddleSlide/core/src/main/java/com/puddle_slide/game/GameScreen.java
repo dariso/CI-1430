@@ -1,8 +1,8 @@
 package com.puddle_slide.game;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,29 +10,21 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
-import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 
 
 
@@ -52,7 +44,6 @@ public class GameScreen extends InputAdapter implements Screen {
     private Texture gotaImage;
     private Texture hojaImg;
     private Texture backgroundImage;
-    private Texture backgroundPause;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
 
@@ -60,8 +51,8 @@ public class GameScreen extends InputAdapter implements Screen {
     //Objetos del mundo
     private World world;
     private Box2DDebugRenderer debugRenderer;
-    private Body ground;
     private float vel = 5000;
+    private Body ground;
     private Gota enki;
     private Hoja hoja;
 
@@ -78,7 +69,6 @@ public class GameScreen extends InputAdapter implements Screen {
         hojaSprite = new Sprite(hojaImg);
         gotaSprite.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
         hojaSprite.setPosition(0, 0);
-
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -145,7 +135,7 @@ public class GameScreen extends InputAdapter implements Screen {
     public void show() {
         world = new World(new Vector2(0, -98), true);
         debugRenderer = new Box2DDebugRenderer();
-
+        world.setContactListener(new MyContactListener());
         //Boton de Pausa
 
         buttonPause.addListener(new ClickListener(){
@@ -164,19 +154,39 @@ public class GameScreen extends InputAdapter implements Screen {
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
         BodyDef groundDef = new BodyDef();
+        FixtureDef fixtureDefIzq = new FixtureDef();
+        FixtureDef fixtureDefDer = new FixtureDef();
+        FixtureDef fixtureDefPiso = new FixtureDef();
         groundDef.position.set(new Vector2(0,0));
         groundDef.type = BodyDef.BodyType.StaticBody;
         ground = world.createBody(groundDef);
+
         //definicion borde Izquierdo
         groundEdge.set(-180,-35,-180,camera.viewportHeight);
-        ground.createFixture(groundEdge,0);
-        //definicion Piso
-        groundEdge.set(-180,-35,camera.viewportWidth,-35);
-        ground.createFixture(groundEdge,0);
-        //definicion borde Derecho
-        groundEdge.set(camera.viewportWidth-40,-35,camera.viewportWidth-40,camera.viewportHeight);
-        ground.createFixture(groundEdge,0);
+        fixtureDefIzq.shape = groundEdge;
+        fixtureDefIzq.density = 0;
+        ground.createFixture(fixtureDefIzq);
+        fixtureDefIzq.filter.categoryBits=FigureId.BIT_BORDE;
+        fixtureDefIzq.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
 
+        //definicion Piso
+        groundEdge.set(-180, -35, camera.viewportWidth, -35);
+        fixtureDefPiso.shape = groundEdge;
+        fixtureDefPiso.density = 0;
+        ground.createFixture(fixtureDefPiso);
+        fixtureDefPiso.filter.categoryBits=FigureId.BIT_BORDE;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
+
+        //definicion borde Derecho
+        groundEdge.set(camera.viewportWidth - 40, -35, camera.viewportWidth - 40, camera.viewportHeight);
+        fixtureDefDer.shape = groundEdge;
+        fixtureDefDer.density = 0;
+        ground.createFixture(fixtureDefDer);
+        fixtureDefDer.filter.categoryBits=FigureId.BIT_BORDE;
+        fixtureDefDer.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        ground.createFixture(fixtureDefDer).setUserData("borde_der");
 
         groundEdge.dispose();
 

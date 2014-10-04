@@ -1,11 +1,9 @@
 package com.puddle_slide.game;
-
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-
 /**
  * Created by xia on 9/30/14.
  */
@@ -30,10 +28,15 @@ public class Gota {
         gotaShape.setRadius(ancho/2);                   //Para que sea el radio dividimos el ancho (diametro) por 2
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = gotaShape;
+        //Define la cetegoria de objeto a la que pertenece
+        fixtureDef.filter.categoryBits=FigureId.BIT_GOTA;
+        //Define los objetos con los que debe colisionar
+        fixtureDef.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_BORDE;
         fixtureDef.density = 999.97f;
         fixtureDef.friction = 0.2f;
         fixtureDef.restitution = 0.9f;
-        gotaBody.createFixture(fixtureDef);
+        //Id del objeto
+        gotaBody.createFixture(fixtureDef).setUserData("gota");
         gotaShape.dispose();
 
     }

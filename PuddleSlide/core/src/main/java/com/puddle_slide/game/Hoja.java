@@ -33,10 +33,15 @@ public class Hoja {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = hojaShape;
+        //Define la cetegoria de objeto a la que pertenece
+        fixtureDef.filter.categoryBits=FigureId.BIT_HOJA;
+        //Define los objetos con los que debe colisionar
+        fixtureDef.filter.maskBits = FigureId.BIT_GOTA|FigureId.BIT_BORDE;
         fixtureDef.density = 1000f;
         fixtureDef.friction = 0.42f;
         fixtureDef.restitution = 0.5f;
-        hojaBody.createFixture(fixtureDef);
+        //Id del objeto
+        hojaBody.createFixture(fixtureDef).setUserData("hoja");;
         hojaShape.dispose();
     }
 
