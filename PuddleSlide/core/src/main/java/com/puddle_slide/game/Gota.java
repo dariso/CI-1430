@@ -35,6 +35,7 @@ public class Gota {
         fixtureDef.density = 999.97f;
         fixtureDef.friction = 0.2f;
         fixtureDef.restitution = 0.9f;
+
         //Id del objeto
         gotaBody.createFixture(fixtureDef).setUserData("gota");
         gotaShape.dispose();
