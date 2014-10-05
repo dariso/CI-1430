@@ -1,8 +1,11 @@
 package com.puddle_slide.game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 /**
  * Created by xia on 9/30/14.
@@ -10,6 +13,9 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Gota {
 
     private Body gotaBody;
+    private static final float WORLD_TO_BOX = 0.01f;
+    private static final float BOX_TO_WORLD = 100f;
+    private Vector2 puntoRef;
 
     /**
      * Constructor de la gota
@@ -19,34 +25,51 @@ public class Gota {
      * @param ancho Ancho del cuerpo de la gota
      * */
     public Gota(World world, float x, float y, float ancho){
+        BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/gota.json"));
+
         BodyDef gotaDef = new BodyDef();
         gotaDef.type = BodyDef.BodyType.DynamicBody;
         gotaDef.position.set(x, y);
         gotaBody = world.createBody(gotaDef);
 
-        CircleShape gotaShape = new CircleShape();
-        gotaShape.setRadius(ancho/2);                   //Para que sea el radio dividimos el ancho (diametro) por 2
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = gotaShape;
+
         //Define la cetegoria de objeto a la que pertenece
-        fixtureDef.filter.categoryBits=FigureId.BIT_GOTA;
+        fixtureDef.filter.categoryBits = FigureId.BIT_GOTA;
+
         //Define los objetos con los que debe colisionar
         fixtureDef.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_BORDE;
         fixtureDef.density = 999.97f;
+<<<<<<< HEAD
         fixtureDef.friction = 0.2f;
         fixtureDef.restitution = 0.9f;
 
         //Id del objeto
         gotaBody.createFixture(fixtureDef).setUserData("gota");
         gotaShape.dispose();
+=======
+        fixtureDef.friction = 0.1f;
+        fixtureDef.restitution = 0.7f;
+
+        bodyEditorLoader.attachFixture(gotaBody, "gota", fixtureDef, ancho * WORLD_TO_BOX);
+        puntoRef = bodyEditorLoader.getOrigin("gota", ancho *  WORLD_TO_BOX);
+>>>>>>> 1cc0043e730078208ed6719071abbe6aba32cc36
 
     }
 
     public float getX(){
-        return gotaBody.getPosition().x;
+        return gotaBody.getPosition().x * BOX_TO_WORLD;
     }
 
     public float getY(){
-        return gotaBody.getPosition().y;
+        return gotaBody.getPosition().y * BOX_TO_WORLD;
+    }
+
+    public float getAngulo(){
+        return gotaBody.getAngle();
+    }
+
+    public Vector2 getOrigen(){
+        return puntoRef;
     }
 }
