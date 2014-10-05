@@ -57,7 +57,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private Body ground;
     private Gota enki;
     private Hoja hoja;
-    private MyContactListener escuchadorColision;
+
     boolean PAUSE = false;
 
     public GameScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
@@ -80,8 +80,6 @@ public class GameScreen extends InputAdapter implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
-        escuchadorColision=new MyContactListener();
-
     }
 
     private Vector2 vec = new Vector2();
@@ -103,7 +101,6 @@ public class GameScreen extends InputAdapter implements Screen {
         this.repintar();
 
     }
-
 
     public void repintar(){
         gotaSprite.setPosition(enki.getX(), enki.getY());
@@ -141,14 +138,9 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public void show() {
-<<<<<<< HEAD
-        world = new World(new Vector2(0, -98), true);
-
-=======
         world = new World(new Vector2(0, -9.8f), true);
->>>>>>> 1cc0043e730078208ed6719071abbe6aba32cc36
         debugRenderer = new Box2DDebugRenderer();
-        world.setContactListener(escuchadorColision);
+        world.setContactListener(new MyContactListener());
         //Boton de Pausa
 
         buttonPause.addListener(new ClickListener(){
@@ -224,7 +216,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public void pause() {
-    pauseGame();
+        pauseGame();
     }
 
     @Override
@@ -249,6 +241,6 @@ public class GameScreen extends InputAdapter implements Screen {
             PAUSE=true;
             buttonPause.setText("Atrás");
         }
-     }
+    }
 
 }
