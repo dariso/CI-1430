@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Scaling;
 
 public class MainStartScreen implements Screen {
-    final com.puddle_slide.game.MainMenuScreen menuScreen;
     final com.puddle_slide.game.Puddle_Slide game;
     private OrthographicCamera camera;
     private FileHandle filehandle;
@@ -31,8 +30,7 @@ public class MainStartScreen implements Screen {
     private Texture imagent;
     private Image imagen;
 
-    public MainStartScreen(final com.puddle_slide.game.Puddle_Slide gam, final com.puddle_slide.game.MainMenuScreen menu) {
-        menuScreen = menu;
+    public MainStartScreen(final com.puddle_slide.game.Puddle_Slide gam) {
         game = gam;
         filehandle= Gdx.files.internal("skins/menuSkin.json");
         textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -55,10 +53,8 @@ public class MainStartScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new com.puddle_slide.game.GameScreen(game));
-            game.setScreen(new com.puddle_slide.game.GameScreen(game));
-            ((Game)Gdx.app.getApplicationListener()).setScreen(new com.puddle_slide.game.MainMenuScreen(game));
-            dispose();
+            game.setScreen(new MainMenuScreen(game));
+            this.dispose();
         }
     }
 
