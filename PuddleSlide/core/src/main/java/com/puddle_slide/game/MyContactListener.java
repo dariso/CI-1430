@@ -20,7 +20,7 @@ public class MyContactListener implements ContactListener {
         Fixture objetoB = contact.getFixtureB();
        // Vector2 velocidad = new Vector2(0, 8);
         Vector2 velocidad=new Vector2((float)Math.cos(30*Math.PI/180),(float)Math.sin(30*Math.PI/180));
-              // System.out.println(objetoA.getUserData()+", "+objetoB.getUserData());
+       // System.out.println(objetoA.getUserData()+", "+objetoB.getUserData());
            if( (objetoA.getUserData()=="hoja"||objetoB.getUserData()=="hoja")&& (objetoA.getUserData()=="gota"||objetoB.getUserData()=="gota")){
                //objetoA es la gota
 
