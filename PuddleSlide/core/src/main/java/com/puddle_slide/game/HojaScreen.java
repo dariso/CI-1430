@@ -56,6 +56,7 @@ public class HojaScreen extends InputAdapter implements Screen {
     private Body ground;
     private Gota enki;
     private Hoja hoja;
+    private Tronco tronko;
 
     boolean PAUSE = false;
 
@@ -203,6 +204,10 @@ public class HojaScreen extends InputAdapter implements Screen {
 
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
+
+        //creacion de un tronco
+
+        tronko = new Tronco(world,Gdx.graphics.getWidth() *WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX,30,400);
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
