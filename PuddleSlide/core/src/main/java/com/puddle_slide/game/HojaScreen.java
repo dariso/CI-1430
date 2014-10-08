@@ -87,7 +87,7 @@ public class HojaScreen extends InputAdapter implements Screen {
     @Override
     public void render(float delta) {
         camera.update();
-        Gdx.gl.glClearColor(0,0,1f,1);
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(camera.combined);
         Matrix4 cameraCopy = camera.combined.cpy();
@@ -207,7 +207,7 @@ public class HojaScreen extends InputAdapter implements Screen {
 
         //creacion de un tronco
 
-        tronko = new Tronco(world,Gdx.graphics.getWidth() *WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX,30,400);
+        tronko = new Tronco(world,Gdx.graphics.getWidth()/2-100, Gdx.graphics.getHeight()/2-100,30,400);
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);

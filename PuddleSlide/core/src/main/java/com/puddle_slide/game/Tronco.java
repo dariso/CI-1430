@@ -24,12 +24,14 @@ public class Tronco {
 
         BodyDef troncoDef = new BodyDef();
         troncoDef.type = BodyDef.BodyType.StaticBody;
-        troncoDef.position.set(x, y);
+        troncoDef.position.set(350*WORLD_TO_BOX,200*WORLD_TO_BOX);
         troncoBody = world.createBody(troncoDef);
 
 
         PolygonShape troncoShape = new PolygonShape();
-        troncoShape.setAsBox(30,30,new Vector2(x,y),0.86f);
+        troncoShape.setAsBox(200*WORLD_TO_BOX,10*WORLD_TO_BOX,
+                new Vector2(-30*WORLD_TO_BOX,50*WORLD_TO_BOX),-0.26f);
+
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = troncoShape;
          //Define la cetegoria de objeto a la que pertenece
@@ -39,6 +41,6 @@ public class Tronco {
         fixtureDef.friction = 0f;
 
         troncoBody.createFixture(fixtureDef).setUserData("tronco");
-        troncoShape.dispose();
+
     }
 }
