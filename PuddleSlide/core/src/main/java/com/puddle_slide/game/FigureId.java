@@ -12,5 +12,6 @@ public class FigureId {
     public static final short BIT_BORDE = 2;
     public static final short BIT_GOTA = 4;
     public static final short BIT_HOJA = 8;
+    public static final short BIT_TRONCO = 16;
 
 }

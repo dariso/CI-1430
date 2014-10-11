@@ -18,23 +18,24 @@ public class MyContactListener implements ContactListener {
     public void beginContact(Contact contact) {
         Fixture objetoA = contact.getFixtureA();
         Fixture objetoB = contact.getFixtureB();
-       // Vector2 velocidad = new Vector2(0, 8);
+        // Vector2 velocidad = new Vector2(0, 8);
         //Vector con direccion a futuro
         Vector2 velocidad=new Vector2((float)Math.cos(30*Math.PI/180),(float)Math.sin(30*Math.PI/180));
 
-           if( (objetoA.getUserData() == "hoja" || objetoB.getUserData() == "hoja") && (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
-               //objetoA es la gota
-                if(objetoA.getUserData() == "gota"){
 
-                    objetoA.getBody().applyAngularImpulse(100,true);
-
-                }else{
-
-                    objetoB.getBody().applyAngularImpulse(100,true);
-
-                }
-           }
+        if( (objetoA.getUserData() == "hoja" || objetoB.getUserData() == "hoja")
+             && (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
+          //objetoA es la gota
+            if(objetoA.getUserData() == "gota"){
+                objetoA.getBody().applyAngularImpulse(100,true);
+            }else{
+                objetoB.getBody().applyAngularImpulse(100,true);
+            }
+        }
     }
+
+
+
     public boolean contactoHoja(){
         return contactoConHoja;
     }
