@@ -24,12 +24,12 @@ public class Tronco {
 
         BodyDef troncoDef = new BodyDef();
         troncoDef.type = BodyDef.BodyType.StaticBody;
-        troncoDef.position.set(350*WORLD_TO_BOX,200*WORLD_TO_BOX);
+        troncoDef.position.set(x*WORLD_TO_BOX,y*WORLD_TO_BOX);
         troncoBody = world.createBody(troncoDef);
 
 
         PolygonShape troncoShape = new PolygonShape();
-        troncoShape.setAsBox(200*WORLD_TO_BOX,10*WORLD_TO_BOX,
+        troncoShape.setAsBox(largo*WORLD_TO_BOX,ancho*WORLD_TO_BOX,
                 new Vector2(-30*WORLD_TO_BOX,50*WORLD_TO_BOX),-0.26f);
 
         FixtureDef fixtureDef = new FixtureDef();

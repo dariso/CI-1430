@@ -205,9 +205,9 @@ public class HojaScreen extends InputAdapter implements Screen {
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
-        //creacion de un tronco
+        //prueba de creacion de tronco, borrar.
 
-        tronko = new Tronco(world,Gdx.graphics.getWidth()/2-100, Gdx.graphics.getHeight()/2-100,30,400);
+        tronko = new Tronco(world,350,200,7,200);
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
