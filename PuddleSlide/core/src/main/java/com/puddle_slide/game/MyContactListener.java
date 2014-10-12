@@ -20,9 +20,7 @@ public class MyContactListener implements ContactListener {
 
         Fixture objetoA = contact.getFixtureA();
         Fixture objetoB = contact.getFixtureB();
-
         SoundControl sonido = new SoundControl();
-
        // Vector2 velocidad = new Vector2(0, 8);
         //Vector con direccion a futuro
         Vector2 velocidad=new Vector2((float)Math.cos(30*Math.PI/180),(float)Math.sin(30*Math.PI/180));
@@ -30,14 +28,10 @@ public class MyContactListener implements ContactListener {
            if( (objetoA.getUserData() == "hoja" || objetoB.getUserData() == "hoja") && (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
                //objetoA es la gota
                 if(objetoA.getUserData() == "gota"){
-
                     objetoA.getBody().applyAngularImpulse(100,true);
-
                 }else{
-
                     objetoB.getBody().applyAngularImpulse(100,true);
                     sonido.sonidoHoja();
-
                 }
            }
     }

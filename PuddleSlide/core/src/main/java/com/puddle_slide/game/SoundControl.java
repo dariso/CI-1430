@@ -11,14 +11,10 @@ public class SoundControl {
     Sound hojaSound;
 
     public SoundControl(){
-
         hojaSound = Gdx.audio.newSound(Gdx.files.internal("boinki.wav"));
-
     }
 
     public void sonidoHoja(){
-
         hojaSound.play();
-        
     }
 }
