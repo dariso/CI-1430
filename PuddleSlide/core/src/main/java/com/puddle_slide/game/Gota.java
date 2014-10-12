@@ -36,7 +36,7 @@ public class Gota {
         fixtureDef.filter.categoryBits = FigureId.BIT_GOTA;
 
         //Define los objetos con los que debe colisionar
-        fixtureDef.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_BORDE|FigureId.BIT_TRONCO;
+        fixtureDef.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_BORDE|FigureId.BIT_TRONCO|FigureId.BIT_MANZANA;
         fixtureDef.density = 999.97f;
         fixtureDef.friction = 0.1f;
         fixtureDef.restitution = 0.7f;
