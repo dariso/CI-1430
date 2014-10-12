@@ -35,6 +35,7 @@ public class MyContactListener implements ContactListener {
                 }
            }
     }
+
     public boolean contactoHoja(){
         return contactoConHoja;
     }
