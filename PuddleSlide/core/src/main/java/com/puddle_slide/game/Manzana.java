@@ -35,7 +35,7 @@ public class Manzana {
        manzanaBody = world.createBody(manzanaDef);
 
        PolygonShape polygonShape = new PolygonShape();
-        
+
        FixtureDef fixtureDef = new FixtureDef();
 
        //Define la cetegoria de objeto a la que pertenece
