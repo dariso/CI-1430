@@ -40,7 +40,6 @@ public class Hoja {
 
         FixtureDef fixtureDef = new FixtureDef();
 
-
         //Define la cetegoria de objeto a la que pertenece
         fixtureDef.filter.categoryBits = FigureId.BIT_HOJA;
 
@@ -79,4 +78,5 @@ public class Hoja {
     public float getMasa(){
         return hojaBody.getMass();
     }
+
 }
