@@ -14,10 +14,15 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class MyContactListener implements ContactListener {
     private boolean contactoConHoja;
+
     @Override
     public void beginContact(Contact contact) {
+
         Fixture objetoA = contact.getFixtureA();
         Fixture objetoB = contact.getFixtureB();
+
+        SoundControl sonido = new SoundControl();
+
        // Vector2 velocidad = new Vector2(0, 8);
         //Vector con direccion a futuro
         Vector2 velocidad=new Vector2((float)Math.cos(30*Math.PI/180),(float)Math.sin(30*Math.PI/180));
@@ -31,6 +36,7 @@ public class MyContactListener implements ContactListener {
                 }else{
 
                     objetoB.getBody().applyAngularImpulse(100,true);
+                    sonido.sonidoHoja();
 
                 }
            }
