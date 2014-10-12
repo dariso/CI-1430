@@ -3,8 +3,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+
+import java.util.ArrayList;
+
 /**
  * Created by xia on 9/30/14.
  */
@@ -14,6 +19,7 @@ public class Gota {
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
     private Vector2 puntoRef;
+
 
     /**
      * Constructor de la gota
@@ -46,6 +52,15 @@ public class Gota {
 
     }
 
+
+    public void setRestitucion(float rest){
+        //devuelve todas las fixtures de un body
+        //La lista NO debe cambiarse
+        Array<Fixture> fixtures = gotaBody.getFixtureList();
+        fixtures.first().setRestitution(rest);
+    }
+
+
     public float getX(){
         return gotaBody.getPosition().x * BOX_TO_WORLD;
     }
@@ -57,6 +72,8 @@ public class Gota {
     public float getAngulo(){
         return gotaBody.getAngle();
     }
+
+
 
     public Vector2 getOrigen(){
         return puntoRef;
