@@ -35,6 +35,7 @@ public class Manzana {
        manzanaBody = world.createBody(manzanaDef);
 
        PolygonShape polygonShape = new PolygonShape();
+        
        FixtureDef fixtureDef = new FixtureDef();
 
        //Define la cetegoria de objeto a la que pertenece
@@ -48,7 +49,6 @@ public class Manzana {
 
        bodyEditorLoader.attachFixture(manzanaBody, "manzana", fixtureDef, ancho * WORLD_TO_BOX);//tamaño de gota doble
        puntoRef = bodyEditorLoader.getOrigin("manzana", ancho *  WORLD_TO_BOX);
-
     }
 
     public float getX(){
