@@ -20,7 +20,7 @@ import java.util.Map;
  *
  * @author Aurelien Ribon | http://www.aurelienribon.com
  */
-public class BodyEditorLoader {
+public class  BodyEditorLoader {
 
     // Model
     private final Model model;
