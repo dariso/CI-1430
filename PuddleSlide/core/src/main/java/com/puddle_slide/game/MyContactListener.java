@@ -21,7 +21,6 @@ public class MyContactListener implements ContactListener {
         Fixture objetoA = contact.getFixtureA();
         Fixture objetoB = contact.getFixtureB();
         SoundControl sonido = new SoundControl();
-        // Vector2 velocidad = new Vector2(0, 8);
         //Vector con direccion a futuro
         Vector2 velocidad=new Vector2((float)Math.cos(30*Math.PI/180),(float)Math.sin(30*Math.PI/180));
 
