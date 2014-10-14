@@ -28,9 +28,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
- * Created by kalam on 05/10/2014.
+ * Created by Meli.
  */
-public class HojaScreen extends InputAdapter implements Screen {
+public class ManzanaScreen extends InputAdapter implements Screen {
 
     final Puddle_Slide game;
     private OrthographicCamera camera;
@@ -56,10 +56,10 @@ public class HojaScreen extends InputAdapter implements Screen {
     private Body ground;
     private Gota enki;
     private Hoja hoja;
-
+    private Manzana manzana;
     boolean PAUSE = false;
 
-    public HojaScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
+    public ManzanaScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
@@ -96,10 +96,9 @@ public class HojaScreen extends InputAdapter implements Screen {
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1/45f, 6, 2);
             // En vec se va a actualizar la posicion del cuerpo de la hoja
-            hoja.mover(vec);
+            manzana.mover(vec);
         }
         this.repintar();
-
     }
 
     public void repintar(){
@@ -110,10 +109,10 @@ public class HojaScreen extends InputAdapter implements Screen {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            if(Gdx.input.getX() > hoja.getX()){
-                vec.x = vel * hoja.getMasa();
+            if(Gdx.input.getX() > manzana.getX()){
+                vec.x = vel * manzana.getMasa();
             }else{
-                vec.x = -vel * hoja.getMasa();
+                vec.x = -vel * manzana.getMasa();
             }
         }else{
             vec.x = 0;
@@ -175,7 +174,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         fixtureDefIzq.density = 0;
         ground.createFixture(fixtureDefIzq);
         fixtureDefIzq.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefIzq.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefIzq.filter.maskBits = FigureId.BIT_MANZANA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
 
         //definicion Piso
@@ -184,7 +183,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefPiso.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_MANZANA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
 
         //definicion borde Derecho
@@ -193,14 +192,14 @@ public class HojaScreen extends InputAdapter implements Screen {
         fixtureDefDer.density = 0;
         ground.createFixture(fixtureDefDer);
         fixtureDefDer.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefDer.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefDer.filter.maskBits = FigureId.BIT_MANZANA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefDer).setUserData("borde_der");
 
         groundEdge.dispose();
 
         //Creacion de la hoja
         hoja = new Hoja(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
-
+        manzana = new Manzana(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
@@ -224,6 +223,7 @@ public class HojaScreen extends InputAdapter implements Screen {
 
     @Override
     public void resume() {
+
     }
 
     @Override
@@ -244,5 +244,4 @@ public class HojaScreen extends InputAdapter implements Screen {
             buttonPause.setText("Atrás");
         }
     }
-
 }

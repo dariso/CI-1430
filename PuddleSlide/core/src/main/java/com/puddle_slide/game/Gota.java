@@ -1,10 +1,14 @@
 package com.puddle_slide.game;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+
 /**
  * Created by xia on 9/30/14.
  */
@@ -44,6 +48,13 @@ public class Gota {
         bodyEditorLoader.attachFixture(gotaBody, "gota", fixtureDef, ancho * WORLD_TO_BOX);
         puntoRef = bodyEditorLoader.getOrigin("gota", ancho *  WORLD_TO_BOX);
 
+    }
+
+    public void setRestitucion(float rest){
+            //devuelve todas las fixtures de un body
+            //La lista NO debe cambiarse
+            Array< Fixture > fixtures = gotaBody.getFixtureList();
+            fixtures.first().setRestitution(rest);
     }
 
     public float getX(){
