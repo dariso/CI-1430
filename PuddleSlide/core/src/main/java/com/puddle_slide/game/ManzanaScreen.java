@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -95,8 +94,6 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         if(!PAUSE){
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1/45f, 6, 2);
-            // En vec se va a actualizar la posicion del cuerpo de la hoja
-            manzana.mover(vec);
         }
         this.repintar();
     }
@@ -106,16 +103,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
         //Movimiento horizontal de la hoja
         if(Gdx.input.isTouched()) {
-            Vector3 touchPos = new Vector3();
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos);
-            if(Gdx.input.getX() > manzana.getX()){
-                vec.x = vel * manzana.getMasa();
-            }else{
-                vec.x = -vel * manzana.getMasa();
-            }
-        }else{
-            vec.x = 0;
+           //Caerá manzana
         }
 
         hojaSprite.setPosition(hoja.getX(), hoja.getY());
