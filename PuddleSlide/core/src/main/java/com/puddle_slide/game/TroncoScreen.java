@@ -42,6 +42,11 @@ public class TroncoScreen extends InputAdapter implements Screen {
     private TextButton buttonRegresar;
     private Sprite gotaSprite;
     private Sprite hojaSprite;
+    private Sprite troncoDerSprite;
+    private Sprite troncoIzqSprite;
+    private Texture troncoDerImage;
+    private Texture troncoIzqImage;
+
     private Texture gotaImage;
     private Texture hojaImg;
     private Texture backgroundImage;
@@ -57,19 +62,25 @@ public class TroncoScreen extends InputAdapter implements Screen {
     private Hoja hoja;
     private Tronco tronko;
     private Tronco tronko1;
+    private Tronco tronko2;
 
     boolean PAUSE = false;
+
 
     public TroncoScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
         hojaImg = new Texture (Gdx.files.internal("hoja2.png"));
+        troncoDerImage = new Texture(Gdx.files.internal("troncoDer.png"));
+        troncoIzqImage = new Texture(Gdx.files.internal("troncoIzq.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         gotaSprite = new Sprite(gotaImage);
         hojaSprite = new Sprite(hojaImg);
-        gotaSprite.setPosition(100*WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
+        troncoDerSprite = new Sprite(troncoDerImage);
+        troncoIzqSprite = new Sprite(troncoIzqImage);
+        gotaSprite.setPosition(150*WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
         hojaSprite.setPosition(0,0);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
@@ -123,15 +134,31 @@ public class TroncoScreen extends InputAdapter implements Screen {
         hojaSprite.setPosition(hoja.getX(), hoja.getY());
         hojaSprite.setRotation(hoja.getAngulo() * MathUtils.radiansToDegrees);
         //Dibuja los sprites
-        /*
         this.game.batch.begin();
         this.game.batch.draw(backgroundImage, 0, 0);
-        this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(), hoja.getOrigen().x, hoja.getOrigen().y, hojaSprite.getWidth(),
-                hojaSprite.getHeight(), hojaSprite.getScaleX(), hojaSprite.getScaleY(), hojaSprite.getRotation());
-        this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
-                gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
+        this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(), hoja.getOrigen().x,
+                hoja.getOrigen().y, hojaSprite.getWidth(),hojaSprite.getHeight(),
+                hojaSprite.getScaleX(), hojaSprite.getScaleY(), hojaSprite.getRotation());
+
+        this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x,
+                enki.getOrigen().y, gotaSprite.getWidth(),
+                gotaSprite.getHeight(), gotaSprite.getScaleX(),
+                gotaSprite.getScaleY(), gotaSprite.getRotation());
+
+        this.game.batch.draw(troncoDerSprite, tronko.getX() - 9, tronko.getY() + 12,
+                tronko.getOrigen().x, tronko.getOrigen().y,tronko.getWidth(), tronko.getHeight(),
+                troncoDerSprite.getScaleX(),troncoDerSprite.getScaleY(),
+                tronko.getAngulo() * MathUtils.radiansToDegrees - 2);
+        this.game.batch.draw(troncoIzqSprite,tronko1.getX()+9,tronko1.getY()+6,tronko1.getOrigen().x,
+                tronko1.getOrigen().y ,tronko1.getWidth(),tronko1.getHeight(),
+                troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(),
+                tronko1.getAngulo()*MathUtils.radiansToDegrees+2);
+        this.game.batch.draw(troncoDerSprite,tronko2.getX()-15,tronko2.getY()+ 68,tronko2.getOrigen().x,
+                tronko2.getOrigen().y,tronko2.getWidth(),tronko2.getHeight(),
+                troncoDerSprite.getScaleX(),troncoDerSprite.getScaleY(),
+                tronko2.getAngulo()*MathUtils.radiansToDegrees-12);
+
         this.game.batch.end();
-        */
         stage.act();
         stage.draw();
     }
@@ -208,7 +235,9 @@ public class TroncoScreen extends InputAdapter implements Screen {
 
         //Creacion Tronko, ultimo parametro es si es derecho el tronco
         //en caso contrario, izquierdo
-        tronko = new Tronco(world,100*WORLD_TO_BOX,200*WORLD_TO_BOX,300,250,-0.26f,true);
+        tronko = new Tronco(world,200*WORLD_TO_BOX,220*WORLD_TO_BOX,300,250,0.26f,true);
+        tronko1 = new Tronco(world,380*WORLD_TO_BOX,130*WORLD_TO_BOX,300,250,-0.26f,false);
+        tronko2 = new Tronco(world,190*WORLD_TO_BOX,30*WORLD_TO_BOX,200,100,0.15f,true);
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);

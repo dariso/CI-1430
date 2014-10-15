@@ -18,14 +18,24 @@ public class Tronco {
     private Body troncoBody;
     private Vector2 puntoRef;
     private boolean esTroncoDerecho;
+    private float ancho;
+    private float largo;
     private final float WORLD_TO_BOX = 0.01f;
     private final float BOX_TO_WORLD = 100f;
 
-    //direccion, 1 = orientado derecha,0 izquierda
-    public Tronco(World world, float x, float y,float ancho,float largo,float angulo,boolean esDer){
-
+    public Tronco(World world, float x, float y,float anch,float larg,float angulo,boolean esDer){
+        BodyEditorLoader bodyEditorLoader;
+        ancho = anch;
+        largo = larg;
         esTroncoDerecho = esDer;
-        BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/tronco.json"));
+        if(esDer){
+            bodyEditorLoader =
+                    new BodyEditorLoader(Gdx.files.internal("Shapes/troncoDer.json"));
+        }
+        else{
+            bodyEditorLoader =
+                    new BodyEditorLoader(Gdx.files.internal("Shapes/troncoIzq.json"));
+        }
         BodyDef troncoDef = new BodyDef();
         troncoDef.type = BodyDef.BodyType.StaticBody;
         troncoDef.position.set(x,y);
@@ -39,13 +49,13 @@ public class Tronco {
         fixtureDef.filter.maskBits = FigureId.BIT_GOTA;
         fixtureDef.friction = 0f;
         if(esDer){
-            bodyEditorLoader.attachFixture(troncoBody,"tronco1",fixtureDef,ancho * WORLD_TO_BOX);
-            puntoRef = bodyEditorLoader.getOrigin("tronco1", ancho * WORLD_TO_BOX);
+            bodyEditorLoader.attachFixture(troncoBody,"troncoDer",fixtureDef,ancho * WORLD_TO_BOX);
+            puntoRef = bodyEditorLoader.getOrigin("troncoDer", ancho * WORLD_TO_BOX);
 
         }
         else{
-            bodyEditorLoader.attachFixture(troncoBody,"tronco",fixtureDef,ancho * WORLD_TO_BOX);
-            puntoRef = bodyEditorLoader.getOrigin("tronco", ancho * WORLD_TO_BOX);
+            bodyEditorLoader.attachFixture(troncoBody,"troncoIzq",fixtureDef,ancho * WORLD_TO_BOX);
+            puntoRef = bodyEditorLoader.getOrigin("troncoIzq", ancho * WORLD_TO_BOX);
         }
 
         troncoBody.setTransform(troncoBody.getPosition(),angulo);
@@ -62,6 +72,10 @@ public class Tronco {
     public float getAngulo(){
         return troncoBody.getAngle();
     }
+
+    public float getWidth(){return ancho;}
+
+    public float getHeight(){return largo;}
 
     public Vector2 getOrigen(){
         return puntoRef;
