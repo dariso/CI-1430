@@ -28,10 +28,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
- * Created by kalam on 05/10/2014.
+ * Created by daniel on 12/10/14.
  */
-public class HojaScreen extends InputAdapter implements Screen {
-
+public class TroncoScreen extends InputAdapter implements Screen {
     final Puddle_Slide game;
     private OrthographicCamera camera;
     private FileHandle filehandle;
@@ -56,11 +55,12 @@ public class HojaScreen extends InputAdapter implements Screen {
     private Body ground;
     private Gota enki;
     private Hoja hoja;
-    private Hoja hoja2;
+    private Tronco tronko;
+    private Tronco tronko1;
 
     boolean PAUSE = false;
 
-    public HojaScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
+    public TroncoScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
@@ -69,7 +69,7 @@ public class HojaScreen extends InputAdapter implements Screen {
 
         gotaSprite = new Sprite(gotaImage);
         hojaSprite = new Sprite(hojaImg);
-        gotaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
+        gotaSprite.setPosition(100*WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
         hojaSprite.setPosition(0,0);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
@@ -176,7 +176,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         fixtureDefIzq.density = 0;
         ground.createFixture(fixtureDefIzq);
         fixtureDefIzq.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefIzq.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefIzq.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
 
         //definicion Piso
@@ -185,7 +185,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefPiso.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
 
         //definicion borde Derecho
@@ -194,17 +194,21 @@ public class HojaScreen extends InputAdapter implements Screen {
         fixtureDefDer.density = 0;
         ground.createFixture(fixtureDefDer);
         fixtureDefDer.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefDer.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefDer.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefDer).setUserData("borde_der");
 
         groundEdge.dispose();
 
         //Creacion de la hoja
-        hoja = new Hoja(world, hojaSprite.getX(),( hojaSprite.getY()), hojaSprite.getWidth(), hojaSprite.getHeight());
+        hoja = new Hoja(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
 
-        hoja2 = new Hoja(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
+        enki.setRestitucion(0f);
+
+        //Creacion Tronko
+        tronko = new Tronco(world,300,300,10,250,-0.26f);
+        tronko1 = new Tronco(world,600,100,10,200,0.26f);
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
@@ -226,6 +230,7 @@ public class HojaScreen extends InputAdapter implements Screen {
 
     @Override
     public void resume() {
+
     }
 
     @Override
@@ -246,5 +251,4 @@ public class HojaScreen extends InputAdapter implements Screen {
             buttonPause.setText("Atrás");
         }
     }
-
 }

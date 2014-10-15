@@ -28,9 +28,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
- * Created by kalam on 05/10/2014.
+ * Created by xia on 10/14/14.
  */
-public class HojaScreen extends InputAdapter implements Screen {
+public class HongoScreen extends InputAdapter implements Screen{
 
     final Puddle_Slide game;
     private OrthographicCamera camera;
@@ -42,9 +42,9 @@ public class HojaScreen extends InputAdapter implements Screen {
     private TextButton buttonPause;
     private TextButton buttonRegresar;
     private Sprite gotaSprite;
-    private Sprite hojaSprite;
+    private Sprite hongoSprite;
     private Texture gotaImage;
-    private Texture hojaImg;
+    private Texture hongoImg;
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
@@ -55,22 +55,21 @@ public class HojaScreen extends InputAdapter implements Screen {
     private float vel = 10;
     private Body ground;
     private Gota enki;
-    private Hoja hoja;
-    private Hoja hoja2;
+    private Hongo hongo;
 
     boolean PAUSE = false;
 
-    public HojaScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
+    public HongoScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
-        hojaImg = new Texture (Gdx.files.internal("hoja2.png"));
+        hongoImg = new Texture (Gdx.files.internal("hongosNaranja.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         gotaSprite = new Sprite(gotaImage);
-        hojaSprite = new Sprite(hojaImg);
-        gotaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
-        hojaSprite.setPosition(0,0);
+        hongoSprite = new Sprite(hongoImg);
+        gotaSprite.setPosition(0, Gdx.graphics.getHeight() * WORLD_TO_BOX);
+        hongoSprite.setPosition(0,0);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -82,7 +81,6 @@ public class HojaScreen extends InputAdapter implements Screen {
 
     }
 
-    private Vector2 vec = new Vector2();
 
     @Override
     public void render(float delta) {
@@ -96,8 +94,6 @@ public class HojaScreen extends InputAdapter implements Screen {
         if(!PAUSE){
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1/45f, 6, 2);
-            // En vec se va a actualizar la posicion del cuerpo de la hoja
-            hoja.mover(vec);
         }
         this.repintar();
 
@@ -107,21 +103,8 @@ public class HojaScreen extends InputAdapter implements Screen {
         gotaSprite.setPosition(enki.getX(), enki.getY());
         gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
         //Movimiento horizontal de la hoja
-        if(Gdx.input.isTouched()) {
-            Vector3 touchPos = new Vector3();
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos);
-            if(Gdx.input.getX() > hoja.getX()){
-                vec.x = vel * hoja.getMasa();
-            }else{
-                vec.x = -vel * hoja.getMasa();
-            }
-        }else{
-            vec.x = 0;
-        }
-
-        hojaSprite.setPosition(hoja.getX(), hoja.getY());
-        hojaSprite.setRotation(hoja.getAngulo() * MathUtils.radiansToDegrees);
+        hongoSprite.setPosition(hongo.getX(), hongo.getY());
+        hongoSprite.setRotation(hongo.getAngulo() * MathUtils.radiansToDegrees);
         //Dibuja los sprites
         /*
         this.game.batch.begin();
@@ -176,7 +159,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         fixtureDefIzq.density = 0;
         ground.createFixture(fixtureDefIzq);
         fixtureDefIzq.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefIzq.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefIzq.filter.maskBits = FigureId.BIT_HONGO|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
 
         //definicion Piso
@@ -185,7 +168,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefPiso.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_HONGO|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
 
         //definicion borde Derecho
@@ -194,15 +177,14 @@ public class HojaScreen extends InputAdapter implements Screen {
         fixtureDefDer.density = 0;
         ground.createFixture(fixtureDefDer);
         fixtureDefDer.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefDer.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefDer.filter.maskBits = FigureId.BIT_HONGO|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefDer).setUserData("borde_der");
 
         groundEdge.dispose();
 
-        //Creacion de la hoja
-        hoja = new Hoja(world, hojaSprite.getX(),( hojaSprite.getY()), hojaSprite.getWidth(), hojaSprite.getHeight());
+        //Creacion del hongo
+        hongo = new Hongo(world, hongoSprite.getX(), hongoSprite.getY(), hongoSprite.getWidth(), hongoSprite.getHeight());
 
-        hoja2 = new Hoja(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
@@ -226,6 +208,7 @@ public class HojaScreen extends InputAdapter implements Screen {
 
     @Override
     public void resume() {
+
     }
 
     @Override
@@ -233,7 +216,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         stage.dispose();
         skin.dispose();
         gotaImage.dispose();
-        hojaImg.dispose();
+        hongoImg.dispose();
         backgroundImage.dispose();
     }
 
@@ -246,5 +229,6 @@ public class HojaScreen extends InputAdapter implements Screen {
             buttonPause.setText("Atrás");
         }
     }
-
 }
+
+

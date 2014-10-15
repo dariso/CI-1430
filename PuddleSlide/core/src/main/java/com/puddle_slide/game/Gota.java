@@ -1,10 +1,14 @@
 package com.puddle_slide.game;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+
 /**
  * Created by xia on 9/30/14.
  */
@@ -14,6 +18,7 @@ public class Gota {
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
     private Vector2 puntoRef;
+
 
     /**
      * Constructor de la gota
@@ -36,14 +41,20 @@ public class Gota {
         fixtureDef.filter.categoryBits = FigureId.BIT_GOTA;
 
         //Define los objetos con los que debe colisionar
-        fixtureDef.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_HOJABASICA|FigureId.BIT_BORDE|FigureId.BIT_TRONCO|FigureId.BIT_MANZANA;
+        fixtureDef.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_HOJABASICA|FigureId.BIT_BORDE|FigureId.BIT_TRONCO|FigureId.BIT_MANZANA|FigureId.BIT_HONGO;
         fixtureDef.density = 999.97f;
         fixtureDef.friction = 0.1f;
         fixtureDef.restitution = 0.7f;
 
         bodyEditorLoader.attachFixture(gotaBody, "gota", fixtureDef, ancho * WORLD_TO_BOX);
         puntoRef = bodyEditorLoader.getOrigin("gota", ancho *  WORLD_TO_BOX);
+    }
 
+    public void setRestitucion(float rest){
+        //devuelve todas las fixtures de un body
+        //La lista NO debe cambiarse
+        Array<Fixture> fixtures = gotaBody.getFixtureList();
+        fixtures.first().setRestitution(rest);
     }
 
     public float getX(){

@@ -22,7 +22,7 @@ public class MyContactListener implements ContactListener {
         Fixture objetoB = contact.getFixtureB();
         SoundControl sonido = new SoundControl();
         //Vector con direccion a futuro
-        Vector2 velocidad=new Vector2((float)Math.cos(30*Math.PI/180),(float)Math.sin(30*Math.PI/180));
+        Vector2 velocidad = new Vector2((float)Math.cos(30*Math.PI/180),(float)Math.sin(30*Math.PI/180));
 
 
         if( (objetoA.getUserData() == "hoja" || objetoB.getUserData() == "hoja") && (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
