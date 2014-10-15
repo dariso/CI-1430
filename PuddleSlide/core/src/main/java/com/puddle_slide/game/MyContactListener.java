@@ -35,6 +35,36 @@ public class MyContactListener implements ContactListener {
                 sonido.sonidoHoja();
             }
         }
+
+        Vector2 impulso = new Vector2();    // Contiene los valores del impulso aplicado a la gota cuando choca con el hongo
+        Vector2 punto = new Vector2();      // Contiene el punto en el que se le va a aplicar ese impulso a la gota
+        if( (objetoA.getUserData() == "hongo" || objetoB.getUserData() == "hongo") && (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
+            //objetoA es la gota
+            if(objetoA.getUserData() == "gota"){
+                impulso.x = 450;
+                impulso.y = 20;
+                //Para saber a que lado aplicar el impulso a la gota
+                if(objetoA.getBody().getPosition().x > objetoB.getBody().getPosition().x){
+                    punto.x = objetoA.getBody().getPosition().x;
+                }else{
+                    punto.x = -objetoA.getBody().getPosition().x;
+                }
+                objetoA.getBody().applyLinearImpulse(impulso.x, impulso.y, punto.x, punto.y, true);
+            }else{
+                impulso.x = 450;
+                impulso.y = 20;
+                //Para saber a que lado aplicar el impulso a la gota
+                if(objetoA.getBody().getPosition().x > objetoB.getBody().getPosition().x){
+                    punto.x = objetoB.getBody().getPosition().x;
+                    punto.y = objetoB.getBody().getPosition().y;
+                }else{
+                    punto.x = -objetoB.getBody().getPosition().x;
+                    punto.y = -objetoB.getBody().getPosition().y;
+                }
+                objetoB.getBody().applyLinearImpulse(impulso.x, impulso.y, punto.x, punto.y, true);
+                sonido.sonidoHoja();
+            }
+        }
     }
 
     public boolean contactoHoja(){
