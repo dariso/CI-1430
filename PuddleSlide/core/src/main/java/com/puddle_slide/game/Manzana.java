@@ -8,8 +8,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+
+
 /**
- * Created by Meli
+ * Created by Meli.
  */
 public class Manzana {
 
@@ -19,36 +21,40 @@ public class Manzana {
     private static final float BOX_TO_WORLD = 100f;
 
     /**
-    * Constructor de la manzana
-    * @param world Mundo en el que se dibujara la manzana
-    * @param x Posicion en el eje x en el que se dibujara la manzana
-    * @param y Posicion en el eje y en el que se dibujara la manzana
-    * @param ancho Ancho del cuerpo de la manzana
-    * */
-    public Manzana(World world, float x, float y, float ancho){
+     * Constructor de la manzana
+     * @param world Mundo en el que se dibujara la manzana
+     * @param x Posicion en el eje x en el que se dibujara la manzana
+     * @param y Posicion en el eje y en el que se dibujara la manzana
+     * @param ancho Ancho del sprite de la manzana
+     * @param alto Alto del sprite de la manzana
+     * */
+    public Manzana(World world, float x, float y, float ancho, float alto) {
+        BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/manzana.json"));
 
-       BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/manzana.json"));
+        BodyDef manzanaDef = new BodyDef();
+        manzanaDef.type = BodyDef.BodyType.DynamicBody;
+        manzanaDef.position.set(x, y);
+        manzanaBody = world.createBody(manzanaDef);
 
-       BodyDef manzanaDef = new BodyDef();
-       manzanaDef.type = BodyDef.BodyType.DynamicBody;
-       manzanaDef.position.set(x, y);
-       manzanaBody = world.createBody(manzanaDef);
+        PolygonShape polygonShape = new PolygonShape();
 
-       PolygonShape polygonShape = new PolygonShape();
+        FixtureDef fixtureDef = new FixtureDef();
 
-       FixtureDef fixtureDef = new FixtureDef();
+        //Define la cetegoria de objeto a la que pertenece
+        fixtureDef.filter.categoryBits = FigureId.BIT_MANZANA;
 
-       //Define la cetegoria de objeto a la que pertenece
-       fixtureDef.filter.categoryBits = FigureId.BIT_MANZANA;
+        //Define los objetos con los que debe colisionar
+        fixtureDef.filter.maskBits = FigureId.BIT_GOTA | FigureId.BIT_BORDE;
+        fixtureDef.density = 1000f;
+        fixtureDef.friction = 0.42f;
+        fixtureDef.restitution = 0.5f;
 
-       //Define los objetos con los que debe colisionar
-       fixtureDef.filter.maskBits = FigureId.BIT_GOTA | FigureId.BIT_BORDE;
-       fixtureDef.density = 1000f;
-       fixtureDef.friction = 0.42f;
-       fixtureDef.restitution = 0.5f;
 
-       bodyEditorLoader.attachFixture(manzanaBody, "manzana", fixtureDef, ancho * WORLD_TO_BOX);//tamaño de gota doble
-       puntoRef = bodyEditorLoader.getOrigin("manzana", ancho *  WORLD_TO_BOX);
+        bodyEditorLoader.attachFixture( manzanaBody,"manzana",  fixtureDef, ancho * WORLD_TO_BOX);
+        puntoRef = bodyEditorLoader.getOrigin("manzana", ancho * WORLD_TO_BOX);
+
+
+
     }
 
     public float getX(){

@@ -1,4 +1,5 @@
 package com.puddle_slide.game;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -7,8 +8,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-
-import java.util.ArrayList;
 
 /**
  * Created by xia on 9/30/14.
@@ -49,9 +48,7 @@ public class Gota {
 
         bodyEditorLoader.attachFixture(gotaBody, "gota", fixtureDef, ancho * WORLD_TO_BOX);
         puntoRef = bodyEditorLoader.getOrigin("gota", ancho *  WORLD_TO_BOX);
-
     }
-
 
     public void setRestitucion(float rest){
         //devuelve todas las fixtures de un body
@@ -59,7 +56,6 @@ public class Gota {
         Array<Fixture> fixtures = gotaBody.getFixtureList();
         fixtures.first().setRestitution(rest);
     }
-
 
     public float getX(){
         return gotaBody.getPosition().x * BOX_TO_WORLD;
@@ -72,8 +68,6 @@ public class Gota {
     public float getAngulo(){
         return gotaBody.getAngle();
     }
-
-
 
     public Vector2 getOrigen(){
         return puntoRef;
