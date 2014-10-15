@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -55,7 +56,10 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     private Body ground;
     private Gota enki;
     private Manzana manzana;
+    private Tronco tronko;
+    private Tronco tronko2;
     boolean PAUSE = false;
+
 
     public ManzanaScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
@@ -76,7 +80,6 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-
     }
 
     private Vector2 vec = new Vector2();
@@ -100,10 +103,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     public void repintar(){
         gotaSprite.setPosition(enki.getX(), enki.getY());
         gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
-        //Movimiento de caida de la manzana
-        if(Gdx.input.isTouched()) {
-           //Caerá manzana
-        }
+
 
         manzanaSprite.setPosition(manzana.getX(), manzana.getY());
         manzanaSprite.setRotation(manzana.getAngulo() * MathUtils.radiansToDegrees);
@@ -130,8 +130,8 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
         world.setContactListener(new MyContactListener());
-        //Boton de Pausa
 
+        //Boton de Pausa
         buttonPause.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -188,6 +188,26 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         manzana = new Manzana(world, manzanaSprite.getX(), manzanaSprite.getY(), manzanaSprite.getWidth(), manzanaSprite.getHeight());
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
+        //Creación de Tronco
+        tronko = new Tronco(world,200,390,10,200,-0.26f);//Es el que me ayudaría con el joint de la manzana.
+        tronko2 = new Tronco(world,600,110,10,320,0.15f);
+
+        DistanceJointDef distanceJointDef = new DistanceJointDef();
+        distanceJointDef.bodyA = tronko.getTroncoBody();
+        distanceJointDef.bodyB = manzana.getManzanaBody();
+        distanceJointDef.length = 1;
+        world.createJoint(distanceJointDef);
+
+        //Otro tipo de Joint
+        //DistanceJointDef jointDef = new DistanceJointDef();
+        //jointDef.initialize(tronko.getTroncoBody(), manzana.getManzanaBody(), new Vector2(0,0) , new Vector2(0,-10) );
+        //jointDef.collideConnected = true;
+        //world.createJoint(jointDef);
+
+        //world.destroyJoint(bla bla); <-- no funciona
+        if(Gdx.input.isTouched()) {
+            //Manzana cae
+        }
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
