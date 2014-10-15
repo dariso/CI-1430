@@ -41,9 +41,9 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     private TextButton buttonPause;
     private TextButton buttonRegresar;
     private Sprite gotaSprite;
-    private Sprite hojaSprite;
+    private Sprite manzanaSprite;
     private Texture gotaImage;
-    private Texture hojaImg;
+    private Texture manzanaImg;
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
@@ -54,7 +54,6 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     private float vel = 10;
     private Body ground;
     private Gota enki;
-    private Hoja hoja;
     private Manzana manzana;
     boolean PAUSE = false;
 
@@ -62,13 +61,13 @@ public class ManzanaScreen extends InputAdapter implements Screen {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
-        hojaImg = new Texture (Gdx.files.internal("hoja2.png"));
+        manzanaImg = new Texture (Gdx.files.internal("manzana.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         gotaSprite = new Sprite(gotaImage);
-        hojaSprite = new Sprite(hojaImg);
+        manzanaSprite = new Sprite(manzanaImg);
         gotaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
-        hojaSprite.setPosition(0,0);
+        manzanaSprite.setPosition(0,0);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -101,13 +100,13 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     public void repintar(){
         gotaSprite.setPosition(enki.getX(), enki.getY());
         gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
-        //Movimiento horizontal de la hoja
+        //Movimiento de caida de la manzana
         if(Gdx.input.isTouched()) {
            //Caerá manzana
         }
 
-        hojaSprite.setPosition(hoja.getX(), hoja.getY());
-        hojaSprite.setRotation(hoja.getAngulo() * MathUtils.radiansToDegrees);
+        manzanaSprite.setPosition(manzana.getX(), manzana.getY());
+        manzanaSprite.setRotation(manzana.getAngulo() * MathUtils.radiansToDegrees);
         //Dibuja los sprites
         /*
         this.game.batch.begin();
@@ -185,9 +184,8 @@ public class ManzanaScreen extends InputAdapter implements Screen {
 
         groundEdge.dispose();
 
-        //Creacion de la hoja
-        hoja = new Hoja(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
-        manzana = new Manzana(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
+        //Creacion de la manzana
+        manzana = new Manzana(world, manzanaSprite.getX(), manzanaSprite.getY(), manzanaSprite.getWidth(), manzanaSprite.getHeight());
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
@@ -219,7 +217,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         stage.dispose();
         skin.dispose();
         gotaImage.dispose();
-        hojaImg.dispose();
+        manzanaImg.dispose();
         backgroundImage.dispose();
     }
 
