@@ -218,7 +218,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         //jointDef.collideConnected = true;
         //world.createJoint(jointDef);
 
-
+        joint.isActive();
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
