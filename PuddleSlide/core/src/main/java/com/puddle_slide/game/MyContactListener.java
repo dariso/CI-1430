@@ -76,6 +76,17 @@ public class MyContactListener implements ContactListener {
                 sonido.sonidoHoja();
             }
         }
+
+        else if((objetoA.getUserData() == "troncoDer" || objetoB.getUserData() == "troncoDer") &&
+                (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
+                    sonido.sonidoTronco();
+
+        }
+
+        else if((objetoA.getUserData() == "troncoIzq" || objetoB.getUserData() == "troncoIzq") &&
+                (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
+            sonido.sonidoTronco();
+        }
     }
 
     public boolean contactoHoja(){
