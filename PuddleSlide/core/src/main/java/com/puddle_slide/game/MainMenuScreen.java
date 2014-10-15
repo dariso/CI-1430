@@ -32,9 +32,9 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final Puddle_Slide elJuego) {
 
         this.game = elJuego;
-        filehandle= Gdx.files.internal("skins/menuSkin.json");
+        filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
-        skin= new Skin(filehandle,textura);
+        skin = new Skin(filehandle,textura);
         buttonPlay = new TextButton("Jugar", skin);
         buttonNiveles = new TextButton("Escoger Nivel", skin);
         buttonOpciones = new TextButton("Opciones",skin);
