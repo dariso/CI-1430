@@ -45,6 +45,14 @@ public class MyContactListener implements ContactListener {
                 System.out.println(objetoA.getUserData());
             }
 
+        }else if((objetoA.getUserData() == "manzana" || objetoB.getUserData() == "manzana") && (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
+            //objetoA es la gota
+            if(objetoA.getUserData() == "gota"){
+
+            }else{
+                sonido.sonidoManzana();
+            }
+
         }
 
         Vector2 impulso = new Vector2();    // Contiene los valores del impulso aplicado a la gota cuando choca con el hongo
