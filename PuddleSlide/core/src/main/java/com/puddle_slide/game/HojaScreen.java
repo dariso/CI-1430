@@ -123,7 +123,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         hojaSprite.setPosition(hoja.getX(), hoja.getY());
         hojaSprite.setRotation(hoja.getAngulo() * MathUtils.radiansToDegrees);
         //Dibuja los sprites
-        /*
+
         this.game.batch.begin();
         this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(), hoja.getOrigen().x, hoja.getOrigen().y, hojaSprite.getWidth(),
@@ -131,7 +131,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                 gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
         this.game.batch.end();
-        */
+
         stage.act();
         stage.draw();
     }
