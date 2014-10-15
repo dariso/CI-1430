@@ -32,7 +32,7 @@ public class Hoja {
         BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/hoja.json"));
 
         BodyDef hojaDef = new BodyDef();
-        hojaDef.type = BodyDef.BodyType.DynamicBody;
+        hojaDef.type = BodyDef.BodyType.StaticBody;
         hojaDef.position.set(x, y);
         hojaBody = world.createBody(hojaDef);
 
@@ -49,8 +49,8 @@ public class Hoja {
         fixtureDef.friction = 0.42f;
         fixtureDef.restitution = 0.5f;
 
-        bodyEditorLoader.attachFixture( hojaBody,"hoja",  fixtureDef, ancho * WORLD_TO_BOX);
-        puntoRef = bodyEditorLoader.getOrigin("hoja", ancho * WORLD_TO_BOX);
+         bodyEditorLoader.attachFixture(hojaBody, "hoja", fixtureDef, ancho * WORLD_TO_BOX);
+         puntoRef = bodyEditorLoader.getOrigin("hoja", ancho * WORLD_TO_BOX);
 
     }
 

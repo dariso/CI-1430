@@ -56,6 +56,7 @@ public class HojaScreen extends InputAdapter implements Screen {
     private Body ground;
     private Gota enki;
     private Hoja hoja;
+    private Hoja hoja2;
 
     boolean PAUSE = false;
 
@@ -175,7 +176,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         fixtureDefIzq.density = 0;
         ground.createFixture(fixtureDefIzq);
         fixtureDefIzq.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefIzq.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefIzq.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
 
         //definicion Piso
@@ -184,7 +185,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefPiso.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
 
         //definicion borde Derecho
@@ -193,14 +194,15 @@ public class HojaScreen extends InputAdapter implements Screen {
         fixtureDefDer.density = 0;
         ground.createFixture(fixtureDefDer);
         fixtureDefDer.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefDer.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefDer.filter.maskBits = FigureId.BIT_HOJA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefDer).setUserData("borde_der");
 
         groundEdge.dispose();
 
         //Creacion de la hoja
-        hoja = new Hoja(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
+        hoja = new Hoja(world, hojaSprite.getX(),( hojaSprite.getY()), hojaSprite.getWidth(), hojaSprite.getHeight());
 
+        hoja2 = new Hoja(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 

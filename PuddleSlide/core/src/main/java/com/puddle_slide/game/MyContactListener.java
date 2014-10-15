@@ -31,8 +31,20 @@ public class MyContactListener implements ContactListener {
                 objetoA.getBody().applyAngularImpulse(100,true);
             }else{
                 objetoB.getBody().applyAngularImpulse(100,true);
+                System.out.println(objetoB.getUserData());
+                System.out.println(objetoA.getUserData());
                 sonido.sonidoHoja();
             }
+        }else if((objetoA.getUserData() == "hojaBasica" || objetoB.getUserData() == "hojaBasica") && (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
+            //objetoA es la gota
+            if(objetoA.getUserData() == "gota"){
+
+            }else{
+
+                System.out.println(objetoB.getUserData());
+                System.out.println(objetoA.getUserData());
+            }
+
         }
     }
 
