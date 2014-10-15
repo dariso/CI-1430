@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -58,8 +59,8 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     private Manzana manzana;
     private Tronco tronko;
     private Tronco tronko2;
+    private DistanceJoint joint;
     boolean PAUSE = false;
-
 
     public ManzanaScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
@@ -91,6 +92,11 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(camera.combined);
         Matrix4 cameraCopy = camera.combined.cpy();
+       
+        if(Gdx.input.isTouched()) {
+           // world.destroyJoint(joint);
+           //Manzana cae
+        }
 
         //Si no esta en pausa actualiza las posiciones
         if(!PAUSE){
@@ -103,7 +109,6 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     public void repintar(){
         gotaSprite.setPosition(enki.getX(), enki.getY());
         gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
-
 
         manzanaSprite.setPosition(manzana.getX(), manzana.getY());
         manzanaSprite.setRotation(manzana.getAngulo() * MathUtils.radiansToDegrees);
@@ -196,7 +201,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         distanceJointDef.bodyA = tronko.getTroncoBody();
         distanceJointDef.bodyB = manzana.getManzanaBody();
         distanceJointDef.length = 1;
-        world.createJoint(distanceJointDef);
+        joint = (DistanceJoint) world.createJoint(distanceJointDef);
 
         //Otro tipo de Joint
         //DistanceJointDef jointDef = new DistanceJointDef();
@@ -204,10 +209,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         //jointDef.collideConnected = true;
         //world.createJoint(jointDef);
 
-        //world.destroyJoint(bla bla); <-- no funciona
-        if(Gdx.input.isTouched()) {
-            //Manzana cae
-        }
+
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
