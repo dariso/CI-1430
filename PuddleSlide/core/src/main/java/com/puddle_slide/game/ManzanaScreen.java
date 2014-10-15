@@ -92,7 +92,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(camera.combined);
         Matrix4 cameraCopy = camera.combined.cpy();
-       
+
         if(Gdx.input.isTouched()) {
            // world.destroyJoint(joint);
            //Manzana cae
