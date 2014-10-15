@@ -63,13 +63,13 @@ public class HongoScreen extends InputAdapter implements Screen{
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
-        hongoImg = new Texture (Gdx.files.internal("hongosNaranja.png"));
+        hongoImg = new Texture (Gdx.files.internal("hongosNaranja2.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         gotaSprite = new Sprite(gotaImage);
         hongoSprite = new Sprite(hongoImg);
-        gotaSprite.setPosition(0, Gdx.graphics.getHeight() * WORLD_TO_BOX);
-        hongoSprite.setPosition(0,0);
+        gotaSprite.setPosition((Gdx.graphics.getWidth() / 2) * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
+        hongoSprite.setPosition(1,0);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -106,15 +106,15 @@ public class HongoScreen extends InputAdapter implements Screen{
         hongoSprite.setPosition(hongo.getX(), hongo.getY());
         hongoSprite.setRotation(hongo.getAngulo() * MathUtils.radiansToDegrees);
         //Dibuja los sprites
-        /*
+
         this.game.batch.begin();
         this.game.batch.draw(backgroundImage, 0, 0);
-        this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(), hoja.getOrigen().x, hoja.getOrigen().y, hojaSprite.getWidth(),
-                hojaSprite.getHeight(), hojaSprite.getScaleX(), hojaSprite.getScaleY(), hojaSprite.getRotation());
+        this.game.batch.draw(hongoSprite, hongoSprite.getX(), hongoSprite.getY(), hongo.getOrigen().x, hongo.getOrigen().y, hongoSprite.getWidth(),
+                hongoSprite.getHeight(), hongoSprite.getScaleX(), hongoSprite.getScaleY(), hongoSprite.getRotation());
         this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                 gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
         this.game.batch.end();
-        */
+
         stage.act();
         stage.draw();
     }
@@ -154,7 +154,7 @@ public class HongoScreen extends InputAdapter implements Screen{
         ground = world.createBody(groundDef);
 
         //definicion borde Izquierdo
-        groundEdge.set(-1 * WORLD_TO_BOX,-35 * WORLD_TO_BOX,-1 * WORLD_TO_BOX, camera.viewportHeight * WORLD_TO_BOX);
+        groundEdge.set(-1 * WORLD_TO_BOX,-35 * WORLD_TO_BOX,-1 * WORLD_TO_BOX, camera.viewportHeight*2 * WORLD_TO_BOX);
         fixtureDefIzq.shape = groundEdge;
         fixtureDefIzq.density = 0;
         ground.createFixture(fixtureDefIzq);
@@ -172,7 +172,7 @@ public class HongoScreen extends InputAdapter implements Screen{
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
 
         //definicion borde Derecho
-        groundEdge.set((camera.viewportWidth+1) * WORLD_TO_BOX, -35*WORLD_TO_BOX, (camera.viewportWidth+1)*WORLD_TO_BOX, camera.viewportHeight*WORLD_TO_BOX);
+        groundEdge.set((camera.viewportWidth+1) * WORLD_TO_BOX, -35*WORLD_TO_BOX, (camera.viewportWidth+1)*WORLD_TO_BOX, camera.viewportHeight*2*WORLD_TO_BOX);
         fixtureDefDer.shape = groundEdge;
         fixtureDefDer.density = 0;
         ground.createFixture(fixtureDefDer);

@@ -46,7 +46,7 @@ public class Hongo {
         fixtureDef.friction = 0.42f;
         fixtureDef.restitution = 0.5f;
 
-        bodyEditorLoader.attachFixture( hongoBody,"hongo",  fixtureDef,(float) (ancho * 0.692513369 /*Para reducir el tamaño del hongo*/ * WORLD_TO_BOX));
+        bodyEditorLoader.attachFixture( hongoBody,"hongo",  fixtureDef,ancho * WORLD_TO_BOX);
         puntoRef = bodyEditorLoader.getOrigin("hongo", ancho * WORLD_TO_BOX);
 
 
