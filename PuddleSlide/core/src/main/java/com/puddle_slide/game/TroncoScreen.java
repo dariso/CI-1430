@@ -206,9 +206,9 @@ public class TroncoScreen extends InputAdapter implements Screen {
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
         enki.setRestitucion(0f);
 
-        //Creacion Tronko
-        tronko = new Tronco(world,300,300,10,250,-0.26f);
-        tronko1 = new Tronco(world,600,100,10,200,0.26f);
+        //Creacion Tronko, ultimo parametro es si es derecho el tronco
+        //en caso contrario, izquierdo
+        tronko = new Tronco(world,100*WORLD_TO_BOX,200*WORLD_TO_BOX,300,250,-0.26f,true);
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
