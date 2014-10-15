@@ -17,10 +17,15 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.JointDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
+import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
+import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -65,6 +70,8 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     private Tronco tronko2;
     private DistanceJoint joint;
     boolean PAUSE = false;
+    private Body body;
+    private Body body2;
 
     public ManzanaScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
@@ -81,6 +88,8 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         troncoIzqSprite = new Sprite(troncoIzqImage);
         gotaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
         manzanaSprite.setPosition(0,0);
+        troncoDerSprite.setPosition(200*WORLD_TO_BOX, 390*WORLD_TO_BOX);
+        troncoIzqSprite.setPosition(600*WORLD_TO_BOX, 200*WORLD_TO_BOX);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -102,8 +111,10 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         Matrix4 cameraCopy = camera.combined.cpy();
 
         if(Gdx.input.isTouched()) {
-           if (joint != null)
-                world.destroyJoint(joint);
+           if (joint != null) {
+               world.destroyJoint(joint);
+               joint = null;
+           }
            //Manzana cae
         }
 
@@ -122,15 +133,20 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         manzanaSprite.setPosition(manzana.getX(), manzana.getY());
         manzanaSprite.setRotation(manzana.getAngulo() * MathUtils.radiansToDegrees);
         //Dibuja los sprites
-        /*
+
         this.game.batch.begin();
         this.game.batch.draw(backgroundImage, 0, 0);
-        this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(), hoja.getOrigen().x, hoja.getOrigen().y, hojaSprite.getWidth(),
-                hojaSprite.getHeight(), hojaSprite.getScaleX(), hojaSprite.getScaleY(), hojaSprite.getRotation());
+        this.game.batch.draw(manzanaSprite, manzanaSprite.getX(), manzanaSprite.getY(), manzana.getOrigen().x, manzana.getOrigen().y, manzanaSprite.getWidth(),
+                manzanaSprite.getHeight(), manzanaSprite.getScaleX(), manzanaSprite.getScaleY(), manzanaSprite.getRotation());
         this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                 gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
+        this.game.batch.draw(troncoDerSprite, troncoDerSprite.getX(), troncoDerSprite.getY()+150,troncoDerSprite.getX(),troncoDerSprite.getY(),troncoDerSprite.getWidth(),
+                troncoDerSprite.getHeight()-200, troncoDerSprite.getScaleX(), troncoDerSprite.getScaleY(),  0.16f*MathUtils.radiansToDegrees);
+        this.game.batch.draw(troncoIzqSprite, troncoIzqSprite.getX()+240, troncoIzqSprite.getY()+60,troncoIzqSprite.getX(),troncoIzqSprite.getY(),troncoIzqSprite.getWidth(),
+                troncoIzqSprite.getHeight()-200, troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(),  -0.18f*MathUtils.radiansToDegrees);
+
         this.game.batch.end();
-        */
+
         stage.act();
         stage.draw();
     }
@@ -198,26 +214,51 @@ public class ManzanaScreen extends InputAdapter implements Screen {
 
         groundEdge.dispose();
 
+
+        BodyDef bd = new BodyDef();
+        bd.type = BodyDef.BodyType.StaticBody;
+        bd.position.set(0, 0);
+        body = world.createBody(bd);
+
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(10*WORLD_TO_BOX, 320*WORLD_TO_BOX, new Vector2(600*WORLD_TO_BOX, 200*WORLD_TO_BOX), 1.75f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.filter.categoryBits = FigureId.BIT_TRONCO;
+        fixtureDef.filter.maskBits = FigureId.BIT_GOTA;
+        fixtureDef.friction = 0f;
+
+        body.createFixture(fixtureDef).setUserData("tronco");
+
+        bd = new BodyDef();
+        bd.type = BodyDef.BodyType.StaticBody;
+        bd.position.set(0, 0);
+        body2 = world.createBody(bd);
+
+        polygonShape = new PolygonShape();
+        polygonShape.setAsBox(10*WORLD_TO_BOX, 250*WORLD_TO_BOX, new Vector2(200*WORLD_TO_BOX, 390*WORLD_TO_BOX),-1.80f);
+
+        fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.filter.categoryBits = FigureId.BIT_TRONCO;
+        fixtureDef.filter.maskBits = FigureId.BIT_GOTA;
+        fixtureDef.friction = 0f;
+
+        body2.createFixture(fixtureDef).setUserData("tronco");
+
+
         //Creacion de la manzana
         manzana = new Manzana(world, manzanaSprite.getX(), manzanaSprite.getY(), manzanaSprite.getWidth(), manzanaSprite.getHeight());
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
-        //Creación de Tronco
-        tronko = new Tronco(world,200*WORLD_TO_BOX,300*WORLD_TO_BOX,troncoDerSprite.getWidth(),200,-0.26f,false); //Es el que me ayudaría con el joint de la manzana.
-        tronko2 = new Tronco(world,190*WORLD_TO_BOX,30*WORLD_TO_BOX,200,100,0.15f,false);
-
-        DistanceJointDef distanceJointDef = new DistanceJointDef();
-        distanceJointDef.bodyA = tronko.getTroncoBody();
-        distanceJointDef.bodyB = manzana.getManzanaBody();
-        distanceJointDef.length = 30 * WORLD_TO_BOX;
-        joint = (DistanceJoint) world.createJoint(distanceJointDef);
 
         //Otro tipo de Joint
-        //DistanceJointDef jointDef = new DistanceJointDef();
-        //jointDef.initialize(tronko.getTroncoBody(), manzana.getManzanaBody(), new Vector2(0,0) , new Vector2(0,-10) );
-        //jointDef.collideConnected = true;
-        //world.createJoint(jointDef);
-
+        DistanceJointDef jointDef = new DistanceJointDef();
+        jointDef.initialize(body, manzana.getManzanaBody(), new Vector2(250*WORLD_TO_BOX, 390*WORLD_TO_BOX) , new Vector2(manzana.getX(),manzana.getY()) );
+        jointDef.collideConnected = true;
+        jointDef.length = 1;
+        joint = (DistanceJoint) world.createJoint(jointDef);
 
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
