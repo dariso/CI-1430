@@ -28,8 +28,14 @@ public class Hoja {
      * @param ancho Ancho del sprite de la hoja
      * @param alto Alto del sprite de la hoja
      * */
-    public Hoja(World world, float x, float y, float ancho, float alto) {
-        BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/hoja.json"));
+    public Hoja(World world, float x, float y, float ancho, float alto, boolean esDer) {
+
+        BodyEditorLoader bodyEditorLoader;
+        if(esDer == true){
+             bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/hojader.json"));
+        }else{
+             bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/hoja.json"));
+        }
 
         BodyDef hojaDef = new BodyDef();
         hojaDef.type = BodyDef.BodyType.StaticBody;
@@ -49,8 +55,14 @@ public class Hoja {
         fixtureDef.friction = 0.42f;
         fixtureDef.restitution = 0.5f;
 
-         bodyEditorLoader.attachFixture(hojaBody, "hoja", fixtureDef, ancho * WORLD_TO_BOX);
-         puntoRef = bodyEditorLoader.getOrigin("hoja", ancho * WORLD_TO_BOX);
+        if(esDer == true ){
+            bodyEditorLoader.attachFixture(hojaBody, "hojader", fixtureDef, ancho * WORLD_TO_BOX);
+            puntoRef = bodyEditorLoader.getOrigin("hojader", ancho * WORLD_TO_BOX);
+        }else{
+            bodyEditorLoader.attachFixture(hojaBody, "hoja", fixtureDef, ancho * WORLD_TO_BOX);
+            puntoRef = bodyEditorLoader.getOrigin("hoja", ancho * WORLD_TO_BOX);
+        }
+
 
 
     }
@@ -78,5 +90,6 @@ public class Hoja {
     public float getMasa(){
         return hojaBody.getMass();
     }
+    public Body getBody(){ return hojaBody; }
 
 }

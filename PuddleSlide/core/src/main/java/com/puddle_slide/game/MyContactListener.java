@@ -25,7 +25,7 @@ public class MyContactListener implements ContactListener {
         Vector2 velocidad = new Vector2((float)Math.cos(30*Math.PI/180),(float)Math.sin(30*Math.PI/180));
 
 
-        if( (objetoA.getUserData() == "hoja" || objetoB.getUserData() == "hoja") && (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
+        if( (objetoA.getUserData() == "hoja" ||objetoA.getUserData() == "hojader" || objetoB.getUserData() == "hoja" || objetoB.getUserData() == "hojader") && (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
             //objetoA es la gota
             if(objetoA.getUserData() == "gota"){
                 objetoA.getBody().applyAngularImpulse(100,true);
