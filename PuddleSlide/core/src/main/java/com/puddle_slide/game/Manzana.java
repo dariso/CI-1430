@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 /**
  * Created by Meli.
  */
-public class Manzana {
+public class Manzana{
 
     private Body manzanaBody;
     private Vector2 puntoRef;
@@ -81,4 +81,7 @@ public class Manzana {
         return manzanaBody.getMass();
     }
 
+    public Body getManzanaBody() {
+        return manzanaBody;
+    }
 }

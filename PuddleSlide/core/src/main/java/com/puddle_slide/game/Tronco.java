@@ -1,11 +1,13 @@
 package com.puddle_slide.game;
 
+import com.badlogic.gdx.math.Vector2;
+
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -13,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 /**
  * Created by daniel on 07/10/14.
  */
-public class Tronco {
+public class Tronco{
 
     private Body troncoBody;
     private Vector2 puntoRef;
@@ -79,5 +81,9 @@ public class Tronco {
 
     public Vector2 getOrigen(){
         return puntoRef;
+    }
+
+    public Body getTroncoBody() {
+        return troncoBody;
     }
 }
