@@ -53,6 +53,7 @@ public class Hoja {
         puntoRef = bodyEditorLoader.getOrigin("hoja", ancho * WORLD_TO_BOX);
 
 
+
     }
 
     public float getX(){

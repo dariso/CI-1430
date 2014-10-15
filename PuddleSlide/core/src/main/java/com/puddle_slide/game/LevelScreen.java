@@ -81,7 +81,7 @@ public class LevelScreen implements Screen {
         buttonHongo.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new ComingSoonScreen(new LevelScreen(game)));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new HongoScreen(game));
             }
         });
         buttonTronco.addListener(new ClickListener(){
