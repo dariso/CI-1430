@@ -254,12 +254,21 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
         //Otro tipo de Joint
+<<<<<<< HEAD
         DistanceJointDef jointDef = new DistanceJointDef();
         jointDef.initialize(body, manzana.getManzanaBody(), new Vector2(250*WORLD_TO_BOX, 390*WORLD_TO_BOX) , new Vector2(manzana.getX(),manzana.getY()) );
         jointDef.collideConnected = true;
         jointDef.length = 1;
         joint = (DistanceJoint) world.createJoint(jointDef);
 
+=======
+        //DistanceJointDef jointDef = new DistanceJointDef();
+        //jointDef.initialize(tronko.getTroncoBody(), manzana.getManzanaBody(), new Vector2(0,0) , new Vector2(0,-10) );
+        //jointDef.collideConnected = true;
+        //world.createJoint(jointDef);
+
+        joint.isActive();
+>>>>>>> Meli
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
