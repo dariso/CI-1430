@@ -20,6 +20,8 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -118,6 +120,8 @@ public class HongoScreen extends InputAdapter implements Screen{
         stage.act();
         stage.draw();
     }
+
+
 
     @Override
     public void resize(int width, int height) {

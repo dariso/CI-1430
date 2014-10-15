@@ -46,6 +46,10 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     private Sprite manzanaSprite;
     private Texture gotaImage;
     private Texture manzanaImg;
+    private Sprite troncoDerSprite;
+    private Sprite troncoIzqSprite;
+    private Texture troncoDerImage;
+    private Texture troncoIzqImage;
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
@@ -67,10 +71,14 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
         manzanaImg = new Texture (Gdx.files.internal("manzana.png"));
+        troncoDerImage = new Texture(Gdx.files.internal("troncoDer.png"));
+        troncoIzqImage = new Texture(Gdx.files.internal("troncoIzq.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         gotaSprite = new Sprite(gotaImage);
         manzanaSprite = new Sprite(manzanaImg);
+        troncoDerSprite = new Sprite(troncoDerImage);
+        troncoIzqSprite = new Sprite(troncoIzqImage);
         gotaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
         manzanaSprite.setPosition(0,0);
 
@@ -94,7 +102,8 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         Matrix4 cameraCopy = camera.combined.cpy();
 
         if(Gdx.input.isTouched()) {
-           // world.destroyJoint(joint);
+           if (joint != null)
+                world.destroyJoint(joint);
            //Manzana cae
         }
 
@@ -194,13 +203,13 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
         //Creación de Tronco
-        tronko = new Tronco(world,200,390,10,200,-0.26f);//Es el que me ayudaría con el joint de la manzana.
-        tronko2 = new Tronco(world,600,110,10,320,0.15f);
+        tronko = new Tronco(world,200*WORLD_TO_BOX,300*WORLD_TO_BOX,troncoDerSprite.getWidth(),200,-0.26f,false); //Es el que me ayudaría con el joint de la manzana.
+        tronko2 = new Tronco(world,190*WORLD_TO_BOX,30*WORLD_TO_BOX,200,100,0.15f,false);
 
         DistanceJointDef distanceJointDef = new DistanceJointDef();
         distanceJointDef.bodyA = tronko.getTroncoBody();
         distanceJointDef.bodyB = manzana.getManzanaBody();
-        distanceJointDef.length = 1;
+        distanceJointDef.length = 30 * WORLD_TO_BOX;
         joint = (DistanceJoint) world.createJoint(distanceJointDef);
 
         //Otro tipo de Joint
