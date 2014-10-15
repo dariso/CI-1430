@@ -200,8 +200,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         groundEdge.dispose();
 
         //Creacion de la hoja
-        hoja = new Hoja(world,hojaSprite.getX(),( hojaSprite.getY()), hojaSprite.getWidth(), hojaSprite.getHeight(),false);
-        hoja2 = new Hoja(world,3+hojaSprite.getX(),( hojaSprite.getY()), hojaSprite.getWidth(), hojaSprite.getHeight(),true);
+        hoja = new Hoja(world,hojaSprite.getX(),( hojaSprite.getY()), hojaSprite.getWidth(), hojaSprite.getHeight());
 
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
