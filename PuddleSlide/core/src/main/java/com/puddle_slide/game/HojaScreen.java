@@ -64,7 +64,7 @@ public class HojaScreen extends InputAdapter implements Screen {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
-        hojaImg = new Texture (Gdx.files.internal("hoja3.png"));
+        hojaImg = new Texture (Gdx.files.internal("hoja2.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         gotaSprite = new Sprite(gotaImage);
