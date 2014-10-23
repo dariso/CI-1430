@@ -97,7 +97,7 @@ public class OptionsScreen implements Screen {
 
     @Override
     public void hide() {
-
+        this.dispose();
     }
 
     @Override
