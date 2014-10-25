@@ -256,13 +256,6 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         jointDef.length = 1;
         joint = (DistanceJoint) world.createJoint(jointDef);
 
-        //DistanceJointDef jointDef = new DistanceJointDef();
-        //jointDef.initialize(tronko.getTroncoBody(), manzana.getManzanaBody(), new Vector2(0,0) , new Vector2(0,-10) );
-        //jointDef.collideConnected = true;
-        //world.createJoint(jointDef);
-
-        joint.isActive();
-
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
         table.setFillParent(true);
@@ -282,9 +275,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     }
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
     public void dispose() {
