@@ -53,8 +53,6 @@ public class Manzana{
         bodyEditorLoader.attachFixture( manzanaBody,"manzana",  fixtureDef, ancho * WORLD_TO_BOX);
         puntoRef = bodyEditorLoader.getOrigin("manzana", ancho * WORLD_TO_BOX);
 
-
-
     }
 
     public float getX(){
