@@ -40,7 +40,7 @@ public class OptionsScreen implements Screen {
         buttonReturn = new TextButton("Regresar",skin);
         title = new Label("Opciones",skin);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
     }
 
 

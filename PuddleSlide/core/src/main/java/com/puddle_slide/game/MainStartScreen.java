@@ -36,7 +36,7 @@ public class MainStartScreen implements Screen {
         titulo = new Label("Puddle Slide",skin);
         titulo2 = new Label("Presionar Pantalla",skin);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
         imagent = new Texture(Gdx.files.internal("gotitaYagua_1.png"));
         imagen = new Image(imagent);
     }
@@ -52,7 +52,6 @@ public class MainStartScreen implements Screen {
 
         if (Gdx.input.isTouched()) {
             game.setScreen(new MainMenuScreen(game));
-            this.dispose();
         }
     }
 
