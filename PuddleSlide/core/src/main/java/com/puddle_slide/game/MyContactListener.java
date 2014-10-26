@@ -33,11 +33,14 @@ public class MyContactListener implements ContactListener {
             }else{
                 objetoContrario = contact.getFixtureB();
             }
+
             String contrario;
             contrario = (String) objetoContrario.getUserData();
+
             if(contrario=="hoja"){
                 objetoContrario.getBody().applyAngularImpulse(100,true);
                 sonido.sonidoHoja();
+
             }else if(contrario=="hojaBasica"){
 
             }else if(contrario=="hongo"){
