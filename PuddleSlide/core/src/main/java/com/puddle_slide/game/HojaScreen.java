@@ -126,6 +126,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         hojaSprite.setRotation(hoja.getAngulo() * MathUtils.radiansToDegrees);
 
         //Dibuja los sprites
+
         this.game.batch.begin();
         this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(), hoja.getOrigen().x, hoja.getOrigen().y, hojaSprite.getWidth(),
