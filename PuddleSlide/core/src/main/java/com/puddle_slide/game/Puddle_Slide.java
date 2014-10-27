@@ -1,7 +1,6 @@
 package com.puddle_slide.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -19,8 +18,8 @@ public class Puddle_Slide extends Game {
     public void create () {
         batch = new SpriteBatch();
         font = new BitmapFont();
-        V_WIDTH = (float)Gdx.graphics.getWidth();
-        V_HEIGHT = (float)Gdx.graphics.getHeight();
+        V_WIDTH = 800;
+        V_HEIGHT = 480;
         this.setScreen(new MainStartScreen(this));
     }
 

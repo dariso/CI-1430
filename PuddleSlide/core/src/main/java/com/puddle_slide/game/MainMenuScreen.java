@@ -81,9 +81,9 @@ public class MainMenuScreen implements Screen {
         });
 
         table.add(title).colspan(2).center().padBottom(40).row();
-        table.add(buttonPlay).colspan(2).center().size(250,120).padBottom(20).row();
-        table.add(buttonNiveles).size(250,80).padBottom(20).spaceRight(50.0f);
-        table.add(buttonOpciones).size(250,80).padBottom(20).row();
+        table.add(buttonPlay).colspan(2).center().size(camera.viewportWidth/3,camera.viewportHeight/4).padBottom(20).row();
+        table.add(buttonNiveles).size(camera.viewportWidth/3,camera.viewportHeight/4).padBottom(20).spaceRight(50.0f);
+        table.add(buttonOpciones).size(camera.viewportWidth/3,camera.viewportHeight/4).padBottom(20).row();
 
         table.setFillParent(true);
         stage.addActor(table);

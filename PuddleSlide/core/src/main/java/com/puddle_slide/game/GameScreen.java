@@ -202,8 +202,8 @@ public class GameScreen extends InputAdapter implements Screen {
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
-        table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
-        table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
+        table.add(buttonPause).size(140,60).padTop(-100).padLeft(camera.viewportWidth-350).row();
+        table.add(buttonRegresar).size(140,60).padTop(0).padBottom(250).padLeft(camera.viewportWidth-350);
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
