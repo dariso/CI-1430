@@ -1,10 +1,8 @@
 package com.puddle_slide.game;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 /**
@@ -17,7 +15,7 @@ public class MyContactListener implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-
+    /**
         Fixture objetoA = contact.getFixtureA();
         Fixture objetoB = contact.getFixtureB();
         SoundControl sonido = new SoundControl();
@@ -95,6 +93,7 @@ public class MyContactListener implements ContactListener {
                 (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
             sonido.sonidoTronco();
         }
+     **/
     }
 
     public boolean contactoHoja(){
