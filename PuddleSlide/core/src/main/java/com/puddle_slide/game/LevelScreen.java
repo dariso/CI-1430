@@ -17,9 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-/**
- * Created by kalam on 05/10/2014.
- */
 public class LevelScreen implements Screen {
     final Puddle_Slide game;
     OrthographicCamera camera;
@@ -122,7 +119,7 @@ public class LevelScreen implements Screen {
 
     @Override
     public void hide() {
-
+        this.dispose();
     }
 
     @Override
