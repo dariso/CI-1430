@@ -78,7 +78,7 @@ public class GameScreen extends InputAdapter implements Screen {
         buttonPause = new TextButton("Pausa", skin);
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
+        camera.setToOrtho(false,game.V_WIDTH*WORLD_TO_BOX,game.V_HEIGHT*WORLD_TO_BOX);
 
     }
 
