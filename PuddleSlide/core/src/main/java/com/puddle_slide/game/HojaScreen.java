@@ -48,6 +48,7 @@ public class HojaScreen extends InputAdapter implements Screen {
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
+    private Vector2 vec = new Vector2();
 
     //Objetos del mundo
     private World world;
@@ -83,8 +84,6 @@ public class HojaScreen extends InputAdapter implements Screen {
         this.escuchadorColision = escuchadorColision;
         this.world=world;
     }
-
-    private Vector2 vec = new Vector2();
 
     @Override
     public void render(float delta) {
