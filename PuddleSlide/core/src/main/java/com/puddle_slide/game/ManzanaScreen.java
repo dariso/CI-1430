@@ -155,7 +155,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
-        world.setContactListener(new MyContactListener());
+      //  world.setContactListener(new MyContactListener());
 
         //Boton de Pausa
         buttonPause.addListener(new ClickListener(){
