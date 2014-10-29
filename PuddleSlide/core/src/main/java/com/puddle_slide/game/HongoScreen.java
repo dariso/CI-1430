@@ -223,7 +223,7 @@ public class HongoScreen extends InputAdapter implements Screen{
     }
 
     public void pauseGame(){
-        if(PAUSE == true){
+        if(PAUSE){
             PAUSE=false;
             buttonPause.setText("Pausa");
         }else{

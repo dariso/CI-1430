@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class MainStartScreen implements Screen {
     final com.puddle_slide.game.Puddle_Slide game;
@@ -35,6 +36,10 @@ public class MainStartScreen implements Screen {
         skin= new Skin(filehandle,textura);
         titulo = new Label("Puddle Slide",skin);
         titulo2 = new Label("Presionar Pantalla",skin);
+        stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));;
+        table = new Table();
+        titulo.setFontScale(1.4f);
+        titulo.setFontScale(1.2f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
         imagent = new Texture(Gdx.files.internal("gotitaYagua_1.png"));

@@ -37,13 +37,13 @@ public class MyContactListener implements ContactListener {
             String contrario;
             contrario = (String) objetoContrario.getUserData();
 
-            if(contrario=="hoja"){
+            if(contrario == "hoja"){
                 objetoContrario.getBody().applyAngularImpulse(100,true);
                 sonido.sonidoHoja();
 
-            }else if(contrario=="hojaBasica"){
+            }else if(contrario =="hojaBasica"){
 
-            }else if(contrario=="hongo"){
+            }else if(contrario =="hongo"){
                 impulso.x = 450;
                 impulso.y = 20;
 
