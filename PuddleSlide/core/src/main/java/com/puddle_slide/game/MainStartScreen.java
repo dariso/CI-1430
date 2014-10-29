@@ -36,7 +36,7 @@ public class MainStartScreen implements Screen {
         skin= new Skin(filehandle,textura);
         titulo = new Label("Puddle Slide",skin);
         titulo2 = new Label("Presionar Pantalla",skin);
-        stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));;
+        stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
         table = new Table();
         titulo.setFontScale(1.4f);
         titulo.setFontScale(1.2f);
