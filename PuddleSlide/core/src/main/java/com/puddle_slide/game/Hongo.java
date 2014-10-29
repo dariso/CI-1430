@@ -49,7 +49,6 @@ public class Hongo {
         bodyEditorLoader.attachFixture( hongoBody,"hongo",  fixtureDef,ancho * WORLD_TO_BOX);
         puntoRef = bodyEditorLoader.getOrigin("hongo", ancho * WORLD_TO_BOX);
 
-
     }
 
     public float getX(){

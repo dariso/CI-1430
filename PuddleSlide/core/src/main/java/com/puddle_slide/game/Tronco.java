@@ -1,15 +1,10 @@
 package com.puddle_slide.game;
 
-import com.badlogic.gdx.math.Vector2;
-
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
@@ -53,7 +48,6 @@ public class Tronco{
         if(esDer){
             bodyEditorLoader.attachFixture(troncoBody,"troncoDer",fixtureDef,ancho * WORLD_TO_BOX);
             puntoRef = bodyEditorLoader.getOrigin("troncoDer", ancho * WORLD_TO_BOX);
-
         }
         else{
             bodyEditorLoader.attachFixture(troncoBody,"troncoIzq",fixtureDef,ancho * WORLD_TO_BOX);

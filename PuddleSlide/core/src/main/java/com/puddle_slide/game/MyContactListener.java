@@ -104,7 +104,6 @@ public class MyContactListener implements ContactListener {
     @Override
     public void endContact(Contact contact) {
 
-
     }
 
     @Override
