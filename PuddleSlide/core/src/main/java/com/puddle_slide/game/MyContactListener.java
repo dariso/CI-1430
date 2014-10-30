@@ -31,9 +31,9 @@ public class MyContactListener implements ContactListener {
                 objetoA.getBody().applyAngularImpulse(100,true);
             }else{
                 objetoB.getBody().applyAngularImpulse(100,true);
-                System.out.println(objetoB.getUserData());
-                System.out.println(objetoA.getUserData());
-                sonido.sonidoHoja();
+               // System.out.println(objetoB.getUserData());
+             //   System.out.println(objetoA.getUserData());
+               // sonido.sonidoHoja();
             }
         }else if((objetoA.getUserData() == "hojaBasica" || objetoB.getUserData() == "hojaBasica") && (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
             //objetoA es la gota
@@ -41,11 +41,11 @@ public class MyContactListener implements ContactListener {
 
             }else{
 
-                System.out.println(objetoB.getUserData());
-                System.out.println(objetoA.getUserData());
+               // System.out.println(objetoB.getUserData());
+               // System.out.println(objetoA.getUserData());
             }
 
-        }else if((objetoA.getUserData() == "manzana" || objetoB.getUserData() == "manzana") && (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
+        }/*else if((objetoA.getUserData() == "manzana" || objetoB.getUserData() == "manzana") && (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
             //objetoA es la gota
             if(objetoA.getUserData() == "gota"){
 
@@ -94,7 +94,7 @@ public class MyContactListener implements ContactListener {
         else if((objetoA.getUserData() == "troncoIzq" || objetoB.getUserData() == "troncoIzq") &&
                 (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota")){
             sonido.sonidoTronco();
-        }
+        }*/
     }
 
     public boolean contactoHoja(){
