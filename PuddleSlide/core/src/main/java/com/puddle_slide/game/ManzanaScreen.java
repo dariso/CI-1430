@@ -155,7 +155,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
-        world.setContactListener(new MyContactListener());
+      //  world.setContactListener(new MyContactListener());
 
         //Boton de Pausa
         buttonPause.addListener(new ClickListener(){
@@ -250,6 +250,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
         //Otro tipo de Joint
+
         DistanceJointDef jointDef = new DistanceJointDef();
         jointDef.initialize(body, manzana.getManzanaBody(), new Vector2(250*WORLD_TO_BOX, 390*WORLD_TO_BOX) , new Vector2(manzana.getX(),manzana.getY()) );
         jointDef.collideConnected = true;
@@ -287,7 +288,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     }
 
     public void pauseGame(){
-        if(PAUSE == true){
+        if(PAUSE){
             PAUSE=false;
             buttonPause.setText("Pausa");
         }else{

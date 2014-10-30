@@ -13,15 +13,12 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -58,10 +55,10 @@ public class HongoScreen extends InputAdapter implements Screen{
     private Body ground;
     private Gota enki;
     private Hongo hongo;
-
     boolean PAUSE = false;
+    MyContactListener escuchadorColision;
 
-    public HongoScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
+    public HongoScreen(final com.puddle_slide.game.Puddle_Slide elJuego,MyContactListener escuchadorColision,World world) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
@@ -81,6 +78,8 @@ public class HongoScreen extends InputAdapter implements Screen{
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
+        this.escuchadorColision = escuchadorColision;
+        this.world=world;
     }
 
 
@@ -104,11 +103,12 @@ public class HongoScreen extends InputAdapter implements Screen{
     public void repintar(){
         gotaSprite.setPosition(enki.getX(), enki.getY());
         gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
+
         //Movimiento horizontal de la hoja
         hongoSprite.setPosition(hongo.getX(), hongo.getY());
         hongoSprite.setRotation(hongo.getAngulo() * MathUtils.radiansToDegrees);
-        //Dibuja los sprites
 
+        //Dibuja los sprites
         this.game.batch.begin();
         this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.draw(hongoSprite, hongoSprite.getX(), hongoSprite.getY(), hongo.getOrigen().x, hongo.getOrigen().y, hongoSprite.getWidth(),
@@ -129,11 +129,9 @@ public class HongoScreen extends InputAdapter implements Screen{
 
     @Override
     public void show() {
-        world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
-        world.setContactListener(new MyContactListener());
-        //Boton de Pausa
 
+        //Boton de Pausa
         buttonPause.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -225,7 +223,7 @@ public class HongoScreen extends InputAdapter implements Screen{
     }
 
     public void pauseGame(){
-        if(PAUSE == true){
+        if(PAUSE){
             PAUSE=false;
             buttonPause.setText("Pausa");
         }else{

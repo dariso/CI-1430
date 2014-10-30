@@ -18,12 +18,10 @@ public class Puas {
     private final float WORLD_TO_BOX = 0.01f;
     private final float BOX_TO_WORLD = 100f;
 
-    public Puas(World world, float x, float y,float anch,float larg,float angulo){
+    public Puas(World world, float x, float y, float ancho, float alto){
         BodyEditorLoader bodyEditorLoader;
-        ancho = anch;
-        largo = larg;
-       
-        bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/troncoDer.json"));
+        //Falta el puas.json
+        bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/puas.json"));
 
         BodyDef puasDef = new BodyDef();
         puasDef.type = BodyDef.BodyType.StaticBody;
@@ -35,13 +33,12 @@ public class Puas {
         //Define la cetegoria de objeto a la que pertenece
         fixtureDef.filter.categoryBits = FigureId.BIT_PUAS;
         //Define los objetos con los que debe colisionar
-        fixtureDef.filter.maskBits = FigureId.BIT_GOTA;
+        fixtureDef.filter.maskBits = FigureId.BIT_GOTA|FigureId.BIT_MANZANA;
         fixtureDef.friction = 0f;
 
         bodyEditorLoader.attachFixture(puasBody,"puas",fixtureDef,ancho * WORLD_TO_BOX);
         puntoRef = bodyEditorLoader.getOrigin("puas", ancho * WORLD_TO_BOX);
 
-        puasBody.setTransform(puasBody.getPosition(),angulo);
     }
 
     public float getX(){
@@ -56,15 +53,10 @@ public class Puas {
         return puasBody.getAngle();
     }
 
-    public float getWidth(){return ancho;}
-
-    public float getHeight(){return largo;}
-
     public Vector2 getOrigen(){
         return puntoRef;
     }
 
-    public Body getTroncoBody() {
-        return puasBody;
+    public float getMasa() { return puasBody.getMass();
     }
 }

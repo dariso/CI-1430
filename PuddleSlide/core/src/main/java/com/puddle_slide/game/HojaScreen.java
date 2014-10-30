@@ -48,6 +48,7 @@ public class HojaScreen extends InputAdapter implements Screen {
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
+    private Vector2 vec = new Vector2();
 
     //Objetos del mundo
     private World world;
@@ -57,14 +58,14 @@ public class HojaScreen extends InputAdapter implements Screen {
     private Gota enki;
     private Hoja hoja;
     private Hoja hoja2;
-
     boolean PAUSE = false;
+    MyContactListener escuchadorColision;
 
-    public HojaScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
+    public HojaScreen(final com.puddle_slide.game.Puddle_Slide elJuego,MyContactListener escuchadorColision,World world) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
-        hojaImg = new Texture (Gdx.files.internal("hoja2.png"));
+        hojaImg = new Texture (Gdx.files.internal("hojaVerde2.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         gotaSprite = new Sprite(gotaImage);
@@ -80,9 +81,9 @@ public class HojaScreen extends InputAdapter implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
+        this.escuchadorColision = escuchadorColision;
+        this.world=world;
     }
-
-    private Vector2 vec = new Vector2();
 
     @Override
     public void render(float delta) {
@@ -100,12 +101,12 @@ public class HojaScreen extends InputAdapter implements Screen {
             hoja.mover(vec);
         }
         this.repintar();
-
     }
 
     public void repintar(){
         gotaSprite.setPosition(enki.getX(), enki.getY());
         gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
+
         //Movimiento horizontal de la hoja
         if(Gdx.input.isTouched()) {
             Vector3 touchPos = new Vector3();
@@ -122,6 +123,7 @@ public class HojaScreen extends InputAdapter implements Screen {
 
         hojaSprite.setPosition(hoja.getX(), hoja.getY());
         hojaSprite.setRotation(hoja.getAngulo() * MathUtils.radiansToDegrees);
+
         //Dibuja los sprites
 
         this.game.batch.begin();
@@ -142,11 +144,9 @@ public class HojaScreen extends InputAdapter implements Screen {
 
     @Override
     public void show() {
-        world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
-        world.setContactListener(new MyContactListener());
-        //Boton de Pausa
 
+        //Boton de Pausa
         buttonPause.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {

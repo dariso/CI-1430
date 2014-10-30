@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class MainMenuScreen implements Screen {
 
@@ -35,12 +36,15 @@ public class MainMenuScreen implements Screen {
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
         skin = new Skin(filehandle,textura);
-        buttonPlay = new TextButton("Jugar", skin);
+        buttonPlay = new TextButton("Jugar",skin);
         buttonNiveles = new TextButton("Escoger Nivel", skin);
         buttonOpciones = new TextButton("Opciones",skin);
         title = new Label("Puddle Slide",skin);
+        title.setFontScale(2.0f);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
+        new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
+        table = new Table();
     }
 
     @Override
@@ -80,10 +84,10 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        table.add(title).colspan(2).center().padBottom(40).row();
-        table.add(buttonPlay).colspan(2).center().size(250,120).padBottom(20).row();
-        table.add(buttonNiveles).size(250,80).padBottom(20).spaceRight(50.0f);
-        table.add(buttonOpciones).size(250,80).padBottom(20).row();
+        table.add(title).colspan(2).center().padBottom(80).row();
+        table.add(buttonPlay).colspan(2).center().size(stage.getCamera().viewportWidth/2-100,stage.getCamera().viewportHeight/4).padBottom(60).row();
+        table.add(buttonNiveles).size(stage.getCamera().viewportWidth/3+50,stage.getCamera().viewportHeight/6).padBottom(20).spaceRight(50.0f);
+        table.add(buttonOpciones).size(stage.getCamera().viewportWidth/3+50,stage.getCamera().viewportHeight/6).padBottom(20).row();
 
         table.setFillParent(true);
         stage.addActor(table);
@@ -92,8 +96,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
-        dispose();
+        this.dispose();
     }
 
     @Override
