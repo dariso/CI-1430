@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class LevelScreen implements Screen {
     final Puddle_Slide game;
@@ -23,8 +24,8 @@ public class LevelScreen implements Screen {
     FileHandle filehandle;
     TextureAtlas textura;
     private Skin skin;
-    private Stage stage = new Stage();
-    private Table table = new Table();
+    private Stage stage;
+    private Table table;
     private TextButton buttonHoja;
     private TextButton buttonHongo;
     private TextButton buttonTronco;
@@ -49,6 +50,8 @@ public class LevelScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         escuchadorColision=new MyContactListener();
+        stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
+        table = new Table();
 
     }
     @Override
@@ -105,11 +108,11 @@ public class LevelScreen implements Screen {
 
 
         table.add(title).colspan(2).center().padBottom(40).row();
-        table.add(buttonHoja).size(150,60).padBottom(20).spaceRight(50.0f);
-        table.add(buttonHongo).size(150,60).padBottom(20).row();
-        table.add(buttonTronco).size(150,60).padBottom(20).spaceRight(50.0f);
-        table.add(buttonManzana).size(150,60).padBottom(20).row();
-        table.add(buttonReturn).colspan(2).center().size(150,60).padBottom(20).row();
+        table.add(buttonHoja).size(camera.viewportWidth/6,camera.viewportHeight/6).padBottom(20).spaceRight(50.0f);
+        table.add(buttonHongo).size(camera.viewportWidth/6,camera.viewportHeight/6).padBottom(20).row();
+        table.add(buttonTronco).size(camera.viewportWidth/6,camera.viewportHeight/6).padBottom(20).spaceRight(50.0f);
+        table.add(buttonManzana).size(camera.viewportWidth/6,camera.viewportHeight/6).padBottom(20).row();
+        table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/6,camera.viewportHeight/6).padBottom(20).row();
 
         table.setFillParent(true);
         stage.addActor(table);
