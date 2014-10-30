@@ -52,7 +52,6 @@ public class Hoja {
          bodyEditorLoader.attachFixture(hojaBody, "hoja", fixtureDef, ancho * WORLD_TO_BOX);
          puntoRef = bodyEditorLoader.getOrigin("hoja", ancho * WORLD_TO_BOX);
 
-
     }
 
     public float getX(){

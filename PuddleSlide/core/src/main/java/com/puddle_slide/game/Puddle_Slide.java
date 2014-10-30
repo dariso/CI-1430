@@ -4,15 +4,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-
-
 public class Puddle_Slide extends Game {
     SpriteBatch batch;
     BitmapFont font;
     float V_WIDTH;
     float V_HEIGHT;
-
-
 
     @Override
     public void create () {

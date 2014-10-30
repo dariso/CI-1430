@@ -47,7 +47,6 @@ public class OptionsScreen implements Screen {
         table = new Table();
     }
 
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
@@ -86,7 +85,6 @@ public class OptionsScreen implements Screen {
         });
 
 
-
         table.add(title).colspan(2).center().padBottom(40).row();
         table.add(buttonVideo).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
         table.add(buttonSonido).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
@@ -96,8 +94,6 @@ public class OptionsScreen implements Screen {
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
     }
-
-
 
     @Override
     public void hide() {
@@ -119,5 +115,4 @@ public class OptionsScreen implements Screen {
         stage.dispose();
         skin.dispose();
     }
-
 }
