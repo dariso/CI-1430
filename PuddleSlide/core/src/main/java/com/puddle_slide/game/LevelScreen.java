@@ -47,6 +47,7 @@ public class LevelScreen implements Screen {
         buttonManzana = new TextButton("Manzana", skin);
         buttonReturn = new TextButton("Regresar",skin);
         title = new Label("Niveles de prueba",skin);
+        title.setFontScale(1.6f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         escuchadorColision=new MyContactListener();
@@ -108,11 +109,11 @@ public class LevelScreen implements Screen {
 
 
         table.add(title).colspan(2).center().padBottom(40).row();
-        table.add(buttonHoja).size(camera.viewportWidth/6,camera.viewportHeight/6).padBottom(20).spaceRight(50.0f);
-        table.add(buttonHongo).size(camera.viewportWidth/6,camera.viewportHeight/6).padBottom(20).row();
-        table.add(buttonTronco).size(camera.viewportWidth/6,camera.viewportHeight/6).padBottom(20).spaceRight(50.0f);
-        table.add(buttonManzana).size(camera.viewportWidth/6,camera.viewportHeight/6).padBottom(20).row();
-        table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/6,camera.viewportHeight/6).padBottom(20).row();
+        table.add(buttonHoja).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).spaceRight(50.0f);
+        table.add(buttonHongo).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
+        table.add(buttonTronco).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).spaceRight(50.0f);
+        table.add(buttonManzana).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
+        table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
 
         table.setFillParent(true);
         stage.addActor(table);
