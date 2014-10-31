@@ -3,19 +3,19 @@ package com.puddle_slide.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
-
 
 public class Puddle_Slide extends Game {
     SpriteBatch batch;
     BitmapFont font;
-
-
+    float V_WIDTH;
+    float V_HEIGHT;
 
     @Override
     public void create () {
         batch = new SpriteBatch();
         font = new BitmapFont();
+        V_WIDTH = 800;
+        V_HEIGHT = 480;
         this.setScreen(new MainStartScreen(this));
     }
 

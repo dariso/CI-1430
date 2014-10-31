@@ -7,6 +7,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,24 +16,24 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-/**
- * Created by kalam on 05/10/2014.
- */
 public class LevelScreen implements Screen {
     final Puddle_Slide game;
     OrthographicCamera camera;
     FileHandle filehandle;
     TextureAtlas textura;
     private Skin skin;
-    private Stage stage = new Stage();
-    private Table table = new Table();
+    private Stage stage;
+    private Table table;
     private TextButton buttonHoja;
     private TextButton buttonHongo;
     private TextButton buttonTronco;
     private TextButton buttonManzana;
     private TextButton buttonReturn;
     private Label title;
+    MyContactListener escuchadorColision;
+    private World world;
 
     public LevelScreen(final Puddle_Slide elJuego){
 
@@ -45,8 +47,12 @@ public class LevelScreen implements Screen {
         buttonManzana = new TextButton("Manzana", skin);
         buttonReturn = new TextButton("Regresar",skin);
         title = new Label("Niveles de prueba",skin);
+        title.setFontScale(1.6f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
+        escuchadorColision=new MyContactListener();
+        stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
+        table = new Table();
 
     }
     @Override
@@ -64,6 +70,8 @@ public class LevelScreen implements Screen {
 
     @Override
     public void show() {
+        world = new World(new Vector2(0, -9.8f), true);
+        world.setContactListener(new MyContactListener());
         buttonReturn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -74,14 +82,14 @@ public class LevelScreen implements Screen {
         buttonHoja.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new HojaScreen(game));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new HojaScreen(game,escuchadorColision,world));
             }
         });
 
         buttonHongo.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new HongoScreen(game));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new HongoScreen(game,escuchadorColision,world));
             }
         });
         buttonTronco.addListener(new ClickListener(){
@@ -98,12 +106,14 @@ public class LevelScreen implements Screen {
         });
 
 
+
+
         table.add(title).colspan(2).center().padBottom(40).row();
-        table.add(buttonHoja).size(150,60).padBottom(20).spaceRight(50.0f);
-        table.add(buttonHongo).size(150,60).padBottom(20).row();
-        table.add(buttonTronco).size(150,60).padBottom(20).spaceRight(50.0f);
-        table.add(buttonManzana).size(150,60).padBottom(20).row();
-        table.add(buttonReturn).colspan(2).center().size(150,60).padBottom(20).row();
+        table.add(buttonHoja).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).spaceRight(50.0f);
+        table.add(buttonHongo).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
+        table.add(buttonTronco).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).spaceRight(50.0f);
+        table.add(buttonManzana).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
+        table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
 
         table.setFillParent(true);
         stage.addActor(table);
@@ -113,7 +123,7 @@ public class LevelScreen implements Screen {
 
     @Override
     public void hide() {
-
+        this.dispose();
     }
 
     @Override

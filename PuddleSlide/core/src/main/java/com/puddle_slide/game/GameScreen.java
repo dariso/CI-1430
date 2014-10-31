@@ -26,7 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 
 public class GameScreen extends InputAdapter implements Screen {
@@ -36,8 +36,8 @@ public class GameScreen extends InputAdapter implements Screen {
     private FileHandle filehandle;
     private TextureAtlas textura;
     private Skin skin;
-    private Stage stage = new Stage();
-    private Table table = new Table();
+    private Stage stage;
+    private Table table;
     private TextButton buttonPause;
     private TextButton buttonRegresar;
     private Sprite gotaSprite;
@@ -66,6 +66,8 @@ public class GameScreen extends InputAdapter implements Screen {
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
         hojaImg = new Texture (Gdx.files.internal("hoja2.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
+        stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
+        table = new Table();
 
         gotaSprite = new Sprite(gotaImage);
         hojaSprite = new Sprite(hojaImg);
@@ -78,7 +80,7 @@ public class GameScreen extends InputAdapter implements Screen {
         buttonPause = new TextButton("Pausa", skin);
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
 
     }
 
@@ -202,8 +204,8 @@ public class GameScreen extends InputAdapter implements Screen {
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
-        table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
-        table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
+        table.add(buttonPause).size(camera.viewportWidth/6,camera.viewportHeight/8).padTop(-100).padLeft(stage.getCamera().viewportWidth-150).row();
+        table.add(buttonRegresar).size(camera.viewportWidth/6,camera.viewportHeight/8).padTop(0).padBottom(250).padLeft(stage.getCamera().viewportWidth-150);
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
@@ -235,7 +237,7 @@ public class GameScreen extends InputAdapter implements Screen {
     }
 
     public void pauseGame(){
-        if(PAUSE == true){
+        if(PAUSE){
             PAUSE=false;
             buttonPause.setText("Pausa");
         }else{
