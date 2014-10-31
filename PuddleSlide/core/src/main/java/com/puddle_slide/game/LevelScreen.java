@@ -26,10 +26,7 @@ public class LevelScreen implements Screen {
     private Skin skin;
     private Stage stage;
     private Table table;
-    private TextButton buttonHoja;
-    private TextButton buttonHongo;
-    private TextButton buttonTronco;
-    private TextButton buttonManzana;
+    private TextButton buttonPuas;
     private TextButton buttonReturn;
     private Label title;
     MyContactListener escuchadorColision;
@@ -41,16 +38,13 @@ public class LevelScreen implements Screen {
         filehandle= Gdx.files.internal("skins/menuSkin.json");
         textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
         skin= new Skin(filehandle,textura);
-        buttonHoja = new TextButton("Hoja", skin);
-        buttonHongo = new TextButton("Hongo", skin);
-        buttonTronco = new TextButton("Tronco", skin);
-        buttonManzana = new TextButton("Manzana", skin);
+        buttonPuas = new TextButton("Puas", skin);
         buttonReturn = new TextButton("Regresar",skin);
         title = new Label("Niveles de prueba",skin);
         title.setFontScale(1.6f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-        escuchadorColision=new MyContactListener();
+        escuchadorColision = new MyContactListener();
         stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
         table = new Table();
 
@@ -79,40 +73,19 @@ public class LevelScreen implements Screen {
             }
         });
 
-        buttonHoja.addListener(new ClickListener(){
+        buttonPuas.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new HojaScreen(game,escuchadorColision,world));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new ComingSoonScreen(new LevelScreen(game)));
             }
         });
 
-        buttonHongo.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new HongoScreen(game,escuchadorColision,world));
-            }
-        });
-        buttonTronco.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new TroncoScreen(game));
-            }
-        });
-        buttonManzana.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new ManzanaScreen(game));
-            }
-        });
 
 
 
 
         table.add(title).colspan(2).center().padBottom(40).row();
-        table.add(buttonHoja).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).spaceRight(50.0f);
-        table.add(buttonHongo).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
-        table.add(buttonTronco).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).spaceRight(50.0f);
-        table.add(buttonManzana).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
+        table.add(buttonPuas).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).spaceRight(50.0f);
         table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
 
         table.setFillParent(true);

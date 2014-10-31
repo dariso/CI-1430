@@ -27,7 +27,7 @@ public class Gota {
      * @param y Posicion en el eje y en el que se dibujara la gota
      * @param ancho Ancho del cuerpo de la gota
      * */
-    public Gota(World world, float x, float y, float ancho, BodyEditorLoader b){
+    public Gota(World world, float x, float y, float ancho){
         BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/gota.json"));
 
         BodyDef gotaDef = new BodyDef();
