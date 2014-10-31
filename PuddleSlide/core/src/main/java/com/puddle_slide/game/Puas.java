@@ -57,5 +57,5 @@ public class Puas {
         return puntoRef;
     }
 
-    public float getMasa() { return puasBody.getMass();  }
+    public float getMasa() { return puasBody.getMass(); }
 }
