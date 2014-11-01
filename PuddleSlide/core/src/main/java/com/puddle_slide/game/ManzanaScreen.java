@@ -249,8 +249,6 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
-        //Otro tipo de Joint
-
         DistanceJointDef jointDef = new DistanceJointDef();
         jointDef.initialize(body, manzana.getManzanaBody(), new Vector2(250*WORLD_TO_BOX, 390*WORLD_TO_BOX) , new Vector2(manzana.getX(),manzana.getY()) );
         jointDef.collideConnected = true;

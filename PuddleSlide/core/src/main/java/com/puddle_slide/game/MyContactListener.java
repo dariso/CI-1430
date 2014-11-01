@@ -63,6 +63,7 @@ public class MyContactListener implements ContactListener {
                 sonido.sonidoManzana();
             }else if(contrario.equals("troncoIzq")||contrario.equals("troncoDer")){
                 sonido.sonidoTronco();
+
             }
         }
     }
