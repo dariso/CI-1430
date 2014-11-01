@@ -20,7 +20,7 @@ public class Puas {
 
     public Puas(World world, float x, float y, float ancho, float alto){
         BodyEditorLoader bodyEditorLoader;
-        
+
         bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/puas.json"));
 
         BodyDef puasDef = new BodyDef();
