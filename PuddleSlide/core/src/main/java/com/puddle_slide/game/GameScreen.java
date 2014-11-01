@@ -56,7 +56,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private float vel = 10;
     private Body ground;
     private Gota enki;
-    private HojaBasica hoja;
+    private Hoja hoja;
 
     boolean PAUSE = false;
 
@@ -64,7 +64,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
-        hojaImg = new Texture (Gdx.files.internal("hoja2.png"));
+        hojaImg = new Texture (Gdx.files.internal("hojaVerde2.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
         stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
         table = new Table();
@@ -199,7 +199,7 @@ public class GameScreen extends InputAdapter implements Screen {
         groundEdge.dispose();
 
         //Creacion de la hoja
-        hoja = new HojaBasica(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
+        hoja = new Hoja(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
 
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
