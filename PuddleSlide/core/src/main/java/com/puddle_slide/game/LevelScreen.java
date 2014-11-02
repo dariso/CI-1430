@@ -43,7 +43,7 @@ public class LevelScreen implements Screen {
         title = new Label("Niveles de prueba",skin);
         title.setFontScale(1.6f);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
         escuchadorColision = new MyContactListener();
         stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
         table = new Table();
@@ -84,9 +84,9 @@ public class LevelScreen implements Screen {
 
 
 
-        table.add(title).colspan(2).center().padBottom(40).row();
-        table.add(buttonPuas).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).spaceRight(50.0f);
-        table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
+        table.add(title).colspan(2).center().padBottom(60).row();
+        table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
+        table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6);
 
         table.setFillParent(true);
         stage.addActor(table);
