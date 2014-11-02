@@ -234,6 +234,7 @@ public class GameScreen extends InputAdapter implements Screen {
         gotaImage.dispose();
         hojaImg.dispose();
         backgroundImage.dispose();
+        world.dispose();
     }
 
     public void pauseGame(){
