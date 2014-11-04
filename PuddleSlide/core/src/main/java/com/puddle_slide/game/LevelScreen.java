@@ -74,13 +74,9 @@ public class LevelScreen implements Screen {
         buttonPuas.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new ComingSoonScreen(new LevelScreen(game)));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new PuasScreen(game));
             }
         });
-
-
-
-
 
         table.add(title).colspan(2).center().padBottom(60).row();
         table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
