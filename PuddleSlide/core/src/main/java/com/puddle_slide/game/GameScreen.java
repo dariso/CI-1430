@@ -236,7 +236,7 @@ public class GameScreen extends InputAdapter implements Screen {
         groundEdge.dispose();
 
         table.add(buttonPause).size(camera.viewportWidth/6,camera.viewportHeight/9).padTop(-600).padLeft(stage.getCamera().viewportWidth-250).row();
-        table.add(buttonRegresar).size(camera.viewportWidth/6,camera.viewportHeight/9).padTop(-550).padBottom(-200).padLeft(stage.getCamera().viewportWidth-250);
+        table.add(buttonRegresar).size(camera.viewportWidth / 6, camera.viewportHeight / 9).padTop(-575).padBottom(-200).padLeft(stage.getCamera().viewportWidth - 250);
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
