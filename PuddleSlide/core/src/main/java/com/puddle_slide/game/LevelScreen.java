@@ -29,7 +29,6 @@ public class LevelScreen implements Screen {
     private TextButton buttonPuas;
     private TextButton buttonReturn;
     private Label title;
-    MyContactListener escuchadorColision;
     private World world;
 
     public LevelScreen(final Puddle_Slide elJuego){
@@ -44,7 +43,6 @@ public class LevelScreen implements Screen {
         title.setFontScale(1.6f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
-        escuchadorColision = new MyContactListener();
         stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
         table = new Table();
 

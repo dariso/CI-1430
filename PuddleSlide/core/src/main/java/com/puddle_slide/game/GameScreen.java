@@ -45,6 +45,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private Texture gotaImage;
     private Texture hojaImg;
     private Texture backgroundImage;
+    MyContactListener escuchadorColision;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
 
@@ -80,6 +81,8 @@ public class GameScreen extends InputAdapter implements Screen {
         buttonPause = new TextButton("Pausa", skin);
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
+        //escuchadorColision = MyContactListener.getInstancia();
+       // escuchadorColision = new MyContactListener();
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
 
     }
