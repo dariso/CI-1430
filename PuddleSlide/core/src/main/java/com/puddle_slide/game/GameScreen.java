@@ -19,7 +19,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
+import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
+import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -56,7 +61,10 @@ public class GameScreen extends InputAdapter implements Screen {
     private float vel = 10;
     private Body ground;
     private Gota enki;
-    private Hoja hoja;
+    private HojaBasica hoja;
+    private Tronco troncoTecho;
+    private DistanceJoint jointHojaParedIzq;
+    private DistanceJoint jointHojaTecho;
 
     boolean PAUSE = false;
 
@@ -64,14 +72,14 @@ public class GameScreen extends InputAdapter implements Screen {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
-        hojaImg = new Texture (Gdx.files.internal("hojaVerde2.png"));
-        backgroundImage = new Texture(Gdx.files.internal("background.png"));
+        hojaImg = new Texture (Gdx.files.internal("hoja2.png"));
+        backgroundImage = new Texture(Gdx.files.internal("fondoMontanas.png"));
         stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
         table = new Table();
 
         gotaSprite = new Sprite(gotaImage);
         hojaSprite = new Sprite(hojaImg);
-        gotaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
+        gotaSprite.setPosition(50*WORLD_TO_BOX , (Gdx.graphics.getHeight()+100)*WORLD_TO_BOX);
         hojaSprite.setPosition(0,0);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
@@ -123,10 +131,11 @@ public class GameScreen extends InputAdapter implements Screen {
         }
 
         hojaSprite.setPosition(hoja.getX(), hoja.getY());
+        hojaSprite.setOrigin(hoja.getOrigen().x, hoja.getOrigen().y);
         hojaSprite.setRotation(hoja.getAngulo() * MathUtils.radiansToDegrees);
         this.game.batch.begin();
-        this.game.batch.draw(backgroundImage, 0, 0);
-        this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(), hoja.getOrigen().x, hoja.getOrigen().y, hojaSprite.getWidth(),
+        //this.game.batch.draw(backgroundImage, 0, 0);
+        this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(),hojaSprite.getOriginX(), hojaSprite.getOriginY(), hojaSprite.getWidth(),
                 hojaSprite.getHeight(), hojaSprite.getScaleX(), hojaSprite.getScaleY(), hojaSprite.getRotation());
         this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                 gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
@@ -159,6 +168,15 @@ public class GameScreen extends InputAdapter implements Screen {
             }
         });
 
+        //Creacion de la hoja
+        hoja = new HojaBasica(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
+
+        //Creacion de la gota
+        enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
+
+        //Creacion del tronco que sostiene la hoja
+        troncoTecho = new Tronco(world,100*WORLD_TO_BOX,Gdx.graphics.getHeight()*WORLD_TO_BOX,300,100,0.5f,true);
+
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
         BodyDef groundDef = new BodyDef();
@@ -178,6 +196,27 @@ public class GameScreen extends InputAdapter implements Screen {
         fixtureDefIzq.filter.maskBits = FigureId.BIT_HOJABASICA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
 
+        //Definicion de Joint entre hoja y pared izquierda
+        DistanceJointDef jointDef = new DistanceJointDef();
+        jointDef.localAnchorA.set(new Vector2(0, 2.5f));
+        jointDef.localAnchorB.set(new Vector2(0f, 1.3f));
+        jointDef.bodyA = troncoTecho.getTroncoBody();
+        jointDef.bodyB = hoja.getHojaBody();
+        jointDef.collideConnected = true;
+        jointDef.length = 1f;
+        jointHojaParedIzq = (DistanceJoint) world.createJoint(jointDef);
+
+       //Definicion del Joint entre la hoja y el tronco (techo)
+        jointDef.localAnchorA.y = 1;
+        jointDef.localAnchorA.x = 2;
+        jointDef.localAnchorB.x = 2.5f;
+        jointDef.localAnchorB.y = 1;
+        jointDef.bodyA = troncoTecho.getTroncoBody();
+        jointDef.bodyB = hoja.getHojaBody();
+        jointDef.length = 1f;
+
+        jointHojaTecho = (DistanceJoint) world.createJoint(jointDef);
+
         //definicion Piso
         groundEdge.set(-180 * WORLD_TO_BOX, -1 * WORLD_TO_BOX, camera.viewportWidth * WORLD_TO_BOX, -1 * WORLD_TO_BOX);
         fixtureDefPiso.shape = groundEdge;
@@ -186,6 +225,7 @@ public class GameScreen extends InputAdapter implements Screen {
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
         fixtureDefPiso.filter.maskBits = FigureId.BIT_HOJABASICA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
+
 
         //definicion borde Derecho
         groundEdge.set(camera.viewportWidth * WORLD_TO_BOX, -35*WORLD_TO_BOX, (camera.viewportWidth)*WORLD_TO_BOX, camera.viewportHeight*WORLD_TO_BOX);
@@ -198,14 +238,8 @@ public class GameScreen extends InputAdapter implements Screen {
 
         groundEdge.dispose();
 
-        //Creacion de la hoja
-        hoja = new Hoja(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
-
-        //Creacion de la gota
-        enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
-
         table.add(buttonPause).size(camera.viewportWidth/6,camera.viewportHeight/8).padTop(-100).padLeft(stage.getCamera().viewportWidth-150).row();
-        table.add(buttonRegresar).size(camera.viewportWidth/6,camera.viewportHeight/8).padTop(0).padBottom(250).padLeft(stage.getCamera().viewportWidth-150);
+        table.add(buttonRegresar).size(camera.viewportWidth/6,camera.viewportHeight/8).padTop(0).padBottom(400).padLeft(stage.getCamera().viewportWidth-150);
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
