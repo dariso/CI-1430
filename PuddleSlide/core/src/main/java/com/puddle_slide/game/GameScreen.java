@@ -19,12 +19,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
-import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
-import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -238,8 +235,8 @@ public class GameScreen extends InputAdapter implements Screen {
 
         groundEdge.dispose();
 
-        table.add(buttonPause).size(camera.viewportWidth/6,camera.viewportHeight/8).padTop(-100).padLeft(stage.getCamera().viewportWidth-150).row();
-        table.add(buttonRegresar).size(camera.viewportWidth/6,camera.viewportHeight/8).padTop(0).padBottom(400).padLeft(stage.getCamera().viewportWidth-150);
+        table.add(buttonPause).size(camera.viewportWidth/6,camera.viewportHeight/8).padTop(-50).padLeft(stage.getCamera().viewportWidth-250).row();
+        table.add(buttonRegresar).size(camera.viewportWidth/6,camera.viewportHeight/8).padBottom(40).padLeft(stage.getCamera().viewportWidth-250);
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
