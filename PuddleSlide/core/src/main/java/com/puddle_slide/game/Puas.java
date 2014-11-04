@@ -8,10 +8,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-
-
 /**
- * Created by Meli.
+ * Created by Meli 20/10/2014.
  */
 public class Puas{
 
@@ -32,12 +30,11 @@ public class Puas{
         BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/puas.json"));
 
         BodyDef puasDef = new BodyDef();
-       puasDef.type = BodyDef.BodyType.DynamicBody;
-       puasDef.position.set(x, y);
+        puasDef.type = BodyDef.BodyType.DynamicBody;
+        puasDef.position.set(x, y);
         puasBody = world.createBody(puasDef);
 
         PolygonShape polygonShape = new PolygonShape();
-
         FixtureDef fixtureDef = new FixtureDef();
 
         //Define la cetegoria de objeto a la que pertenece
@@ -48,7 +45,6 @@ public class Puas{
         fixtureDef.density = 1000f;
         fixtureDef.friction = 0.42f;
         fixtureDef.restitution = 0.5f;
-
 
         bodyEditorLoader.attachFixture( puasBody,"puas",  fixtureDef, ancho * WORLD_TO_BOX);
         puntoRef = bodyEditorLoader.getOrigin("puas", ancho * WORLD_TO_BOX);
