@@ -63,7 +63,7 @@ public class LevelScreen implements Screen {
     @Override
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
-        world.setContactListener(new MyContactListener());
+       // world.setContactListener(new MyContactListener());
         buttonReturn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {

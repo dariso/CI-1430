@@ -19,12 +19,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
-import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
-import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -69,7 +66,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     boolean PAUSE = false;
 
-    public GameScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
+    public GameScreen(final com.puddle_slide.game.Puddle_Slide elJuego,MyContactListener escuchadorColision,World world) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
@@ -90,7 +87,10 @@ public class GameScreen extends InputAdapter implements Screen {
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
         //escuchadorColision = MyContactListener.getInstancia();
+
        // escuchadorColision = new MyContactListener();
+        this.escuchadorColision = escuchadorColision;
+        this.world=world;
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
 
     }
@@ -155,7 +155,7 @@ public class GameScreen extends InputAdapter implements Screen {
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
-        world.setContactListener(new MyContactListener());
+        world.setContactListener(this.escuchadorColision);
         //Boton de Pausa
 
         buttonPause.addListener(new ClickListener(){

@@ -2,8 +2,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.puddle_slide.game.Puddle_Slide;
+
 import org.junit.Test;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.*;
 
 public class AssetsTest{
 
@@ -17,6 +19,7 @@ public class AssetsTest{
 
         //prueba
          System.out.print("Hola");
+        /*
         assertTrue(Gdx.files.internal("gotty.png").exists());
         assertTrue(Gdx.files.internal("gottyCS.png").exists());
         assertTrue(Gdx.files.internal("gotty2.png").exists());
@@ -32,7 +35,9 @@ public class AssetsTest{
         assertTrue(Gdx.files.internal("Shapes/manzana.json").exists());
         assertTrue(Gdx.files.internal("Shapes/hoja.json").exists());
         assertTrue(Gdx.files.internal("Shapes/hongo.json").exists());
-
+    */
+        assertTrue(Gdx.files.internal("gotty.png").exists());
+      //  assertTrue(Gdx.files.internal("Shapes/troncoDer.json").exists());
     }
 
 }

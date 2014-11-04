@@ -81,7 +81,7 @@ public class HojaScreen extends InputAdapter implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
-        this.escuchadorColision = escuchadorColision;
+       // this.escuchadorColision = escuchadorColision;
         this.world=world;
     }
 

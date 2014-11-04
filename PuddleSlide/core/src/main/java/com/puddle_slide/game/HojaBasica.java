@@ -74,12 +74,12 @@ public class HojaBasica {
         hojaBody.applyForceToCenter(v, true);
     }
 
+    public Body getHojaBody(){
+        return this.hojaBody;
+    }
     public float getMasa(){
         return hojaBody.getMass();
     }
 
-    public Body getHojaBody(){
-        return this.hojaBody;
-    }
 
 }
