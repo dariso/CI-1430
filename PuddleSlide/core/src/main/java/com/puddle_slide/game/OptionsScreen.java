@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 
 public class OptionsScreen implements Screen {
@@ -22,8 +23,8 @@ public class OptionsScreen implements Screen {
     FileHandle filehandle;
     TextureAtlas textura;
     private Skin skin;
-    private Stage stage = new Stage();
-    private Table table = new Table();
+    private Stage stage;
+    private Table table;
     private TextButton buttonSonido;
     private TextButton buttonVideo;
     private TextButton buttonReturn;
@@ -39,8 +40,11 @@ public class OptionsScreen implements Screen {
         buttonVideo = new TextButton("Video", skin);
         buttonReturn = new TextButton("Regresar",skin);
         title = new Label("Opciones",skin);
+        title.setFontScale(1.6f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
+        stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
+        table = new Table();
     }
 
     @Override
@@ -82,9 +86,9 @@ public class OptionsScreen implements Screen {
 
 
         table.add(title).colspan(2).center().padBottom(40).row();
-        table.add(buttonVideo).size(150,60).padBottom(20).row();
-        table.add(buttonSonido).size(150,60).padBottom(20).row();
-        table.add(buttonReturn).size(150,60).padBottom(20).row();
+        table.add(buttonVideo).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
+        table.add(buttonSonido).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
+        table.add(buttonReturn).size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(20).row();
 
         table.setFillParent(true);
         stage.addActor(table);

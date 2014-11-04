@@ -38,8 +38,8 @@ public class MainStartScreen implements Screen {
         titulo2 = new Label("Presionar Pantalla",skin);
         stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
         table = new Table();
-        titulo.setFontScale(1.4f);
-        titulo.setFontScale(1.2f);
+        titulo.setFontScale(2.0f);
+        titulo2.setFontScale(1.4f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
         imagent = new Texture(Gdx.files.internal("gotitaYagua_1.png"));
@@ -65,7 +65,6 @@ public class MainStartScreen implements Screen {
         imagen.setScaling(Scaling.fit);
         table.add(imagen).colspan(2).center().padBottom(-40).row();
         table.add(titulo).colspan(2).center().padBottom(20).row();
-        titulo2.setFontScale((float) 0.7);
         table.add(titulo2).colspan(2).center().padBottom(40).row();
         table.setFillParent(true);
         stage.addActor(table);
