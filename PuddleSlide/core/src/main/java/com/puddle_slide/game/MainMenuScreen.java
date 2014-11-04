@@ -7,6 +7,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -29,7 +31,9 @@ public class MainMenuScreen implements Screen {
     private TextButton buttonNiveles;
     private TextButton buttonOpciones;
     private Label title;
-
+    private World world;
+    MyContactListener escuchadorColision;
+    SoundControl sonido;
     public MainMenuScreen(final Puddle_Slide elJuego) {
 
         this.game = elJuego;
@@ -45,6 +49,9 @@ public class MainMenuScreen implements Screen {
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
         new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
         table = new Table();
+        world = new World(new Vector2(0, -9.8f), true);
+        sonido = new SoundControl();
+        escuchadorColision= MyContactListener.getInstancia(sonido);
     }
 
     @Override
@@ -66,7 +73,7 @@ public class MainMenuScreen implements Screen {
         buttonPlay.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen(game));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen(game,escuchadorColision,world));
             }
         });
 

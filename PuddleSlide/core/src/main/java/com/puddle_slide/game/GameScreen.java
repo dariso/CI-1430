@@ -47,6 +47,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private Texture gotaImage;
     private Texture hojaImg;
     private Texture backgroundImage;
+    MyContactListener escuchadorColision;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
 
@@ -65,7 +66,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     boolean PAUSE = false;
 
-    public GameScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
+    public GameScreen(final com.puddle_slide.game.Puddle_Slide elJuego,MyContactListener escuchadorColision,World world) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
@@ -85,6 +86,11 @@ public class GameScreen extends InputAdapter implements Screen {
         buttonPause = new TextButton("Pausa", skin);
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
+        //escuchadorColision = MyContactListener.getInstancia();
+
+       // escuchadorColision = new MyContactListener();
+        this.escuchadorColision = escuchadorColision;
+        this.world=world;
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
 
     }
@@ -149,7 +155,7 @@ public class GameScreen extends InputAdapter implements Screen {
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
-        world.setContactListener(new MyContactListener());
+        world.setContactListener(this.escuchadorColision);
         //Boton de Pausa
 
         buttonPause.addListener(new ClickListener(){

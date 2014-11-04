@@ -13,13 +13,29 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 
 
 public class MyContactListener implements ContactListener {
+    private volatile static MyContactListener uniqueInstance;
     private boolean contactoConHoja;
     Fixture objetoA;
     Fixture objetoB;
     Fixture objetoContrario;
     Vector2 impulso = new Vector2();    // Contiene los valores del impulso aplicado a la gota cuando choca con el hongo
     Vector2 punto = new Vector2();      // Contiene el punto en el que se le va a aplicar ese impulso a la gota
-    SoundControl sonido = new SoundControl();
+    SoundControl sonido;
+    public MyContactListener(SoundControl sonido){
+        this.sonido=sonido;
+
+    }
+    public static MyContactListener getInstancia(SoundControl sonido){
+
+        if(uniqueInstance==null){
+            synchronized (MyContactListener.class){
+                if(uniqueInstance==null){
+                    uniqueInstance = new MyContactListener(sonido);
+                }
+            }
+        }
+        return uniqueInstance;
+    }
 
     @Override
     public void beginContact(Contact contact) {
