@@ -29,7 +29,7 @@ public class HojaBasica {
      * @param alto Alto del sprite de la hoja
      * */
     public HojaBasica(World world, float x, float y, float ancho, float alto) {
-        BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/hojaBasica.json"));
+        BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/hoja2.json"));
 
         BodyDef hojaDef = new BodyDef();
         hojaDef.type = BodyDef.BodyType.DynamicBody;
@@ -49,8 +49,8 @@ public class HojaBasica {
         fixtureDef.friction = 0.42f;
         fixtureDef.restitution = 0.5f;
 
-        bodyEditorLoader.attachFixture( hojaBody,"hojaBasica",  fixtureDef, ancho * WORLD_TO_BOX);
-        puntoRef = bodyEditorLoader.getOrigin("hojaBasica", ancho * WORLD_TO_BOX);
+        bodyEditorLoader.attachFixture( hojaBody,"hoja",  fixtureDef, ancho * WORLD_TO_BOX);
+        puntoRef = bodyEditorLoader.getOrigin("hoja", ancho * WORLD_TO_BOX);
 
     }
 
@@ -76,6 +76,10 @@ public class HojaBasica {
 
     public float getMasa(){
         return hojaBody.getMass();
+    }
+
+    public Body getHojaBody(){
+        return this.hojaBody;
     }
 
 }

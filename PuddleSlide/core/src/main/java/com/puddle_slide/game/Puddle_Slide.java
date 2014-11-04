@@ -14,8 +14,8 @@ public class Puddle_Slide extends Game {
     public void create () {
         batch = new SpriteBatch();
         font = new BitmapFont();
-        V_WIDTH = 800;
-        V_HEIGHT = 480;
+        V_WIDTH = 1024;
+        V_HEIGHT = 725;
         this.setScreen(new MainStartScreen(this));
     }
 
