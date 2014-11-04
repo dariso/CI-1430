@@ -196,7 +196,7 @@ public class GameScreen extends InputAdapter implements Screen {
         fixtureDefIzq.filter.maskBits = FigureId.BIT_HOJABASICA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
 
-        //Definicion de Joint entre hoja y pared izquierda
+        //Definicion de primer Joint entre el tronco y la hoja
         DistanceJointDef jointDef = new DistanceJointDef();
         jointDef.localAnchorA.set(new Vector2(0, 2.5f));
         jointDef.localAnchorB.set(new Vector2(0f, 1.3f));
@@ -206,7 +206,7 @@ public class GameScreen extends InputAdapter implements Screen {
         jointDef.length = 1f;
         jointHojaParedIzq = (DistanceJoint) world.createJoint(jointDef);
 
-       //Definicion del Joint entre la hoja y el tronco (techo)
+       //Definicion del segundo Joint entre la hoja y el tronco
         jointDef.localAnchorA.y = 1;
         jointDef.localAnchorA.x = 2;
         jointDef.localAnchorB.x = 2.5f;
