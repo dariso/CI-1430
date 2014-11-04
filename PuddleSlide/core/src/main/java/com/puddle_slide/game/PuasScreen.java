@@ -27,7 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
- * Created by xia on 10/14/14.
+ * Created by Meli on 3/11/14.
  */
 public class PuasScreen extends InputAdapter implements Screen{
 

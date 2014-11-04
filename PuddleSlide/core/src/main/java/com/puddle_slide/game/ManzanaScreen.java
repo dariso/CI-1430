@@ -44,10 +44,9 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     private TextButton buttonPause;
     private TextButton buttonRegresar;
     private Sprite gotaSprite;
-    private Sprite gotaMuertaSprite;
+
     private Sprite manzanaSprite;
     private Texture gotaImage;
-    private Texture gotaMuerta;
     private Texture manzanaImg;
     private Sprite troncoDerSprite;
     private Sprite troncoIzqSprite;
@@ -68,7 +67,6 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     private Tronco tronko2;
     private DistanceJoint joint;
     boolean PAUSE = false;
-    boolean MUERE = false;
     private Body body;
     private Body body2;
 
@@ -76,19 +74,16 @@ public class ManzanaScreen extends InputAdapter implements Screen {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
-        gotaMuerta = new Texture(Gdx.files.internal("gotaM.png"));
         manzanaImg = new Texture (Gdx.files.internal("manzana.png"));
         troncoDerImage = new Texture(Gdx.files.internal("troncoDer.png"));
         troncoIzqImage = new Texture(Gdx.files.internal("troncoIzq.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         gotaSprite = new Sprite(gotaImage);
-        gotaMuertaSprite = new Sprite(gotaMuerta);
         manzanaSprite = new Sprite(manzanaImg);
         troncoDerSprite = new Sprite(troncoDerImage);
         troncoIzqSprite = new Sprite(troncoIzqImage);
         gotaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
-        gotaMuertaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
         manzanaSprite.setPosition(0,0);
         troncoDerSprite.setPosition(200*WORLD_TO_BOX, 390*WORLD_TO_BOX);
         troncoIzqSprite.setPosition(600*WORLD_TO_BOX, 200*WORLD_TO_BOX);
@@ -113,15 +108,11 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         Matrix4 cameraCopy = camera.combined.cpy();
 
         if(Gdx.input.isTouched()) {
-            //gotaImage.load((com.badlogic.gdx.graphics.TextureData) Gdx.files.internal("GotaMuerta.png"));
-
-            MUERE=true;
-           if (joint != null) {
-
-               world.destroyJoint(joint);
-               joint = null;
-           }
-           //Manzana cae
+            if (joint != null) {
+                world.destroyJoint(joint);
+                joint = null;
+            }
+            //Manzana cae
         }
 
         //Si no esta en pausa actualiza las posiciones
@@ -136,25 +127,16 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         gotaSprite.setPosition(enki.getX(), enki.getY());
         gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
 
-        gotaMuertaSprite.setPosition(enki.getX(), enki.getY());
-        gotaMuertaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
-
         manzanaSprite.setPosition(manzana.getX(), manzana.getY());
         manzanaSprite.setRotation(manzana.getAngulo() * MathUtils.radiansToDegrees);
         //Dibuja los sprites
 
         this.game.batch.begin();
         this.game.batch.draw(backgroundImage, 0, 0);
-
         this.game.batch.draw(manzanaSprite, manzanaSprite.getX(), manzanaSprite.getY(), manzana.getOrigen().x, manzana.getOrigen().y, manzanaSprite.getWidth(),
                 manzanaSprite.getHeight(), manzanaSprite.getScaleX(), manzanaSprite.getScaleY(), manzanaSprite.getRotation());
-        if(!MUERE) {
-            this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
-                    gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
-        }else{
-            this.game.batch.draw(gotaMuertaSprite, gotaMuertaSprite.getX(), gotaMuertaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaMuertaSprite.getWidth(),
-                    gotaMuertaSprite.getHeight(), gotaMuertaSprite.getScaleX(), gotaMuertaSprite.getScaleY(), gotaMuertaSprite.getRotation());
-        }
+        this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
+                gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
         this.game.batch.draw(troncoDerSprite, troncoDerSprite.getX(), troncoDerSprite.getY()+150,troncoDerSprite.getX(),troncoDerSprite.getY(),troncoDerSprite.getWidth(),
                 troncoDerSprite.getHeight()-200, troncoDerSprite.getScaleX(), troncoDerSprite.getScaleY(),  0.16f*MathUtils.radiansToDegrees);
         this.game.batch.draw(troncoIzqSprite, troncoIzqSprite.getX()+240, troncoIzqSprite.getY()+60,troncoIzqSprite.getX(),troncoIzqSprite.getY(),troncoIzqSprite.getWidth(),
@@ -174,7 +156,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
-      //  world.setContactListener(new MyContactListener());
+        //  world.setContactListener(new MyContactListener());
 
         //Boton de Pausa
         buttonPause.addListener(new ClickListener(){
@@ -267,6 +249,8 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         manzana = new Manzana(world, manzanaSprite.getX(), manzanaSprite.getY(), manzanaSprite.getWidth(), manzanaSprite.getHeight());
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
+
+        //Otro tipo de Joint
 
         DistanceJointDef jointDef = new DistanceJointDef();
         jointDef.initialize(body, manzana.getManzanaBody(), new Vector2(250*WORLD_TO_BOX, 390*WORLD_TO_BOX) , new Vector2(manzana.getX(),manzana.getY()) );
