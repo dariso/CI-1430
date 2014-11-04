@@ -18,10 +18,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -30,9 +27,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
- * Created by Meli.
+ * Created by xia on 10/14/14.
  */
-public class ManzanaScreen extends InputAdapter implements Screen {
+public class PuasScreen extends InputAdapter implements Screen{
 
     final Puddle_Slide game;
     private OrthographicCamera camera;
@@ -44,15 +41,11 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     private TextButton buttonPause;
     private TextButton buttonRegresar;
     private Sprite gotaSprite;
+    private Sprite puasSprite;
     private Sprite gotaMuertaSprite;
-    private Sprite manzanaSprite;
     private Texture gotaImage;
-    private Texture gotaMuerta;
-    private Texture manzanaImg;
-    private Sprite troncoDerSprite;
-    private Sprite troncoIzqSprite;
-    private Texture troncoDerImage;
-    private Texture troncoIzqImage;
+    private Texture gotaMuertaImage;
+    private Texture puasImg;
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
@@ -63,35 +56,25 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     private float vel = 10;
     private Body ground;
     private Gota enki;
-    private Manzana manzana;
-    private Tronco tronko;
-    private Tronco tronko2;
-    private DistanceJoint joint;
-    boolean PAUSE = false;
+    private Puas pua;
     boolean MUERE = false;
-    private Body body;
-    private Body body2;
+    boolean PAUSE = false;
+    //MyContactListener escuchadorColision;
 
-    public ManzanaScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
+    public PuasScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
-        gotaMuerta = new Texture(Gdx.files.internal("gotaM.png"));
-        manzanaImg = new Texture (Gdx.files.internal("manzana.png"));
-        troncoDerImage = new Texture(Gdx.files.internal("troncoDer.png"));
-        troncoIzqImage = new Texture(Gdx.files.internal("troncoIzq.png"));
+        puasImg = new Texture (Gdx.files.internal("puasP.png"));
+        gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         gotaSprite = new Sprite(gotaImage);
-        gotaMuertaSprite = new Sprite(gotaMuerta);
-        manzanaSprite = new Sprite(manzanaImg);
-        troncoDerSprite = new Sprite(troncoDerImage);
-        troncoIzqSprite = new Sprite(troncoIzqImage);
-        gotaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
+        gotaMuertaSprite = new Sprite(gotaMuertaImage);
+        puasSprite = new Sprite(puasImg);
+        gotaSprite.setPosition((Gdx.graphics.getWidth() / 2) * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
         gotaMuertaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
-        manzanaSprite.setPosition(0,0);
-        troncoDerSprite.setPosition(200*WORLD_TO_BOX, 390*WORLD_TO_BOX);
-        troncoIzqSprite.setPosition(600*WORLD_TO_BOX, 200*WORLD_TO_BOX);
+        puasSprite.setPosition(1,0);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -100,8 +83,8 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-    }
 
+    }
     private Vector2 vec = new Vector2();
 
     @Override
@@ -112,17 +95,12 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         Matrix4 cameraCopy = camera.combined.cpy();
 
-        if(Gdx.input.isTouched()) {
-            //gotaImage.load((com.badlogic.gdx.graphics.TextureData) Gdx.files.internal("GotaMuerta.png"));
+        if(Gdx.input.justTouched()) {
 
             MUERE=true;
-           if (joint != null) {
 
-               world.destroyJoint(joint);
-               joint = null;
-           }
-           //Manzana cae
         }
+
 
         //Si no esta en pausa actualiza las posiciones
         if(!PAUSE){
@@ -130,6 +108,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
             world.step(1/45f, 6, 2);
         }
         this.repintar();
+
     }
 
     public void repintar(){
@@ -139,15 +118,15 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         gotaMuertaSprite.setPosition(enki.getX(), enki.getY());
         gotaMuertaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
 
-        manzanaSprite.setPosition(manzana.getX(), manzana.getY());
-        manzanaSprite.setRotation(manzana.getAngulo() * MathUtils.radiansToDegrees);
-        //Dibuja los sprites
+        //Movimiento horizontal de la hoja
+        puasSprite.setPosition(pua.getX(), pua.getY());
+        puasSprite.setRotation(pua.getAngulo() * MathUtils.radiansToDegrees);
 
+        //Dibuja los sprites
         this.game.batch.begin();
         this.game.batch.draw(backgroundImage, 0, 0);
-
-        this.game.batch.draw(manzanaSprite, manzanaSprite.getX(), manzanaSprite.getY(), manzana.getOrigen().x, manzana.getOrigen().y, manzanaSprite.getWidth(),
-                manzanaSprite.getHeight(), manzanaSprite.getScaleX(), manzanaSprite.getScaleY(), manzanaSprite.getRotation());
+        this.game.batch.draw(puasSprite, puasSprite.getX(), puasSprite.getY(), pua.getOrigen().x, pua.getOrigen().y, puasSprite.getWidth(),
+                puasSprite.getHeight(), puasSprite.getScaleX(), puasSprite.getScaleY(), puasSprite.getRotation());
         if(!MUERE) {
             this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                     gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
@@ -155,16 +134,13 @@ public class ManzanaScreen extends InputAdapter implements Screen {
             this.game.batch.draw(gotaMuertaSprite, gotaMuertaSprite.getX(), gotaMuertaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaMuertaSprite.getWidth(),
                     gotaMuertaSprite.getHeight(), gotaMuertaSprite.getScaleX(), gotaMuertaSprite.getScaleY(), gotaMuertaSprite.getRotation());
         }
-        this.game.batch.draw(troncoDerSprite, troncoDerSprite.getX(), troncoDerSprite.getY()+150,troncoDerSprite.getX(),troncoDerSprite.getY(),troncoDerSprite.getWidth(),
-                troncoDerSprite.getHeight()-200, troncoDerSprite.getScaleX(), troncoDerSprite.getScaleY(),  0.16f*MathUtils.radiansToDegrees);
-        this.game.batch.draw(troncoIzqSprite, troncoIzqSprite.getX()+240, troncoIzqSprite.getY()+60,troncoIzqSprite.getX(),troncoIzqSprite.getY(),troncoIzqSprite.getWidth(),
-                troncoIzqSprite.getHeight()-200, troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(),  -0.18f*MathUtils.radiansToDegrees);
-
         this.game.batch.end();
 
         stage.act();
         stage.draw();
     }
+
+
 
     @Override
     public void resize(int width, int height) {
@@ -174,7 +150,6 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
-      //  world.setContactListener(new MyContactListener());
 
         //Boton de Pausa
         buttonPause.addListener(new ClickListener(){
@@ -206,7 +181,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         fixtureDefIzq.density = 0;
         ground.createFixture(fixtureDefIzq);
         fixtureDefIzq.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefIzq.filter.maskBits = FigureId.BIT_MANZANA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefIzq.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
 
         //definicion Piso
@@ -215,7 +190,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefPiso.filter.maskBits = FigureId.BIT_MANZANA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
 
         //definicion borde Derecho
@@ -224,57 +199,16 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         fixtureDefDer.density = 0;
         ground.createFixture(fixtureDefDer);
         fixtureDefDer.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefDer.filter.maskBits = FigureId.BIT_MANZANA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefDer.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefDer).setUserData("borde_der");
 
         groundEdge.dispose();
 
+        //Creacion del puas
+        pua = new Puas(world, puasSprite.getX(), puasSprite.getY(), puasSprite.getWidth(), puasSprite.getHeight());
 
-        BodyDef bd = new BodyDef();
-        bd.type = BodyDef.BodyType.StaticBody;
-        bd.position.set(0, 0);
-        body = world.createBody(bd);
-
-        PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(10*WORLD_TO_BOX, 320*WORLD_TO_BOX, new Vector2(600*WORLD_TO_BOX, 200*WORLD_TO_BOX), 1.75f);
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = polygonShape;
-        fixtureDef.filter.categoryBits = FigureId.BIT_TRONCO;
-        fixtureDef.filter.maskBits = FigureId.BIT_GOTA;
-        fixtureDef.friction = 0f;
-
-        body.createFixture(fixtureDef).setUserData("tronco");
-
-        bd = new BodyDef();
-        bd.type = BodyDef.BodyType.StaticBody;
-        bd.position.set(0, 0);
-        body2 = world.createBody(bd);
-
-        polygonShape = new PolygonShape();
-        polygonShape.setAsBox(10*WORLD_TO_BOX, 250*WORLD_TO_BOX, new Vector2(200*WORLD_TO_BOX, 390*WORLD_TO_BOX),-1.80f);
-
-        fixtureDef = new FixtureDef();
-        fixtureDef.shape = polygonShape;
-        fixtureDef.filter.categoryBits = FigureId.BIT_TRONCO;
-        fixtureDef.filter.maskBits = FigureId.BIT_GOTA;
-        fixtureDef.friction = 0f;
-
-        body2.createFixture(fixtureDef).setUserData("tronco");
-
-
-        //Creacion de la manzana
-        manzana = new Manzana(world, manzanaSprite.getX(), manzanaSprite.getY(), manzanaSprite.getWidth(), manzanaSprite.getHeight());
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
-
-        //Otro tipo de Joint
-
-        DistanceJointDef jointDef = new DistanceJointDef();
-        jointDef.initialize(body, manzana.getManzanaBody(), new Vector2(250*WORLD_TO_BOX, 390*WORLD_TO_BOX) , new Vector2(manzana.getX(),manzana.getY()) );
-        jointDef.collideConnected = true;
-        jointDef.length = 1;
-        joint = (DistanceJoint) world.createJoint(jointDef);
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
@@ -295,14 +229,16 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     }
 
     @Override
-    public void resume() {}
+    public void resume() {
+
+    }
 
     @Override
     public void dispose() {
         stage.dispose();
         skin.dispose();
         gotaImage.dispose();
-        manzanaImg.dispose();
+        puasImg.dispose();
         backgroundImage.dispose();
     }
 
@@ -316,3 +252,5 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         }
     }
 }
+
+
