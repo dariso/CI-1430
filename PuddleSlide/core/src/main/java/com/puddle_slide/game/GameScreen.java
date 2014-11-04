@@ -215,7 +215,7 @@ public class GameScreen extends InputAdapter implements Screen {
         jointHojaTecho = (DistanceJoint) world.createJoint(jointDef);
 
         //definicion Piso
-        groundEdge.set(-180 * WORLD_TO_BOX, -1 * WORLD_TO_BOX, camera.viewportWidth * WORLD_TO_BOX, -1 * WORLD_TO_BOX);
+        groundEdge.set(-1 * WORLD_TO_BOX, 5 * WORLD_TO_BOX, camera.viewportWidth * WORLD_TO_BOX, 5 * WORLD_TO_BOX);
         fixtureDefPiso.shape = groundEdge;
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
@@ -225,7 +225,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
 
         //definicion borde Derecho
-        groundEdge.set(camera.viewportWidth * WORLD_TO_BOX, -35*WORLD_TO_BOX, (camera.viewportWidth)*WORLD_TO_BOX, camera.viewportHeight*WORLD_TO_BOX);
+        groundEdge.set((camera.viewportWidth+1) * WORLD_TO_BOX, -35*WORLD_TO_BOX, (camera.viewportWidth+1)*WORLD_TO_BOX, camera.viewportHeight*WORLD_TO_BOX);
         fixtureDefDer.shape = groundEdge;
         fixtureDefDer.density = 0;
         ground.createFixture(fixtureDefDer);
@@ -235,8 +235,8 @@ public class GameScreen extends InputAdapter implements Screen {
 
         groundEdge.dispose();
 
-        table.add(buttonPause).size(camera.viewportWidth/6,camera.viewportHeight/8).padTop(-50).padLeft(stage.getCamera().viewportWidth-250).row();
-        table.add(buttonRegresar).size(camera.viewportWidth/6,camera.viewportHeight/8).padBottom(40).padLeft(stage.getCamera().viewportWidth-250);
+        table.add(buttonPause).size(camera.viewportWidth/6,camera.viewportHeight/9).padTop(-600).padLeft(stage.getCamera().viewportWidth-250).row();
+        table.add(buttonRegresar).size(camera.viewportWidth/6,camera.viewportHeight/9).padTop(-550).padBottom(-200).padLeft(stage.getCamera().viewportWidth-250);
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
