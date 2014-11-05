@@ -254,11 +254,6 @@ public class PuasScreen extends InputAdapter implements Screen{
             buttonPause.setText("Atrás");
         }
     }
-
-    public void gotaMuere(){
-        MUERE=true;
-
-    }
 }
 
 
