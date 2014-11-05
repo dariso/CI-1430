@@ -57,7 +57,6 @@ public class PuasScreen extends InputAdapter implements Screen{
     private Body ground;
     private Gota enki;
     private Puas pua;
-    boolean MUERE = false;
     boolean PAUSE = false;
     MyContactListener escuchadorColision;
     SoundControl sonido;
@@ -97,13 +96,6 @@ public class PuasScreen extends InputAdapter implements Screen{
         game.batch.setProjectionMatrix(camera.combined);
         Matrix4 cameraCopy = camera.combined.cpy();
 
-        if(Gdx.input.justTouched()) {
-
-            MUERE=true;
-
-        }
-
-
         //Si no esta en pausa actualiza las posiciones
         if(!PAUSE){
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
@@ -141,8 +133,6 @@ public class PuasScreen extends InputAdapter implements Screen{
         stage.act();
         stage.draw();
     }
-
-
 
     @Override
     public void resize(int width, int height) {
@@ -228,7 +218,7 @@ public class PuasScreen extends InputAdapter implements Screen{
 
     @Override
     public void pause() {
-        pauseGame();
+         pauseGame();
     }
 
     @Override
@@ -243,14 +233,15 @@ public class PuasScreen extends InputAdapter implements Screen{
         gotaImage.dispose();
         puasImg.dispose();
         backgroundImage.dispose();
+        escuchadorColision.setMuerta(false);
     }
 
     public void pauseGame(){
         if(PAUSE){
-            PAUSE=false;
+            PAUSE = false;
             buttonPause.setText("Pausa");
         }else{
-            PAUSE=true;
+            PAUSE = true;
             buttonPause.setText("Atrás");
         }
     }
