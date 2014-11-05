@@ -59,8 +59,8 @@ public class PuasScreen extends InputAdapter implements Screen{
     private Puas pua;
     boolean MUERE = false;
     boolean PAUSE = false;
-    //MyContactListener escuchadorColision;
-
+    MyContactListener escuchadorColision;
+    SoundControl sonido;
     public PuasScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
         this.game = elJuego;
@@ -83,6 +83,8 @@ public class PuasScreen extends InputAdapter implements Screen{
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
+        sonido = new SoundControl();
+        escuchadorColision= MyContactListener.getInstancia(sonido);
 
     }
     private Vector2 vec = new Vector2();
@@ -127,7 +129,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.draw(puasSprite, puasSprite.getX(), puasSprite.getY(), pua.getOrigen().x, pua.getOrigen().y, puasSprite.getWidth(),
                 puasSprite.getHeight(), puasSprite.getScaleX(), puasSprite.getScaleY(), puasSprite.getRotation());
-        if(!MUERE) {
+        if(!escuchadorColision.getMuerta()) {
             this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                     gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
         }else{
@@ -149,6 +151,7 @@ public class PuasScreen extends InputAdapter implements Screen{
     @Override
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
+        world.setContactListener(this.escuchadorColision);
         debugRenderer = new Box2DDebugRenderer();
 
         //Boton de Pausa
@@ -250,6 +253,11 @@ public class PuasScreen extends InputAdapter implements Screen{
             PAUSE=true;
             buttonPause.setText("Atrás");
         }
+    }
+
+    public void gotaMuere(){
+        MUERE=true;
+
     }
 }
 

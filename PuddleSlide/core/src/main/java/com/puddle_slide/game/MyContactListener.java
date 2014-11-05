@@ -21,6 +21,7 @@ public class MyContactListener implements ContactListener {
     Vector2 impulso = new Vector2();    // Contiene los valores del impulso aplicado a la gota cuando choca con el hongo
     Vector2 punto = new Vector2();      // Contiene el punto en el que se le va a aplicar ese impulso a la gota
     SoundControl sonido;
+    boolean muerta;
     public MyContactListener(SoundControl sonido){
         this.sonido=sonido;
 
@@ -78,6 +79,7 @@ public class MyContactListener implements ContactListener {
             }else if(contrario.equals("troncoIzq")||contrario.equals("troncoDer")){
                 sonido.sonidoTronco();
             }else if(contrario=="puas"){
+                muerta=true;
 
             }
         }
@@ -100,5 +102,8 @@ public class MyContactListener implements ContactListener {
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
+    }
+    public boolean getMuerta(){
+        return this.muerta;
     }
 }
