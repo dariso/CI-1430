@@ -123,7 +123,7 @@ public class PuasScreen extends InputAdapter implements Screen{
 
         //Dibuja los sprites
         this.game.batch.begin();
-        this.game.batch.draw(backgroundImage, 0, 0);
+        //this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.draw(puasSprite, puasSprite.getX(), puasSprite.getY(), pua.getOrigen().x, pua.getOrigen().y, puasSprite.getWidth(),
                 puasSprite.getHeight(), puasSprite.getScaleX(), puasSprite.getScaleY(), puasSprite.getRotation());
         if(!escuchadorColision.getMuerta()) {
@@ -206,7 +206,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         groundEdge.dispose();
 
         //Creacion del puas
-        pua = new Puas(world, puasSprite.getX(), puasSprite.getY(), puasSprite.getWidth(), puasSprite.getHeight());
+        pua = new Puas(world, puasSprite.getX(), puasSprite.getY(), puasSprite.getWidth(), puasSprite.getHeight(), false);
 
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());

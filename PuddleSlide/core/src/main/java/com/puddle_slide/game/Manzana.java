@@ -44,7 +44,7 @@ public class Manzana{
         fixtureDef.filter.categoryBits = FigureId.BIT_MANZANA;
 
         //Define los objetos con los que debe colisionar
-        fixtureDef.filter.maskBits = FigureId.BIT_GOTA | FigureId.BIT_BORDE;
+        fixtureDef.filter.maskBits = FigureId.BIT_GOTA | FigureId.BIT_BORDE | FigureId.BIT_PUAS | FigureId.BIT_TRONCO;
         fixtureDef.density = 1000f;
         fixtureDef.friction = 0.42f;
         fixtureDef.restitution = 0.5f;
