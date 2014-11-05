@@ -40,7 +40,7 @@ public class OptionsScreen implements Screen {
         buttonVideo = new TextButton("Video", skin);
         buttonReturn = new TextButton("Regresar",skin);
         title = new Label("Opciones",skin);
-        title.setFontScale(1.6f);
+        title.setFontScale(2.0f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
         stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));

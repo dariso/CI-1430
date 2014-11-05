@@ -18,10 +18,14 @@ public class MyContactListener implements ContactListener {
     Fixture objetoA;
     Fixture objetoB;
     Fixture objetoContrario;
+    Fixture objetoGota;
     Vector2 impulso = new Vector2();    // Contiene los valores del impulso aplicado a la gota cuando choca con el hongo
     Vector2 punto = new Vector2();      // Contiene el punto en el que se le va a aplicar ese impulso a la gota
     SoundControl sonido;
     boolean muerta;
+    float posMuertaX;
+    float posMuertaY;
+
     public MyContactListener(SoundControl sonido){
         this.sonido=sonido;
 
@@ -47,8 +51,10 @@ public class MyContactListener implements ContactListener {
 
             if(objetoB.getUserData() == "gota"){
                 objetoContrario = contact.getFixtureA();
+                objetoGota = contact.getFixtureB();
             }else{
                 objetoContrario = contact.getFixtureB();
+                objetoGota = contact.getFixtureA();
             }
 
             String contrario;
@@ -80,7 +86,9 @@ public class MyContactListener implements ContactListener {
                 sonido.sonidoTronco();
             }else if(contrario=="puas"){
                 muerta=true;
-
+                posMuertaX = objetoGota.getBody().getPosition().x;
+                posMuertaY = objetoGota.getBody().getPosition().y;
+                objetoGota.getBody().setAwake(false);
             }
         }
     }
@@ -109,5 +117,13 @@ public class MyContactListener implements ContactListener {
 
     public void setMuerta(boolean revive){
         this.muerta = revive;
+    }
+
+    public float getMuertaX(){
+        return this.posMuertaX;
+    }
+
+    public float getMuertaY(){
+        return this.posMuertaY;
     }
 }

@@ -40,7 +40,7 @@ public class LevelScreen implements Screen {
         buttonPuas = new TextButton("Puas", skin);
         buttonReturn = new TextButton("Regresar",skin);
         title = new Label("Niveles de prueba",skin);
-        title.setFontScale(1.6f);
+        title.setFontScale(2.0f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
         stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
