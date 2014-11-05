@@ -149,6 +149,15 @@ public class GameScreen extends InputAdapter implements Screen {
         world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
         world.setContactListener(this.escuchadorColision);
+
+        //manejo de multiples input processors
+        //primero se llama al procesador que responde a los objetos del juego
+        //si este retorna falso, el input lo debe manejar el del UI ya que se toco un boton
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(this);
+        Gdx.input.setInputProcessor(multiplexer);
+        
         //Boton de Pausa
 
         buttonPause.addListener(new ClickListener(){
@@ -239,14 +248,6 @@ public class GameScreen extends InputAdapter implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        //manejo de multiples input processors
-        //primero se llama al procesador que responde a los objetos del juego
-        //si este retorna falso, el input lo debe manejar el del UI ya que se toco un boton
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(stage);
-        multiplexer.addProcessor(this);
-        Gdx.input.setInputProcessor(multiplexer);
-
     }
 
     //Para el arrastre de objetos de juego
@@ -265,11 +266,10 @@ public class GameScreen extends InputAdapter implements Screen {
             md.bodyA = ground;
             md.bodyB = fixture.getBody();
             md.collideConnected = true;
-            md.maxForce = 1000*fixture.getBody().getMass();
+            md.maxForce = 1000 * fixture.getBody().getMass();
             md.target.set(tmp.x, tmp.y);
             mouseJoint = (MouseJoint) world.createJoint(md);
             fixture.getBody().setAwake(true);
-            System.out.print("Creado joint");
             return false;
         }
     };
@@ -296,16 +296,12 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        boolean r;
-        if(mouseJoint == null) {
-            System.out.println("No hay joint");
-            r = false;
-        }else {
-            world.destroyJoint(mouseJoint);
-            mouseJoint = null;
-            r = true;
-        }
-        return r;
+        if(mouseJoint == null)
+            return false;
+
+        world.destroyJoint(mouseJoint);
+        mouseJoint = null;
+        return true;
     }
 
     @Override
