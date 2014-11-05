@@ -180,7 +180,7 @@ public class GameScreen extends InputAdapter implements Screen {
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
         //Creacion del tronco que sostiene la hoja
-        troncoTecho = new Tronco(world,(camera.viewportWidth-875)*WORLD_TO_BOX,Gdx.graphics.getHeight()*WORLD_TO_BOX,300,100,0.75f,true);
+        troncoTecho = new Tronco(world,(camera.viewportWidth-875)*WORLD_TO_BOX,(camera.viewportHeight-250)*WORLD_TO_BOX,300,100,0.75f,true);
 
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
