@@ -47,6 +47,7 @@ public class MyContactListener implements ContactListener {
         objetoA = contact.getFixtureA();
         objetoB = contact.getFixtureB();
 
+
         if(objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota" ){
 
             if(objetoB.getUserData() == "gota"){
