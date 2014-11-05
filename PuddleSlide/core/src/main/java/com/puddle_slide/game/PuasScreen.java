@@ -218,7 +218,7 @@ public class PuasScreen extends InputAdapter implements Screen{
 
     @Override
     public void pause() {
-        pauseGame();
+         pauseGame();
     }
 
     @Override
