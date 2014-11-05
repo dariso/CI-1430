@@ -84,7 +84,7 @@ public class GameScreen extends InputAdapter implements Screen {
         gotaSprite = new Sprite(gotaImage);
         hojaSprite = new Sprite(hojaImg);
         gotaSprite.setPosition(50*WORLD_TO_BOX , (Gdx.graphics.getHeight()+100)*WORLD_TO_BOX);
-        hojaSprite.setPosition(0,0);
+        hojaSprite.setPosition(0,Gdx.graphics.getHeight()*WORLD_TO_BOX);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -94,7 +94,7 @@ public class GameScreen extends InputAdapter implements Screen {
         camera = new OrthographicCamera();
         //escuchadorColision = MyContactListener.getInstancia();
 
-       // escuchadorColision = new MyContactListener();
+        // escuchadorColision = new MyContactListener();
         this.escuchadorColision = escuchadorColision;
         this.world=world;
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
@@ -149,6 +149,15 @@ public class GameScreen extends InputAdapter implements Screen {
         world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
         world.setContactListener(this.escuchadorColision);
+
+        //manejo de multiples input processors
+        //primero se llama al procesador que responde a los objetos del juego
+        //si este retorna falso, el input lo debe manejar el del UI ya que se toco un boton
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(this);
+        Gdx.input.setInputProcessor(multiplexer);
+
         //Boton de Pausa
 
         buttonPause.addListener(new ClickListener(){
@@ -171,7 +180,7 @@ public class GameScreen extends InputAdapter implements Screen {
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
         //Creacion del tronco que sostiene la hoja
-        troncoTecho = new Tronco(world,150*WORLD_TO_BOX,Gdx.graphics.getHeight()*WORLD_TO_BOX,300,100,0.75f,true);
+        troncoTecho = new Tronco(world,(camera.viewportWidth-875)*WORLD_TO_BOX,Gdx.graphics.getHeight()*WORLD_TO_BOX,300,100,0.75f,true);
 
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
@@ -202,14 +211,14 @@ public class GameScreen extends InputAdapter implements Screen {
         jointDef.length = 1f;
         jointHojaParedIzq = (DistanceJoint) world.createJoint(jointDef);
 
-       //Definicion del segundo Joint entre la hoja y el tronco
+        //Definicion del segundo Joint entre la hoja y el tronco
         jointDef.localAnchorA.y = 1;
         jointDef.localAnchorA.x = 2;
         jointDef.localAnchorB.x = 2.5f;
         jointDef.localAnchorB.y = 1;
         jointDef.bodyA = troncoTecho.getTroncoBody();
         jointDef.bodyB = hoja.getHojaBody();
-        jointDef.length = 2f;
+        jointDef.length = 1.75f;
 
         jointHojaTecho = (DistanceJoint) world.createJoint(jointDef);
 
@@ -239,14 +248,6 @@ public class GameScreen extends InputAdapter implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        //manejo de multiples input processors
-        //primero se llama al procesador que responde a los objetos del juego
-        //si este retorna falso, el input lo debe manejar el del UI ya que se toco un boton
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(stage);
-        multiplexer.addProcessor(this);
-        Gdx.input.setInputProcessor(multiplexer);
-
     }
 
     //Para el arrastre de objetos de juego
@@ -260,16 +261,16 @@ public class GameScreen extends InputAdapter implements Screen {
             boolean r;
             if(!fixture.testPoint(tmp.x, tmp.y))
                 return true;
-
-            MouseJointDef md = new MouseJointDef();
-            md.bodyA = ground;
-            md.bodyB = fixture.getBody();
-            md.collideConnected = true;
-            md.maxForce = 1000*fixture.getBody().getMass();
-            md.target.set(tmp.x, tmp.y);
-            mouseJoint = (MouseJoint) world.createJoint(md);
-            fixture.getBody().setAwake(true);
-            System.out.print("Creado joint");
+            if(fixture.getBody() == hoja.getHojaBody()) {
+                MouseJointDef md = new MouseJointDef();
+                md.bodyA = ground;
+                md.bodyB = fixture.getBody();
+                md.collideConnected = true;
+                md.maxForce = 1000 * fixture.getBody().getMass();
+                md.target.set(tmp.x, tmp.y);
+                mouseJoint = (MouseJoint) world.createJoint(md);
+                fixture.getBody().setAwake(true);
+            }
             return false;
         }
     };
@@ -296,16 +297,12 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        boolean r;
-        if(mouseJoint == null) {
-            System.out.println("No hay joint");
-            r = false;
-        }else {
-            world.destroyJoint(mouseJoint);
-            mouseJoint = null;
-            r = true;
-        }
-        return r;
+        if(mouseJoint == null)
+            return false;
+
+        world.destroyJoint(mouseJoint);
+        mouseJoint = null;
+        return true;
     }
 
     @Override
