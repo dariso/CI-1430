@@ -83,8 +83,6 @@ public class GameScreen extends InputAdapter implements Screen {
 
         gotaSprite = new Sprite(gotaImage);
         hojaSprite = new Sprite(hojaImg);
-        gotaSprite.setPosition(50*WORLD_TO_BOX , (Gdx.graphics.getHeight()+100)*WORLD_TO_BOX);
-        hojaSprite.setPosition(0,Gdx.graphics.getHeight()*WORLD_TO_BOX);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -172,6 +170,9 @@ public class GameScreen extends InputAdapter implements Screen {
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
             }
         });
+
+        gotaSprite.setPosition((camera.viewportWidth-875)*WORLD_TO_BOX, (camera.viewportHeight-150)*WORLD_TO_BOX);
+        hojaSprite.setPosition(0, (camera.viewportHeight-350)*WORLD_TO_BOX);
 
         //Creacion de la hoja
         hoja = new HojaBasica(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
