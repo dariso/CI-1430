@@ -48,8 +48,10 @@ public class MyContactListener implements ContactListener {
 
             if(objetoB.getUserData() == "gota"){
                 objetoContrario = contact.getFixtureA();
+                objetoGota = contact.getFixtureB();
             }else{
                 objetoContrario = contact.getFixtureB();
+                objetoGota = contact.getFixtureA();
             }
 
             String contrario;

@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
  * SoundControl es el encargado de reproducir todos los sonidos del juego
  */
 public class SoundControl {
+    private volatile static SoundControl uniqueInstance;
    private Sound hojaSound;
    private Sound troncoSound;
    private Sound manzanaSound;
@@ -18,6 +19,17 @@ public class SoundControl {
         troncoSound = Gdx.audio.newSound(Gdx.files.internal("branch.mp3"));
         manzanaSound = Gdx.audio.newSound(Gdx.files.internal("CaeManzana.mp3"));
 
+    }
+    public static SoundControl getInstancia(){
+
+        if(uniqueInstance==null){
+            synchronized (MyContactListener.class){
+                if(uniqueInstance==null){
+                    uniqueInstance = new SoundControl();
+                }
+            }
+        }
+        return uniqueInstance;
     }
 
     public void sonidoHoja(){
