@@ -3,6 +3,7 @@ package com.puddle_slide.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -245,7 +246,14 @@ public class GameScreen extends InputAdapter implements Screen {
         table.add(buttonRegresar).size(camera.viewportWidth / 6, camera.viewportHeight / 9).padTop(-575).padBottom(-200).padLeft(stage.getCamera().viewportWidth - 250);
         table.setFillParent(true);
         stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
+
+        //manejo de multiples input processors
+        //primero se llama al procesador que responde a los objetos del juego
+        //si este retorna falso, el input lo debe manejar el del UI ya que se toco un boton
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(this);
+        multiplexer.addProcessor(stage);
+        Gdx.input.setInputProcessor(multiplexer);
 
     }
 
