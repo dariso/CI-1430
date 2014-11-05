@@ -15,7 +15,6 @@ public class SoundControl {
 
     public SoundControl(){
 
-
         hojaSound = Gdx.audio.newSound(Gdx.files.internal("boinki.mp3"));
         troncoSound = Gdx.audio.newSound(Gdx.files.internal("branch.mp3"));
         manzanaSound = Gdx.audio.newSound(Gdx.files.internal("CaeManzana.mp3"));
