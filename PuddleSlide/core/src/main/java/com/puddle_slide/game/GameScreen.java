@@ -215,7 +215,7 @@ public class GameScreen extends InputAdapter implements Screen {
                 troncoIzqSprite.getHeight()/2, troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(), tronco1.getAngulo()*MathUtils.radiansToDegrees);
         this.game.batch.draw(troncoIzqSprite, tronco2.getX(), tronco2.getY()+10, tronco2.getOrigen().x, tronco2.getOrigen().y, troncoIzqSprite.getWidth()/2,
                 troncoIzqSprite.getHeight()/2, troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(), tronco2.getAngulo()*MathUtils.radiansToDegrees);
-        this.game.batch.draw(troncoIzqSprite, tronco3.getX(), tronco3.getY()-50, tronco3.getOrigen().x, tronco3.getOrigen().y, troncoIzqSprite.getWidth()/2,
+        this.game.batch.draw(troncoIzqSprite, tronco3.getX(), tronco3.getY() - 51, tronco3.getOrigen().x, tronco3.getOrigen().y, troncoIzqSprite.getWidth() / 2,
                 troncoIzqSprite.getHeight()/2, troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(), tronco3.getAngulo()*MathUtils.radiansToDegrees);
 
         this.game.batch.draw(troncoIzqSprite, tronco4.getX(), tronco4.getY()+20, tronco4.getOrigen().x, tronco4.getOrigen().y, (troncoIzqSprite.getWidth()/2) + 50,
