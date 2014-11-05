@@ -274,7 +274,7 @@ public class GameScreen extends InputAdapter implements Screen {
             }
         });
 
-        gotaSprite.setPosition((camera.viewportWidth-875)*WORLD_TO_BOX, (camera.viewportHeight-150)*WORLD_TO_BOX);
+        gotaSprite.setPosition((camera.viewportWidth - 875) * WORLD_TO_BOX, (camera.viewportHeight - 210) * WORLD_TO_BOX);
         hojaSprite.setPosition(0, (camera.viewportHeight-350)*WORLD_TO_BOX);
         troncoTechoSprite.setPosition((camera.viewportWidth-875)*WORLD_TO_BOX, (camera.viewportHeight-250)*WORLD_TO_BOX);
         puas1Sprite.setPosition((camera.viewportWidth-25)*WORLD_TO_BOX, (camera.viewportHeight-225)*WORLD_TO_BOX);
@@ -313,7 +313,7 @@ public class GameScreen extends InputAdapter implements Screen {
         tronco1 = new Tronco(world, (camera.viewportWidth-325)*WORLD_TO_BOX, (camera.viewportHeight-250)*WORLD_TO_BOX, 275, 100, -0.35f, false, false);
         tronco2 = new Tronco(world, (camera.viewportWidth-525)*WORLD_TO_BOX, (camera.viewportHeight-450)*WORLD_TO_BOX, 275, 100, -0.55f, false, false);
         tronco3 = new Tronco(world, (camera.viewportWidth-425)*WORLD_TO_BOX, (camera.viewportHeight-350)*WORLD_TO_BOX, 300, 100, -2.00f, false, false);
-        tronco4 = new Tronco(world, (camera.viewportWidth-1100)*WORLD_TO_BOX, (camera.viewportHeight-450)*WORLD_TO_BOX, 300, 100, -0.55f, false, false);
+        tronco4 = new Tronco(world, (camera.viewportWidth - 1100) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX, 300, 100, -0.65f, false, false);
 
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
@@ -411,8 +411,8 @@ public class GameScreen extends InputAdapter implements Screen {
 
         groundEdge.dispose();
 
-        table.add(buttonPause).size(camera.viewportWidth/6,camera.viewportHeight/9).padTop(-600).padLeft(stage.getCamera().viewportWidth-250).row();
-        table.add(buttonRegresar).size(camera.viewportWidth / 6, camera.viewportHeight / 9).padTop(-575).padBottom(-200).padLeft(stage.getCamera().viewportWidth - 250);
+        table.add(buttonPause).size(camera.viewportWidth / 6, camera.viewportHeight / 12).padTop(-650).padLeft(stage.getCamera().viewportWidth - 250).row();
+        table.add(buttonRegresar).size(camera.viewportWidth / 6, camera.viewportHeight / 12).padTop(-675).padBottom(-200).padLeft(stage.getCamera().viewportWidth - 250);
         table.setFillParent(true);
         stage.addActor(table);
 
