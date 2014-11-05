@@ -47,6 +47,7 @@ public class MyContactListener implements ContactListener {
         objetoA = contact.getFixtureA();
         objetoB = contact.getFixtureB();
 
+
         if(objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota" ){
 
             if(objetoB.getUserData() == "gota"){
@@ -60,7 +61,7 @@ public class MyContactListener implements ContactListener {
             String contrario;
             contrario = (String) objetoContrario.getUserData();
             if(contrario.equals("hoja")){
-                //objetoContrario.getBody().applyAngularImpulse(500,true);
+                objetoGota.getBody().applyAngularImpulse(100,true);
                 sonido.sonidoHoja();
 
             }else if(contrario.equals("hojaBasica")){
