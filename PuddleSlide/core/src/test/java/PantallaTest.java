@@ -17,7 +17,7 @@ public class PantallaTest {
     MainMenuScreen main;
     @Before
     public void antesTest(){
-        main=new MainMenuScreen(new Puddle_Slide());
+        main = new MainMenuScreen(new Puddle_Slide());
     }
 
     @Test
