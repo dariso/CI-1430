@@ -157,7 +157,7 @@ public class GameScreen extends InputAdapter implements Screen {
         multiplexer.addProcessor(stage);
         multiplexer.addProcessor(this);
         Gdx.input.setInputProcessor(multiplexer);
-        
+
         //Boton de Pausa
 
         buttonPause.addListener(new ClickListener(){
@@ -261,15 +261,16 @@ public class GameScreen extends InputAdapter implements Screen {
             boolean r;
             if(!fixture.testPoint(tmp.x, tmp.y))
                 return true;
-
-            MouseJointDef md = new MouseJointDef();
-            md.bodyA = ground;
-            md.bodyB = fixture.getBody();
-            md.collideConnected = true;
-            md.maxForce = 1000 * fixture.getBody().getMass();
-            md.target.set(tmp.x, tmp.y);
-            mouseJoint = (MouseJoint) world.createJoint(md);
-            fixture.getBody().setAwake(true);
+            if(fixture.getBody() == hoja.getHojaBody()) {
+                MouseJointDef md = new MouseJointDef();
+                md.bodyA = ground;
+                md.bodyB = fixture.getBody();
+                md.collideConnected = true;
+                md.maxForce = 1000 * fixture.getBody().getMass();
+                md.target.set(tmp.x, tmp.y);
+                mouseJoint = (MouseJoint) world.createJoint(md);
+                fixture.getBody().setAwake(true);
+            }
             return false;
         }
     };
