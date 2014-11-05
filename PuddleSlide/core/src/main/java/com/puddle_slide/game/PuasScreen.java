@@ -60,12 +60,13 @@ public class PuasScreen extends InputAdapter implements Screen{
     private Gota enki;
     private Puas pua;
     boolean PAUSE = false;
+    float volar= (float) 0.01;
     MyContactListener escuchadorColision;
     SoundControl sonido;
     public PuasScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
         this.game = elJuego;
-        gotaImage = new Texture(Gdx.files.internal("gotty.png"));
+        gotaImage = new Texture(Gdx.files.internal("gotty1.png"));
         puasImg = new Texture (Gdx.files.internal("puasP.png"));
         gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
@@ -131,7 +132,9 @@ public class PuasScreen extends InputAdapter implements Screen{
         }else{
             this.game.batch.draw(gotaMuertaSprite, gotaMuertaSprite.getX(), gotaMuertaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaMuertaSprite.getWidth(),
                     gotaMuertaSprite.getHeight(), gotaMuertaSprite.getScaleX(), gotaMuertaSprite.getScaleY(), gotaMuertaSprite.getRotation());
-            this.game.batch.draw(gotafantasmaSprite, gotaSprite.getX(), gotaSprite.getY());
+            this.game.batch.draw(gotafantasmaSprite, puasSprite.getX() * 2, puasSprite.getHeight() + volar);
+            volar++;
+            //this.game.batch.draw(gotafantasmaSprite, escuchadorColision.getMuertaX(), escuchadorColision.getMuertaY());
         }
         this.game.batch.end();
 
@@ -238,6 +241,8 @@ public class PuasScreen extends InputAdapter implements Screen{
         gotaImage.dispose();
         puasImg.dispose();
         backgroundImage.dispose();
+        gotaMuertaImage.dispose();
+        gotaFantasmaImage.dispose();
         escuchadorColision.setMuerta(false);
     }
 
