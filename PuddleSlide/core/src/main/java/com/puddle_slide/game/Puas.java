@@ -1,6 +1,7 @@
 package com.puddle_slide.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -26,7 +27,7 @@ public class Puas{
      * @param ancho Ancho del sprite de la puas
      * @param alto Alto del sprite de la puas
      * */
-    public Puas(World world, float x, float y, float ancho, float alto) {
+    public Puas(World world, float x, float y, float ancho, float alto, boolean vuelto) {
         BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/puas.json"));
 
         BodyDef puasDef = new BodyDef();
@@ -41,13 +42,17 @@ public class Puas{
         fixtureDef.filter.categoryBits = FigureId.BIT_PUAS;
 
         //Define los objetos con los que debe colisionar
-        fixtureDef.filter.maskBits = FigureId.BIT_GOTA | FigureId.BIT_BORDE;
+        fixtureDef.filter.maskBits = FigureId.BIT_GOTA | FigureId.BIT_BORDE | FigureId.BIT_MANZANA;
         fixtureDef.density = 1000f;
         fixtureDef.friction = 0.42f;
         fixtureDef.restitution = 0.5f;
 
         bodyEditorLoader.attachFixture( puasBody,"puas",  fixtureDef, ancho * WORLD_TO_BOX);
         puntoRef = bodyEditorLoader.getOrigin("puas", ancho * WORLD_TO_BOX);
+
+        if(vuelto){
+            puasBody.setTransform(x,y,180 * MathUtils.radiansToDegrees * WORLD_TO_BOX);
+        }
 
     }
 

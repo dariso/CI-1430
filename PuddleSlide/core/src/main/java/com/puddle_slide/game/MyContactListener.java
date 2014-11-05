@@ -66,25 +66,27 @@ public class MyContactListener implements ContactListener {
             }else if(contrario.equals("hojaBasica")){
             }else if(contrario.equals("hongo")){
 
-                impulso.x = 450;
-                impulso.y = 20;
+                impulso.x = 4 * objetoA.getBody().getMass();
+                impulso.y = 2 * objetoA.getBody().getMass();
 
                 //Para saber a que lado aplicar el impulso a la gota
                 if(objetoA.getBody().getPosition().x > objetoB.getBody().getPosition().x){
-                    punto.x = objetoB.getBody().getPosition().x;
-                    punto.y = objetoB.getBody().getPosition().y;
+                    punto.x = objetoGota.getBody().getPosition().x;
+                    punto.y = objetoGota.getBody().getPosition().y;
                 }else{
-                    punto.x = -objetoB.getBody().getPosition().x;
-                    punto.y = -objetoB.getBody().getPosition().y;
+                    punto.x = -objetoGota.getBody().getPosition().x;
+                    punto.y = -objetoGota.getBody().getPosition().y;
                 }
-                objetoB.getBody().applyLinearImpulse(impulso.x, impulso.y, punto.x, punto.y, true);
+                if(!muerta) {
+                    objetoGota.getBody().applyLinearImpulse(impulso.x, impulso.y, punto.x, punto.y, true);
+                }
                 sonido.sonidoHoja();
 
             }else if(contrario.equals("manzana")){
                 sonido.sonidoManzana();
-            }else if(contrario.equals("troncoIzq")||contrario.equals("troncoDer")){
+            }else if(contrario.equals("troncoIzq") || contrario.equals("troncoDer")){
                 sonido.sonidoTronco();
-            }else if(contrario=="puas"){
+            }else if(contrario.equals("puas")){
                 muerta=true;
                 posMuertaX = objetoGota.getBody().getPosition().x;
                 posMuertaY = objetoGota.getBody().getPosition().y;
