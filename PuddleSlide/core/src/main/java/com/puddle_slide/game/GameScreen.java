@@ -94,6 +94,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private Tronco tronco2;
     private Tronco tronco3;
     private Tronco tronco4;
+    private Tronco tronco5;
 
     private DistanceJoint jointHojaTroncoIzq;
     private DistanceJoint jointHojaTroncoDer;
@@ -105,6 +106,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     boolean PAUSE = false;
     float volar= (float) 0.01;
+
 
     public GameScreen(final com.puddle_slide.game.Puddle_Slide elJuego,MyContactListener escuchadorColision,World world) {
 
@@ -213,10 +215,15 @@ public class GameScreen extends InputAdapter implements Screen {
                 troncoIzqSprite.getHeight()/2, troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(), tronco1.getAngulo()*MathUtils.radiansToDegrees);
         this.game.batch.draw(troncoIzqSprite, tronco2.getX(), tronco2.getY()+10, tronco2.getOrigen().x, tronco2.getOrigen().y, troncoIzqSprite.getWidth()/2,
                 troncoIzqSprite.getHeight()/2, troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(), tronco2.getAngulo()*MathUtils.radiansToDegrees);
-        this.game.batch.draw(troncoIzqSprite, tronco3.getX(), tronco3.getY()-50, tronco3.getOrigen().x, tronco3.getOrigen().y, troncoIzqSprite.getWidth()/2,
+        this.game.batch.draw(troncoIzqSprite, tronco3.getX(), tronco3.getY() - 51, tronco3.getOrigen().x, tronco3.getOrigen().y, troncoIzqSprite.getWidth() / 2,
                 troncoIzqSprite.getHeight()/2, troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(), tronco3.getAngulo()*MathUtils.radiansToDegrees);
+
         this.game.batch.draw(troncoIzqSprite, tronco4.getX(), tronco4.getY()+20, tronco4.getOrigen().x, tronco4.getOrigen().y, (troncoIzqSprite.getWidth()/2) + 50,
                 troncoIzqSprite.getHeight()/2, troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(), tronco4.getAngulo()*MathUtils.radiansToDegrees);
+
+        this.game.batch.draw(troncoIzqSprite, tronco5.getX(), tronco5.getY() - 31, tronco5.getOrigen().x, tronco5.getOrigen().y, (troncoIzqSprite.getWidth() / 2 - 50),
+                troncoIzqSprite.getHeight() / 2, troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(), tronco5.getAngulo() * MathUtils.radiansToDegrees);
+
         this.game.batch.draw(puas1Sprite, puas1Sprite.getX(), puas1Sprite.getY(), puas1.getOrigen().x, puas1.getOrigen().y, 150,
                 150, puas1Sprite.getScaleX(), puas1Sprite.getScaleY(), puas1Sprite.getRotation());
         this.game.batch.draw(puas2Sprite, puas2Sprite.getX(), puas2Sprite.getY(), puas2.getOrigen().x, puas2.getOrigen().y, puas2Sprite.getWidth()-100,
@@ -274,12 +281,12 @@ public class GameScreen extends InputAdapter implements Screen {
             }
         });
 
-        gotaSprite.setPosition((camera.viewportWidth-875)*WORLD_TO_BOX, (camera.viewportHeight-150)*WORLD_TO_BOX);
+        gotaSprite.setPosition((camera.viewportWidth - 875) * WORLD_TO_BOX, (camera.viewportHeight - 210) * WORLD_TO_BOX);
         hojaSprite.setPosition(0, (camera.viewportHeight-350)*WORLD_TO_BOX);
         troncoTechoSprite.setPosition((camera.viewportWidth-875)*WORLD_TO_BOX, (camera.viewportHeight-250)*WORLD_TO_BOX);
         puas1Sprite.setPosition((camera.viewportWidth-25)*WORLD_TO_BOX, (camera.viewportHeight-225)*WORLD_TO_BOX);
         hongoSprite.setPosition((camera.viewportWidth-250)*WORLD_TO_BOX, 0);
-        puas2Sprite.setPosition((camera.viewportWidth-950)*WORLD_TO_BOX, 0);
+        puas2Sprite.setPosition((camera.viewportWidth - 1075) * WORLD_TO_BOX, 0);
         manzanaSprite.setPosition((camera.viewportWidth-850)*WORLD_TO_BOX, (camera.viewportHeight-550)*WORLD_TO_BOX);
 
         //Creacion de la hoja
@@ -313,7 +320,8 @@ public class GameScreen extends InputAdapter implements Screen {
         tronco1 = new Tronco(world, (camera.viewportWidth-325)*WORLD_TO_BOX, (camera.viewportHeight-250)*WORLD_TO_BOX, 275, 100, -0.35f, false, false);
         tronco2 = new Tronco(world, (camera.viewportWidth-525)*WORLD_TO_BOX, (camera.viewportHeight-450)*WORLD_TO_BOX, 275, 100, -0.55f, false, false);
         tronco3 = new Tronco(world, (camera.viewportWidth-425)*WORLD_TO_BOX, (camera.viewportHeight-350)*WORLD_TO_BOX, 300, 100, -2.00f, false, false);
-        tronco4 = new Tronco(world, (camera.viewportWidth-1100)*WORLD_TO_BOX, (camera.viewportHeight-450)*WORLD_TO_BOX, 300, 100, -0.55f, false, false);
+        tronco4 = new Tronco(world, (camera.viewportWidth - 1100) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX, 300, 100, -0.65f, false, false);
+        tronco5 = new Tronco(world, (camera.viewportWidth - 570) * WORLD_TO_BOX, (camera.viewportHeight - 700) * WORLD_TO_BOX, 200, 100, -0.05f, false, false);
 
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
@@ -411,8 +419,8 @@ public class GameScreen extends InputAdapter implements Screen {
 
         groundEdge.dispose();
 
-        table.add(buttonPause).size(camera.viewportWidth/6,camera.viewportHeight/9).padTop(-600).padLeft(stage.getCamera().viewportWidth-250).row();
-        table.add(buttonRegresar).size(camera.viewportWidth / 6, camera.viewportHeight / 9).padTop(-575).padBottom(-200).padLeft(stage.getCamera().viewportWidth - 250);
+        table.add(buttonPause).size(camera.viewportWidth / 6, camera.viewportHeight / 12).padTop(-650).padLeft(stage.getCamera().viewportWidth - 250).row();
+        table.add(buttonRegresar).size(camera.viewportWidth / 6, camera.viewportHeight / 12).padTop(-675).padBottom(-200).padLeft(stage.getCamera().viewportWidth - 250);
         table.setFillParent(true);
         stage.addActor(table);
 
