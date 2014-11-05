@@ -18,6 +18,7 @@ public class MyContactListener implements ContactListener {
     Fixture objetoA;
     Fixture objetoB;
     Fixture objetoContrario;
+    Fixture objetoGota;
     Vector2 impulso = new Vector2();    // Contiene los valores del impulso aplicado a la gota cuando choca con el hongo
     Vector2 punto = new Vector2();      // Contiene el punto en el que se le va a aplicar ese impulso a la gota
     SoundControl sonido;
@@ -80,7 +81,7 @@ public class MyContactListener implements ContactListener {
                 sonido.sonidoTronco();
             }else if(contrario=="puas"){
                 muerta=true;
-
+               
             }
         }
     }

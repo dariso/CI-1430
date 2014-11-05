@@ -41,10 +41,12 @@ public class PuasScreen extends InputAdapter implements Screen{
     private TextButton buttonPause;
     private TextButton buttonRegresar;
     private Sprite gotaSprite;
+    private Sprite gotafantasmaSprite;
     private Sprite puasSprite;
     private Sprite gotaMuertaSprite;
     private Texture gotaImage;
     private Texture gotaMuertaImage;
+    private Texture gotaFantasmaImage;
     private Texture puasImg;
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
@@ -65,11 +67,13 @@ public class PuasScreen extends InputAdapter implements Screen{
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
         puasImg = new Texture (Gdx.files.internal("puasP.png"));
+        gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         gotaSprite = new Sprite(gotaImage);
         gotaMuertaSprite = new Sprite(gotaMuertaImage);
+        gotafantasmaSprite = new Sprite(gotaFantasmaImage);
         puasSprite = new Sprite(puasImg);
         gotaSprite.setPosition((Gdx.graphics.getWidth() / 2) * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
         gotaMuertaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
@@ -127,6 +131,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         }else{
             this.game.batch.draw(gotaMuertaSprite, gotaMuertaSprite.getX(), gotaMuertaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaMuertaSprite.getWidth(),
                     gotaMuertaSprite.getHeight(), gotaMuertaSprite.getScaleX(), gotaMuertaSprite.getScaleY(), gotaMuertaSprite.getRotation());
+            this.game.batch.draw(gotafantasmaSprite, gotaSprite.getX(), gotaSprite.getY());
         }
         this.game.batch.end();
 
