@@ -48,12 +48,15 @@ public class GameScreen extends InputAdapter implements Screen {
     private TextButton buttonPause;
     private TextButton buttonRegresar;
     private Sprite gotaSprite;
+    private Sprite gotaMuertaSprite;
+    private Sprite gotafantasmaSprite;
     private Sprite hojaSprite;
     private Sprite troncoTechoSprite;
     private Sprite troncoIzqSprite;
     private Sprite troncoDinamicoSprite;
     private Sprite hongoSprite;
     private Sprite manzanaSprite;
+    private Sprite lianaSprite;
     private Sprite puas1Sprite;
     private Sprite puas2Sprite;
     private Texture gotaImage;
@@ -63,6 +66,9 @@ public class GameScreen extends InputAdapter implements Screen {
     private Texture hongoImg;
     private Texture manzanaImg;
     private Texture puasImg;
+    private Texture gotaMuertaImage;
+    private Texture gotaFantasmaImage;
+    private Texture lianaImage;
     private Texture backgroundImage;
     MyContactListener escuchadorColision;
     private static final float WORLD_TO_BOX = 0.01f;
@@ -98,14 +104,18 @@ public class GameScreen extends InputAdapter implements Screen {
     private MouseJoint mouseJoint;
 
     boolean PAUSE = false;
+    float volar= (float) 0.01;
 
     public GameScreen(final com.puddle_slide.game.Puddle_Slide elJuego,MyContactListener escuchadorColision,World world) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
+        gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
+        gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
         hojaImg = new Texture (Gdx.files.internal("hoja2.png"));
         troncoDerImg = new Texture(Gdx.files.internal("troncoDer.png"));
         troncoIzqImg = new Texture(Gdx.files.internal("troncoIzq.png"));
+        lianaImage = new Texture(Gdx.files.internal("LianaJoin.png"));
         puasImg = new Texture(Gdx.files.internal("Puas3.png"));
         hongoImg = new Texture(Gdx.files.internal("hongosNaranja2.png"));
         manzanaImg = new Texture(Gdx.files.internal("manzana.png"));
@@ -114,6 +124,8 @@ public class GameScreen extends InputAdapter implements Screen {
         table = new Table();
 
         gotaSprite = new Sprite(gotaImage);
+        gotaMuertaSprite = new Sprite(gotaMuertaImage);
+        gotafantasmaSprite = new Sprite(gotaFantasmaImage);
         hojaSprite = new Sprite(hojaImg);
         troncoTechoSprite = new Sprite(troncoDerImg);
         troncoDinamicoSprite = new Sprite(troncoDerImg);
@@ -122,6 +134,7 @@ public class GameScreen extends InputAdapter implements Screen {
         puas2Sprite = new Sprite(puasImg);
         hongoSprite = new Sprite(hongoImg);
         manzanaSprite = new Sprite(manzanaImg);
+        lianaSprite = new Sprite(lianaImage);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -184,13 +197,13 @@ public class GameScreen extends InputAdapter implements Screen {
         manzanaSprite.setOrigin(manzana.getOrigen().x, manzana.getOrigen().y);
         manzanaSprite.setRotation(manzana.getAngulo() * MathUtils.radiansToDegrees);
 
+        lianaSprite.setPosition(hoja.getHojaBody().getLocalPoint(jointHojaTroncoIzq.getLocalAnchorA()).x,hoja.getHojaBody().getLocalPoint(jointHojaTroncoIzq.getLocalAnchorA()).y);
+
 
         this.game.batch.begin();
-       // this.game.batch.draw(backgroundImage, 0, 0);
+        this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(),hojaSprite.getOriginX(), hojaSprite.getOriginY(), hojaSprite.getWidth(),
                 hojaSprite.getHeight(), hojaSprite.getScaleX(), hojaSprite.getScaleY(), hojaSprite.getRotation());
-        this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
-                gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
         this.game.batch.draw(troncoTechoSprite, troncoTecho.getX(), troncoTecho.getY()+10, troncoTecho.getOrigen().x, troncoTecho.getOrigen().y, troncoTechoSprite.getWidth()/2,
                 troncoTechoSprite.getHeight()/2, troncoTechoSprite.getScaleX(), troncoTechoSprite.getScaleY(), troncoTecho.getAngulo()*MathUtils.radiansToDegrees);
         this.game.batch.draw(troncoTechoSprite, troncoAuxiliar.getX()-75, troncoAuxiliar.getY(), troncoAuxiliar.getOrigen().x, troncoAuxiliar.getOrigen().y, troncoTechoSprite.getWidth()-100,
@@ -213,6 +226,16 @@ public class GameScreen extends InputAdapter implements Screen {
                 250, hongoSprite.getScaleX(), hongoSprite.getScaleY(), hongoSprite.getRotation());
         this.game.batch.draw(manzanaSprite, manzanaSprite.getX(), manzanaSprite.getY(), manzana.getOrigen().x, manzana.getOrigen().y, manzanaSprite.getWidth(),
                 manzanaSprite.getHeight(), manzanaSprite.getScaleX(), manzanaSprite.getScaleY(), manzanaSprite.getRotation());
+        //this.game.batch.draw(lianaSprite, hoja.getHojaBody().getLocalPoint(jointHojaTroncoIzq.getLocalAnchorA()).x, hoja.getHojaBody().getLocalPoint(jointHojaTroncoIzq.getLocalAnchorA()).y);
+        if(!escuchadorColision.getMuerta()) {
+            this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
+                    gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
+        }else {
+            this.game.batch.draw(gotaMuertaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaMuertaSprite.getWidth(),
+                    gotaMuertaSprite.getHeight(), gotaMuertaSprite.getScaleX(), gotaMuertaSprite.getScaleY(), gotaSprite.getRotation());
+            this.game.batch.draw(gotafantasmaSprite, enki.getX()-64, enki.getY() + volar);
+            volar++;
+        }
         this.game.batch.end();
 
         stage.act();
@@ -399,7 +422,6 @@ public class GameScreen extends InputAdapter implements Screen {
     //Para el arrastre de objetos de juego
     private Vector3 tmp = new Vector3();
     private Vector2 tmp2 = new Vector2();
-    int i = 0;
 
     private QueryCallback queryCallback = new QueryCallback() {
 
@@ -458,7 +480,6 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        i++;
         if(mouseJoint == null)
             return false;
 
@@ -488,8 +509,16 @@ public class GameScreen extends InputAdapter implements Screen {
         skin.dispose();
         gotaImage.dispose();
         hojaImg.dispose();
+        troncoDerImg.dispose();
+        troncoIzqImg.dispose();
+        hongoImg.dispose();
+        manzanaImg.dispose();
+        puasImg.dispose();
+        gotaMuertaImage.dispose();
+        gotaFantasmaImage.dispose();
         backgroundImage.dispose();
         world.dispose();
+        escuchadorColision.setMuerta(false);
     }
 
     public void pauseGame(){
