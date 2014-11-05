@@ -50,7 +50,7 @@ public class MainMenuScreen implements Screen {
         new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
         table = new Table();
         world = new World(new Vector2(0, -9.8f), true);
-        sonido = new SoundControl();
+        sonido = SoundControl.getInstancia();
         escuchadorColision= MyContactListener.getInstancia(sonido);
     }
 
