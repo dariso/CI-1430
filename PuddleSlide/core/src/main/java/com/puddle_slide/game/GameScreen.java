@@ -56,8 +56,6 @@ public class GameScreen extends InputAdapter implements Screen {
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
 
-
-
     //Objetos del mundo
     private World world;
     private Box2DDebugRenderer debugRenderer;
@@ -66,8 +64,10 @@ public class GameScreen extends InputAdapter implements Screen {
     private Gota enki;
     private HojaBasica hoja;
     private Tronco troncoTecho;
-    private DistanceJoint jointHojaParedIzq;
-    private DistanceJoint jointHojaTecho;
+    private Tronco troncoAuxiliar;
+    private Tronco troncoDinamico;
+    private DistanceJoint jointHojaTroncoIzq;
+    private DistanceJoint jointHojaTroncoDer;
     private MouseJoint mouseJoint;
 
     boolean PAUSE = false;
@@ -178,7 +178,13 @@ public class GameScreen extends InputAdapter implements Screen {
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
         //Creacion del tronco que sostiene la hoja
-        troncoTecho = new Tronco(world,(camera.viewportWidth-875)*WORLD_TO_BOX,(camera.viewportHeight-250)*WORLD_TO_BOX,300,100,0.75f,true);
+        troncoTecho = new Tronco(world, (camera.viewportWidth-875)*WORLD_TO_BOX, (camera.viewportHeight-250)*WORLD_TO_BOX, 300, 100, 0.75f, true, false);
+
+        //Creacion del tronco que sostendrá al tronco que cuelga
+        troncoAuxiliar = new Tronco(world, (camera.viewportWidth-475)*WORLD_TO_BOX, (camera.viewportHeight-250/*Estaba en 350*/)*WORLD_TO_BOX, 350, 100, 0.65f, true, false);
+
+        //Creacion del tronco que cuelga e interactua con los demas objetos de juego
+        troncoDinamico = new Tronco(world, (camera.viewportWidth-475)*WORLD_TO_BOX, (camera.viewportHeight-450/*Estaba en 550*/)*WORLD_TO_BOX, 350, 100, 0.65f, true, true);
 
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
@@ -207,7 +213,7 @@ public class GameScreen extends InputAdapter implements Screen {
         jointDef.bodyB = hoja.getHojaBody();
         jointDef.collideConnected = true;
         jointDef.length = 1f;
-        jointHojaParedIzq = (DistanceJoint) world.createJoint(jointDef);
+        jointHojaTroncoIzq = (DistanceJoint) world.createJoint(jointDef);
 
         //Definicion del segundo Joint entre la hoja y el tronco
         jointDef.localAnchorA.y = 1;
@@ -218,7 +224,25 @@ public class GameScreen extends InputAdapter implements Screen {
         jointDef.bodyB = hoja.getHojaBody();
         jointDef.length = 1.75f;
 
-        jointHojaTecho = (DistanceJoint) world.createJoint(jointDef);
+        jointHojaTroncoDer = (DistanceJoint) world.createJoint(jointDef);
+
+        //Definicion del primer joint entre el tronco que estara colgando
+        jointDef.localAnchorA.set(troncoAuxiliar.getTroncoBody().getLocalPoint(new Vector2(4.144f, 7.06875f)));
+        jointDef.localAnchorB.set(troncoDinamico.getTroncoBody().getLocalPoint(new Vector2(4.176f, 5.25625f)));
+        jointDef.bodyA = troncoAuxiliar.getTroncoBody();
+        jointDef.bodyB = troncoDinamico.getTroncoBody();
+        jointDef.length = 1.75f;
+
+        jointHojaTroncoIzq = (DistanceJoint) world.createJoint(jointDef);
+
+        //Definicion del segundo joint entre el tronco que estara colgando
+        jointDef.localAnchorA.set(troncoAuxiliar.getTroncoBody().getLocalPoint(new Vector2(7.3279f, 7.0234f)));
+        jointDef.localAnchorB.set(troncoDinamico.getTroncoBody().getLocalPoint(new Vector2(7.3279f, 5.4223f)));
+        jointDef.bodyA = troncoAuxiliar.getTroncoBody();
+        jointDef.bodyB = troncoDinamico.getTroncoBody();
+        jointDef.length = 1.75f;
+
+        jointHojaTroncoDer = (DistanceJoint) world.createJoint(jointDef);
 
         //definicion Piso
         groundEdge.set(-1 * WORLD_TO_BOX, 5 * WORLD_TO_BOX, camera.viewportWidth * WORLD_TO_BOX, 5 * WORLD_TO_BOX);
@@ -226,9 +250,8 @@ public class GameScreen extends InputAdapter implements Screen {
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefPiso.filter.maskBits = FigureId.BIT_HOJABASICA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_HOJABASICA|FigureId.BIT_HOJA|FigureId.BIT_GOTA|FigureId.BIT_TRONCO;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
-
 
         //definicion borde Derecho
         groundEdge.set((camera.viewportWidth+1) * WORLD_TO_BOX, -35*WORLD_TO_BOX, (camera.viewportWidth+1)*WORLD_TO_BOX, camera.viewportHeight*WORLD_TO_BOX);
@@ -259,7 +282,7 @@ public class GameScreen extends InputAdapter implements Screen {
             boolean r;
             if(!fixture.testPoint(tmp.x, tmp.y))
                 return true;
-            if(fixture.getBody() == hoja.getHojaBody()) {
+            if(fixture.getBody() == hoja.getHojaBody() || fixture.getBody() == troncoDinamico.getTroncoBody()) {
                 MouseJointDef md = new MouseJointDef();
                 md.bodyA = ground;
                 md.bodyB = fixture.getBody();
@@ -275,6 +298,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        System.out.println("X = " + tmp.x + " Y = " + tmp.y);
         camera.unproject(tmp.set(screenX, screenY, 0));
         tmp.x *= WORLD_TO_BOX;
         tmp.y *= WORLD_TO_BOX;

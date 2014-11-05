@@ -235,9 +235,9 @@ public class TroncoScreen extends InputAdapter implements Screen {
 
         //Creacion Tronko, ultimo parametro es si es derecho el tronco
         //en caso contrario, izquierdo
-        tronko = new Tronco(world,200*WORLD_TO_BOX,220*WORLD_TO_BOX,300,250,0.26f,true);
-        tronko1 = new Tronco(world,380*WORLD_TO_BOX,130*WORLD_TO_BOX,300,250,-0.26f,false);
-        tronko2 = new Tronco(world,190*WORLD_TO_BOX,30*WORLD_TO_BOX,200,100,0.15f,true);
+        tronko = new Tronco(world,200*WORLD_TO_BOX,220*WORLD_TO_BOX,300,250,0.26f,true,false);
+        tronko1 = new Tronco(world,380*WORLD_TO_BOX,130*WORLD_TO_BOX,300,250,-0.26f,false,false);
+        tronko2 = new Tronco(world,190*WORLD_TO_BOX,30*WORLD_TO_BOX,200,100,0.15f,true,false);
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);

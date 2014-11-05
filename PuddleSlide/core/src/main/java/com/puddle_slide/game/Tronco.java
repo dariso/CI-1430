@@ -20,7 +20,7 @@ public class Tronco{
     private final float WORLD_TO_BOX = 0.01f;
     private final float BOX_TO_WORLD = 100f;
 
-    public Tronco(World world, float x, float y,float anch,float larg,float angulo,boolean esDer){
+    public Tronco(World world, float x, float y,float anch,float larg,float angulo,boolean esDer, boolean esDinamico){
         BodyEditorLoader bodyEditorLoader;
         ancho = anch;
         largo = larg;
@@ -33,18 +33,28 @@ public class Tronco{
             bodyEditorLoader =
                     new BodyEditorLoader(Gdx.files.internal("Shapes/troncoIzq.json"));
         }
-        BodyDef troncoDef = new BodyDef();
-        troncoDef.type = BodyDef.BodyType.StaticBody;
-        troncoDef.position.set(x,y);
-        troncoBody = world.createBody(troncoDef);
+        if(esDinamico) {
+            BodyDef troncoDef = new BodyDef();
+            troncoDef.type = BodyDef.BodyType.DynamicBody;
+            troncoDef.position.set(x, y);
+            troncoBody = world.createBody(troncoDef);
+        }else{
+            BodyDef troncoDef = new BodyDef();
+            troncoDef.type = BodyDef.BodyType.StaticBody;
+            troncoDef.position.set(x, y);
+            troncoBody = world.createBody(troncoDef);
+        }
 
         FixtureDef fixtureDef = new FixtureDef();
 
          //Define la cetegoria de objeto a la que pertenece
         fixtureDef.filter.categoryBits = FigureId.BIT_TRONCO;
         //Define los objetos con los que debe colisionar
-        fixtureDef.filter.maskBits = FigureId.BIT_GOTA;
+        fixtureDef.filter.maskBits = FigureId.BIT_GOTA|FigureId.BIT_TRONCO|FigureId.BIT_MANZANA|FigureId.BIT_BORDE|FigureId.BIT_TRONCO;
         fixtureDef.friction = 0f;
+        fixtureDef.density = 1500f;
+        fixtureDef.restitution = 0.1f;
+
         if(esDer){
             bodyEditorLoader.attachFixture(troncoBody,"troncoDer",fixtureDef,ancho * WORLD_TO_BOX);
             puntoRef = bodyEditorLoader.getOrigin("troncoDer", ancho * WORLD_TO_BOX);
