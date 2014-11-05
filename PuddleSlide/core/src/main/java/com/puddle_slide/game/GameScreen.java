@@ -19,10 +19,14 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
+import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
+import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -64,6 +68,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private Tronco troncoTecho;
     private DistanceJoint jointHojaParedIzq;
     private DistanceJoint jointHojaTecho;
+    private MouseJoint mouseJoint;
 
     boolean PAUSE = false;
 
@@ -120,19 +125,6 @@ public class GameScreen extends InputAdapter implements Screen {
     public void repintar(){
         gotaSprite.setPosition(enki.getX(), enki.getY());
         gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
-        //Movimiento horizontal de la hoja
-        if(Gdx.input.isTouched()) {
-            Vector3 touchPos = new Vector3();
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos);
-            if(Gdx.input.getX() > hoja.getX()){
-                vec.x = vel * hoja.getMasa();
-            }else{
-                vec.x = -vel * hoja.getMasa();
-            }
-        }else{
-            vec.x = 0;
-        }
 
         hojaSprite.setPosition(hoja.getX(), hoja.getY());
         hojaSprite.setOrigin(hoja.getOrigen().x, hoja.getOrigen().y);
@@ -179,7 +171,7 @@ public class GameScreen extends InputAdapter implements Screen {
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
         //Creacion del tronco que sostiene la hoja
-        troncoTecho = new Tronco(world,100*WORLD_TO_BOX,Gdx.graphics.getHeight()*WORLD_TO_BOX,300,100,0.5f,true);
+        troncoTecho = new Tronco(world,150*WORLD_TO_BOX,Gdx.graphics.getHeight()*WORLD_TO_BOX,300,100,0.75f,true);
 
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
@@ -202,7 +194,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
         //Definicion de primer Joint entre el tronco y la hoja
         DistanceJointDef jointDef = new DistanceJointDef();
-        jointDef.localAnchorA.set(new Vector2(0, 2.5f));
+        jointDef.localAnchorA.set(new Vector2(0.25f, 2f));
         jointDef.localAnchorB.set(new Vector2(0f, 1.3f));
         jointDef.bodyA = troncoTecho.getTroncoBody();
         jointDef.bodyB = hoja.getHojaBody();
@@ -217,7 +209,7 @@ public class GameScreen extends InputAdapter implements Screen {
         jointDef.localAnchorB.y = 1;
         jointDef.bodyA = troncoTecho.getTroncoBody();
         jointDef.bodyB = hoja.getHojaBody();
-        jointDef.length = 1f;
+        jointDef.length = 2f;
 
         jointHojaTecho = (DistanceJoint) world.createJoint(jointDef);
 
@@ -251,10 +243,69 @@ public class GameScreen extends InputAdapter implements Screen {
         //primero se llama al procesador que responde a los objetos del juego
         //si este retorna falso, el input lo debe manejar el del UI ya que se toco un boton
         InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(this);
         multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(this);
         Gdx.input.setInputProcessor(multiplexer);
 
+    }
+
+    //Para el arrastre de objetos de juego
+    private Vector3 tmp = new Vector3();
+    private Vector2 tmp2 = new Vector2();
+
+    private QueryCallback queryCallback = new QueryCallback() {
+
+        @Override
+        public boolean reportFixture(Fixture fixture) {
+            boolean r;
+            if(!fixture.testPoint(tmp.x, tmp.y))
+                return true;
+
+            MouseJointDef md = new MouseJointDef();
+            md.bodyA = ground;
+            md.bodyB = fixture.getBody();
+            md.collideConnected = true;
+            md.maxForce = 1000*fixture.getBody().getMass();
+            md.target.set(tmp.x, tmp.y);
+            mouseJoint = (MouseJoint) world.createJoint(md);
+            fixture.getBody().setAwake(true);
+            System.out.print("Creado joint");
+            return false;
+        }
+    };
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        camera.unproject(tmp.set(screenX, screenY, 0));
+        tmp.x *= WORLD_TO_BOX;
+        tmp.y *= WORLD_TO_BOX;
+        world.QueryAABB(queryCallback, tmp.x, tmp.y, tmp.x, tmp.y);
+        return true;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if(mouseJoint == null)
+            return false;
+        camera.unproject(tmp.set(screenX, screenY, 0));
+        tmp.x *= WORLD_TO_BOX;
+        tmp.y *= WORLD_TO_BOX;
+        mouseJoint.setTarget(tmp2.set(tmp.x, tmp.y));
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        boolean r;
+        if(mouseJoint == null) {
+            System.out.println("No hay joint");
+            r = false;
+        }else {
+            world.destroyJoint(mouseJoint);
+            mouseJoint = null;
+            r = true;
+        }
+        return r;
     }
 
     @Override
