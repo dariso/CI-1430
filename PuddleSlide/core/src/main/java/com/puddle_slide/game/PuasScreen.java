@@ -238,10 +238,10 @@ public class PuasScreen extends InputAdapter implements Screen{
 
     public void pauseGame(){
         if(PAUSE){
-            PAUSE=false;
+            PAUSE = false;
             buttonPause.setText("Pausa");
         }else{
-            PAUSE=true;
+            PAUSE = true;
             buttonPause.setText("Atrás");
         }
     }

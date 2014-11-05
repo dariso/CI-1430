@@ -108,6 +108,6 @@ public class MyContactListener implements ContactListener {
     }
 
     public void setMuerta(boolean revive){
-        this.muerta=revive;
+        this.muerta = revive;
     }
 }
