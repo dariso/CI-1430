@@ -44,11 +44,13 @@ public class PuasScreen extends InputAdapter implements Screen{
     private Sprite gotafantasmaSprite;
     private Sprite puasSprite;
     private Sprite gotaMuertaSprite;
+    private Sprite troncoSprite;
     private Texture gotaImage;
     private Texture gotaMuertaImage;
     private Texture gotaFantasmaImage;
     private Texture puasImg;
     private Texture backgroundImage;
+    private Texture troncoImg;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
 
@@ -59,6 +61,7 @@ public class PuasScreen extends InputAdapter implements Screen{
     private Body ground;
     private Gota enki;
     private Puas pua;
+    private Tronco tronco;
     boolean PAUSE = false;
     float volar= (float) 0.01;
     MyContactListener escuchadorColision;
@@ -71,14 +74,17 @@ public class PuasScreen extends InputAdapter implements Screen{
         gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
+        troncoImg = new Texture(Gdx.files.internal("troncoDer.png"));
 
         gotaSprite = new Sprite(gotaImage);
         gotaMuertaSprite = new Sprite(gotaMuertaImage);
         gotafantasmaSprite = new Sprite(gotaFantasmaImage);
+        troncoSprite = new Sprite(troncoImg);
         puasSprite = new Sprite(puasImg);
         gotaSprite.setPosition((Gdx.graphics.getWidth() / 2) * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
         gotaMuertaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
         puasSprite.setPosition(1,0);
+        troncoSprite.setPosition((Gdx.graphics.getWidth() / 2) * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -88,7 +94,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         sonido = new SoundControl();
-        escuchadorColision= MyContactListener.getInstancia(sonido);
+        escuchadorColision = MyContactListener.getInstancia(sonido);
 
     }
     private Vector2 vec = new Vector2();
@@ -117,9 +123,11 @@ public class PuasScreen extends InputAdapter implements Screen{
         gotaMuertaSprite.setPosition(enki.getX(), enki.getY());
         gotaMuertaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
 
-        //Movimiento horizontal de la hoja
         puasSprite.setPosition(pua.getX(), pua.getY());
         puasSprite.setRotation(pua.getAngulo() * MathUtils.radiansToDegrees);
+
+        troncoSprite.setPosition(tronco.getX(), tronco.getY());
+        troncoSprite.setRotation(tronco.getAngulo()*MathUtils.radiansToDegrees);
 
         //Dibuja los sprites
         this.game.batch.begin();
@@ -136,6 +144,7 @@ public class PuasScreen extends InputAdapter implements Screen{
             volar++;
             //this.game.batch.draw(gotafantasmaSprite, escuchadorColision.getMuertaX(), escuchadorColision.getMuertaY());
         }
+        this.game.batch.draw(troncoSprite, troncoSprite.getX(), troncoSprite.getY(), tronco.getOrigen().x, tronco.getOrigen().y, troncoSprite.getWidth()/2, troncoSprite.getHeight()/2, troncoSprite.getScaleX(), troncoSprite.getScaleY(), troncoSprite.getRotation());
         this.game.batch.end();
 
         stage.act();
@@ -191,7 +200,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA|FigureId.BIT_TRONCO;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
 
         //definicion borde Derecho
@@ -210,6 +219,8 @@ public class PuasScreen extends InputAdapter implements Screen{
 
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
+
+        tronco = new Tronco(world, troncoSprite.getX(), troncoSprite.getY(), troncoSprite.getWidth()/2, troncoSprite.getHeight()/2, 0, true, true);
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
