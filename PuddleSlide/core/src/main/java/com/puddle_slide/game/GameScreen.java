@@ -105,7 +105,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private MouseJoint mouseJoint;
 
     boolean PAUSE = false;
-    float volar= (float) 0.01;
+    float volar = (float) 0.01;
 
 
     public GameScreen(final com.puddle_slide.game.Puddle_Slide elJuego,MyContactListener escuchadorColision,World world) {
@@ -164,7 +164,8 @@ public class GameScreen extends InputAdapter implements Screen {
         if(!PAUSE){
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1/45f, 6, 2);
-            hoja.mover(vec);
+            moveCamera(enki.getX(), enki.getY());
+            camera.update();
             // En vec se va a actualizar la posicion del cuerpo de la hoja
         }
         this.repintar();
@@ -425,6 +426,11 @@ public class GameScreen extends InputAdapter implements Screen {
         stage.addActor(table);
 
     }
+
+    public void moveCamera(float x, float y) {
+        camera.position.set(camera.viewportWidth / 2, y, 0);
+    }
+
 
     //Para el arrastre de objetos de juego
     private Vector3 tmp = new Vector3();
