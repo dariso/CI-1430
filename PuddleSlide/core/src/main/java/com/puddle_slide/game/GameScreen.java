@@ -111,7 +111,7 @@ public class GameScreen extends InputAdapter implements Screen {
     public GameScreen(final com.puddle_slide.game.Puddle_Slide elJuego,MyContactListener escuchadorColision,World world) {
 
         this.game = elJuego;
-        gotaImage = new Texture(Gdx.files.internal("gotty.png"));
+        gotaImage = new Texture(Gdx.files.internal("gotty1.png"));
         gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
         hojaImg = new Texture (Gdx.files.internal("hoja2.png"));
