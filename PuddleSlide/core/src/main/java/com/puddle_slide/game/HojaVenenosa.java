@@ -69,5 +69,4 @@ public class HojaVenenosa {
         return this.hojaVenenosaBody.getMass();
     }
 
-
 }
