@@ -17,5 +17,6 @@ public class FigureId {
     public static final short BIT_HONGO = 64;
     public static final short BIT_HOJABASICA = 128;
     public static final short BIT_PUAS = 256;
+    public static final short BIT_HOJAVENENOSA = 512;
 
 }
