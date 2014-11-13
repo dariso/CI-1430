@@ -119,7 +119,7 @@ public class PuasScreen extends InputAdapter implements Screen{
     }
 
     private void moveCamera(float x, float y) {
-        camera.position.set(camera.viewportWidth / 2, y, 0);
+        camera.position.set(camera.viewportWidth / 2, y / 3 + 100, 0);
     }
 
     public void repintar(){
@@ -163,7 +163,7 @@ public class PuasScreen extends InputAdapter implements Screen{
 
     @Override
     public void show() {
-        world = new World(new Vector2(0, -6.8f), true);
+        world = new World(new Vector2(0, -9.8f), true);
         world.setContactListener(this.escuchadorColision);
         debugRenderer = new Box2DDebugRenderer();
 
