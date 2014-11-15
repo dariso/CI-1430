@@ -88,7 +88,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         sonido = new SoundControl();
-        escuchadorColision= MyContactListener.getInstancia(sonido);
+        escuchadorColision = MyContactListener.getInstancia(sonido);
 
     }
     private Vector2 vec = new Vector2();
@@ -105,9 +105,15 @@ public class PuasScreen extends InputAdapter implements Screen{
         if(!PAUSE){
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1/45f, 6, 2);
+            moveCamera(enki.getX(), enki.getY());
+            camera.update();
         }
         this.repintar();
 
+    }
+
+    private void moveCamera(float x, float y) {
+        camera.position.set(camera.viewportWidth / 2, y / 3 + 100, 0);
     }
 
     public void repintar(){
@@ -117,7 +123,6 @@ public class PuasScreen extends InputAdapter implements Screen{
         gotaMuertaSprite.setPosition(enki.getX(), enki.getY());
         gotaMuertaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
 
-        //Movimiento horizontal de la hoja
         puasSprite.setPosition(pua.getX(), pua.getY());
         puasSprite.setRotation(pua.getAngulo() * MathUtils.radiansToDegrees);
 
@@ -130,11 +135,10 @@ public class PuasScreen extends InputAdapter implements Screen{
             this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                     gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
         }else{
-            this.game.batch.draw(gotaMuertaSprite, gotaMuertaSprite.getX(), gotaMuertaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaMuertaSprite.getWidth(),
-                    gotaMuertaSprite.getHeight(), gotaMuertaSprite.getScaleX(), gotaMuertaSprite.getScaleY(), gotaMuertaSprite.getRotation());
-            this.game.batch.draw(gotafantasmaSprite, puasSprite.getX() * 2, puasSprite.getHeight() + volar);
+            this.game.batch.draw(gotaMuertaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaMuertaSprite.getWidth(),
+                    gotaMuertaSprite.getHeight(), gotaMuertaSprite.getScaleX(), gotaMuertaSprite.getScaleY(), gotaSprite.getRotation());
+            this.game.batch.draw(gotafantasmaSprite, enki.getX()-64, enki.getY() + volar);
             volar++;
-            //this.game.batch.draw(gotafantasmaSprite, escuchadorColision.getMuertaX(), escuchadorColision.getMuertaY());
         }
         this.game.batch.end();
 
