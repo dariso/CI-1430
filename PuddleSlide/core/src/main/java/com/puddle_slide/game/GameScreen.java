@@ -200,7 +200,7 @@ public class GameScreen extends InputAdapter implements Screen {
         manzanaSprite.setRotation(manzana.getAngulo() * MathUtils.radiansToDegrees);
 
         lianaSprite.setPosition(hoja.getHojaBody().getLocalPoint(jointHojaTroncoIzq.getLocalAnchorA()).x,hoja.getHojaBody().getLocalPoint(jointHojaTroncoIzq.getLocalAnchorA()).y);
-        
+
         this.game.batch.begin();
         this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(),hojaSprite.getOriginX(), hojaSprite.getOriginY(), hojaSprite.getWidth(),
