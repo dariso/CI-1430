@@ -39,6 +39,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class GameScreen extends InputAdapter implements Screen {
 
     final Puddle_Slide game;
+    private float viejoDelta = 0;
     private OrthographicCamera camera;
     private FileHandle filehandle;
     private TextureAtlas textura;
@@ -154,6 +155,10 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public void render(float delta) {
+        /**
+         * delta - viejoDelta >= 300
+         *  mover camara 
+         * */
         camera.update();
         Gdx.gl.glClearColor(0,0,1f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
