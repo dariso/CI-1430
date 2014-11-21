@@ -87,7 +87,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-        sonido = new SoundControl();
+        sonido = SoundControl.getInstancia();
         escuchadorColision = MyContactListener.getInstancia(sonido);
 
     }
