@@ -27,14 +27,14 @@ public class MyContactListener implements ContactListener {
     float posMuertaY;
 
     public MyContactListener(SoundControl sonido){
-        this.sonido=sonido;
+        this.sonido = sonido;
 
     }
     public static MyContactListener getInstancia(SoundControl sonido){
 
-        if(uniqueInstance==null){
+        if(uniqueInstance == null){
             synchronized (MyContactListener.class){
-                if(uniqueInstance==null){
+                if(uniqueInstance == null){
                     uniqueInstance = new MyContactListener(sonido);
                 }
             }
@@ -88,7 +88,7 @@ public class MyContactListener implements ContactListener {
             }else if(contrario.equals("troncoIzq") || contrario.equals("troncoDer")){
                 sonido.sonidoGota();
             }else if(contrario.equals("puas")){
-                muerta = true;
+                muerta =        muerta = true;
                 posMuertaX = objetoGota.getBody().getPosition().x;
                 posMuertaY = objetoGota.getBody().getPosition().y;
                 objetoGota.getBody().setAwake(false);

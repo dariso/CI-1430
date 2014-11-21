@@ -10,15 +10,11 @@ import com.badlogic.gdx.audio.Sound;
 public class SoundControl {
     private volatile static SoundControl uniqueInstance;
     private Sound gotaSound;
-    private Sound troncoSound;
-    private Sound manzanaSound;
     private Sound hongoSound;
 
     private SoundControl(){
 
         gotaSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
-        troncoSound = Gdx.audio.newSound(Gdx.files.internal("branch.mp3"));
-        manzanaSound = Gdx.audio.newSound(Gdx.files.internal("CaeManzana.mp3"));
         hongoSound = Gdx.audio.newSound(Gdx.files.internal("boinki.mp3"));
 
     }
@@ -37,10 +33,8 @@ public class SoundControl {
     public void sonidoGota(){
         gotaSound.play();
     }
-    public void sonidoTronco(){ troncoSound.play();}
     public void sonidoHongo(){
         hongoSound.play();
     }
-    public void sonidoManzana(){ manzanaSound.play();}
 
 }

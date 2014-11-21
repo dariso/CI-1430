@@ -203,7 +203,7 @@ public class GameScreen extends InputAdapter implements Screen {
         lianaSprite.setPosition(hoja.getHojaBody().getLocalPoint(jointHojaTroncoIzq.getLocalAnchorA()).x,hoja.getHojaBody().getLocalPoint(jointHojaTroncoIzq.getLocalAnchorA()).y);
         
         this.game.batch.begin();
-        this.game.batch.draw(backgroundImage, 0, 0);
+        //this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(),hojaSprite.getOriginX(), hojaSprite.getOriginY(), hojaSprite.getWidth(),
                 hojaSprite.getHeight(), hojaSprite.getScaleX(), hojaSprite.getScaleY(), hojaSprite.getRotation());
         this.game.batch.draw(troncoTechoSprite, troncoTecho.getX(), troncoTecho.getY()+10, troncoTecho.getOrigen().x, troncoTecho.getOrigen().y, troncoTechoSprite.getWidth()/2,
@@ -309,20 +309,20 @@ public class GameScreen extends InputAdapter implements Screen {
         puas2 = new Puas(world, puas2Sprite.getX(), puas2Sprite.getY(), puas2Sprite.getWidth()-100, puas2Sprite.getHeight()-100, false);
 
         //Creacion del tronco que sostiene la hoja
-        troncoTecho = new Tronco(world, troncoTechoSprite.getX(), troncoTechoSprite.getY(), 300, 100, 0.75f, true, false);
+        troncoTecho = new Tronco(world, troncoTechoSprite.getX(), troncoTechoSprite.getY(), troncoIzqSprite.getWidth(), troncoIzqSprite.getHeight(), 0.75f, true, false);
 
         //Creacion del tronco que sostendrá al tronco que cuelga
-        troncoAuxiliar = new Tronco(world, (camera.viewportWidth-475)*WORLD_TO_BOX, (camera.viewportHeight-250)*WORLD_TO_BOX, 350, 100, 0.65f, true, false);
+        troncoAuxiliar = new Tronco(world, (camera.viewportWidth-475)*WORLD_TO_BOX, (camera.viewportHeight-250)*WORLD_TO_BOX, troncoIzqSprite.getWidth(), troncoIzqSprite.getHeight(), 0.65f, true, false);
 
         //Creacion del tronco que cuelga e interactua con los demas objetos de juego
-        troncoDinamico = new Tronco(world, (camera.viewportWidth-475)*WORLD_TO_BOX, (camera.viewportHeight-450)*WORLD_TO_BOX, 350, 100, 0.65f, true, true);
+        troncoDinamico = new Tronco(world, (camera.viewportWidth-475)*WORLD_TO_BOX, (camera.viewportHeight-450)*WORLD_TO_BOX, troncoIzqSprite.getWidth(), troncoIzqSprite.getHeight(), 0.65f, true, true);
 
         //Creacion de los troncos que formaran una estructura
-        tronco1 = new Tronco(world, (camera.viewportWidth-325)*WORLD_TO_BOX, (camera.viewportHeight-250)*WORLD_TO_BOX, 275, 100, -0.35f, false, false);
-        tronco2 = new Tronco(world, (camera.viewportWidth-525)*WORLD_TO_BOX, (camera.viewportHeight-450)*WORLD_TO_BOX, 275, 100, -0.55f, false, false);
-        tronco3 = new Tronco(world, (camera.viewportWidth-425)*WORLD_TO_BOX, (camera.viewportHeight-350)*WORLD_TO_BOX, 300, 100, -2.00f, false, false);
-        tronco4 = new Tronco(world, (camera.viewportWidth - 1100) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX, 300, 100, -0.65f, false, false);
-        tronco5 = new Tronco(world, (camera.viewportWidth - 570) * WORLD_TO_BOX, (camera.viewportHeight - 700) * WORLD_TO_BOX, 200, 100, -0.05f, false, false);
+        tronco1 = new Tronco(world, (camera.viewportWidth-325)*WORLD_TO_BOX, (camera.viewportHeight-250)*WORLD_TO_BOX, troncoIzqSprite.getWidth(), troncoIzqSprite.getHeight(), -0.35f, false, false);
+        tronco2 = new Tronco(world, (camera.viewportWidth-525)*WORLD_TO_BOX, (camera.viewportHeight-450)*WORLD_TO_BOX, troncoIzqSprite.getWidth(), troncoIzqSprite.getHeight(), -0.55f, false, false);
+        tronco3 = new Tronco(world, (camera.viewportWidth-425)*WORLD_TO_BOX, (camera.viewportHeight-350)*WORLD_TO_BOX, troncoIzqSprite.getWidth(), troncoIzqSprite.getHeight(), -2.00f, false, false);
+        tronco4 = new Tronco(world, (camera.viewportWidth - 1100) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX, troncoIzqSprite.getWidth(), troncoIzqSprite.getHeight(), -0.65f, false, false);
+        tronco5 = new Tronco(world, (camera.viewportWidth - 570) * WORLD_TO_BOX, (camera.viewportHeight - 700) * WORLD_TO_BOX, troncoIzqSprite.getWidth(), troncoIzqSprite.getHeight(), -0.05f, false, false);
 
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
