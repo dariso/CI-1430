@@ -88,7 +88,7 @@ public class MyContactListener implements ContactListener {
             }else if(contrario.equals("troncoIzq") || contrario.equals("troncoDer")){
                 sonido.sonidoGota();
             }else if(contrario.equals("puas")){
-                muerta =        muerta = true;
+                muerta = true;
                 posMuertaX = objetoGota.getBody().getPosition().x;
                 posMuertaY = objetoGota.getBody().getPosition().y;
                 objetoGota.getBody().setAwake(false);
