@@ -26,7 +26,7 @@ public class Rama {
         largo = larg;
         tipo = t;
 
-        bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/rama.json"));
+        bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/ramas.json"));
 
         BodyDef ramaDef = new BodyDef();
         ramaDef.type = BodyDef.BodyType.StaticBody;
