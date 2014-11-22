@@ -136,10 +136,10 @@ public class RamasScreen extends InputAdapter implements Screen {
         ramaSprite.setPosition(rama.getX(), rama.getY());
 
         this.game.batch.begin();
-       // this.game.batch.draw(backgroundImage, 0, 0);
+        this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getOriginX(), hojaSprite.getOriginY(), hojaSprite.getWidth(),
                 hojaSprite.getHeight(), hojaSprite.getScaleX(), hojaSprite.getScaleY(), hojaSprite.getRotation());
-       // this.game.batch.draw(ramaSprite, ramaSprite.getX(), ramaSprite.getY());
+        this.game.batch.draw(ramaSprite, ramaSprite.getX(), ramaSprite.getY());
 
         this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                 gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
