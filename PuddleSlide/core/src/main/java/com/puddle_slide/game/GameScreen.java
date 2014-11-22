@@ -39,7 +39,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class GameScreen extends InputAdapter implements Screen {
 
     final Puddle_Slide game;
-    private float viejoDelta = 0;
+    private float deltaAcumulado = 0;
     private OrthographicCamera camera;
     private FileHandle filehandle;
     private TextureAtlas textura;
@@ -169,7 +169,7 @@ public class GameScreen extends InputAdapter implements Screen {
         if(!PAUSE){
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1/45f, 6, 2);
-            moveCamera(enki.getX(), enki.getY());
+            moveCamera(enki.getY() / 12 + 200);
             camera.update();
             // En vec se va a actualizar la posicion del cuerpo de la hoja
         }
@@ -287,7 +287,7 @@ public class GameScreen extends InputAdapter implements Screen {
             }
         });
 
-        gotaSprite.setPosition((camera.viewportWidth - 875) * WORLD_TO_BOX, (camera.viewportHeight - 210) * WORLD_TO_BOX);
+        gotaSprite.setPosition((camera.viewportWidth - 475) * WORLD_TO_BOX, (camera.viewportHeight - 210) * WORLD_TO_BOX);
         hojaSprite.setPosition(0, (camera.viewportHeight-350)*WORLD_TO_BOX);
         troncoTechoSprite.setPosition((camera.viewportWidth-875)*WORLD_TO_BOX, (camera.viewportHeight-250)*WORLD_TO_BOX);
         puas1Sprite.setPosition((camera.viewportWidth-25)*WORLD_TO_BOX, (camera.viewportHeight-225)*WORLD_TO_BOX);
@@ -432,8 +432,8 @@ public class GameScreen extends InputAdapter implements Screen {
 
     }
 
-    public void moveCamera(float x, float y) {
-        camera.position.set(camera.viewportWidth / 2, y / 3 + 250, 0);
+    public void moveCamera(float y) {
+        camera.position.set(camera.viewportWidth / 2, y, 0);
     }
 
 

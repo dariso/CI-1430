@@ -105,15 +105,15 @@ public class PuasScreen extends InputAdapter implements Screen{
         if(!PAUSE){
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1/45f, 6, 2);
-            moveCamera(enki.getX(), enki.getY());
+            moveCamera(enki.getY() / 8 + 200);
             camera.update();
         }
         this.repintar();
 
     }
 
-    private void moveCamera(float x, float y) {
-        camera.position.set(camera.viewportWidth / 2, y / 3 + 100, 0);
+    private void moveCamera(float y) {
+        camera.position.set(camera.viewportWidth / 2, y, 0);
     }
 
     public void repintar(){
