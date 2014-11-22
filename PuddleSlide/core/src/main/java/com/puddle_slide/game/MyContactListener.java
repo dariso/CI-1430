@@ -27,14 +27,14 @@ public class MyContactListener implements ContactListener {
     float posMuertaY;
 
     public MyContactListener(SoundControl sonido){
-        this.sonido=sonido;
+        this.sonido = sonido;
 
     }
     public static MyContactListener getInstancia(SoundControl sonido){
 
-        if(uniqueInstance==null){
+        if(uniqueInstance == null){
             synchronized (MyContactListener.class){
-                if(uniqueInstance==null){
+                if(uniqueInstance == null){
                     uniqueInstance = new MyContactListener(sonido);
                 }
             }

@@ -35,8 +35,8 @@ public class LevelScreen implements Screen {
 
         game = elJuego;
         filehandle= Gdx.files.internal("skins/menuSkin.json");
-        textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
-        skin= new Skin(filehandle,textura);
+        textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
+        skin = new Skin(filehandle,textura);
         buttonPuas = new TextButton("Puas", skin);
         buttonReturn = new TextButton("Regresar",skin);
         title = new Label("Niveles de prueba",skin);
