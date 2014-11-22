@@ -60,7 +60,7 @@ public class PuasScreen extends InputAdapter implements Screen{
     private Gota enki;
     private Puas pua;
     boolean PAUSE = false;
-    float volar= (float) 0.01;
+    float volar = (float) 0.01;
     MyContactListener escuchadorColision;
     SoundControl sonido;
     public PuasScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
@@ -87,7 +87,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-        sonido = new SoundControl();
+        sonido = SoundControl.getInstancia();
         escuchadorColision = MyContactListener.getInstancia(sonido);
 
     }
@@ -125,6 +125,7 @@ public class PuasScreen extends InputAdapter implements Screen{
 
         puasSprite.setPosition(pua.getX(), pua.getY());
         puasSprite.setRotation(pua.getAngulo() * MathUtils.radiansToDegrees);
+
 
         //Dibuja los sprites
         this.game.batch.begin();

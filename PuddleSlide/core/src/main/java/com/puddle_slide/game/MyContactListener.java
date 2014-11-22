@@ -27,14 +27,14 @@ public class MyContactListener implements ContactListener {
     float posMuertaY;
 
     public MyContactListener(SoundControl sonido){
-        this.sonido=sonido;
+        this.sonido = sonido;
 
     }
     public static MyContactListener getInstancia(SoundControl sonido){
 
-        if(uniqueInstance==null){
+        if(uniqueInstance == null){
             synchronized (MyContactListener.class){
-                if(uniqueInstance==null){
+                if(uniqueInstance == null){
                     uniqueInstance = new MyContactListener(sonido);
                 }
             }
@@ -62,7 +62,7 @@ public class MyContactListener implements ContactListener {
             contrario = (String) objetoContrario.getUserData();
             if(contrario.equals("hoja")){
                 //  objetoGota.getBody().applyAngularImpulse(100,true);
-                sonido.sonidoHoja();
+                sonido.sonidoGota();
 
             }else if(contrario.equals("hojaBasica")){
             }else if(contrario.equals("hongo")){
@@ -81,14 +81,14 @@ public class MyContactListener implements ContactListener {
                 if(!muerta) {
                     objetoGota.getBody().applyLinearImpulse(impulso.x, impulso.y, punto.x, punto.y, true);
                 }
-                sonido.sonidoHoja();
+                sonido.sonidoHongo();
 
             }else if(contrario.equals("manzana")){
-                sonido.sonidoManzana();
+                sonido.sonidoGota();
             }else if(contrario.equals("troncoIzq") || contrario.equals("troncoDer")){
-                sonido.sonidoTronco();
+                sonido.sonidoGota();
             }else if(contrario.equals("puas")){
-                muerta=true;
+                muerta = true;
                 posMuertaX = objetoGota.getBody().getPosition().x;
                 posMuertaY = objetoGota.getBody().getPosition().y;
                 objetoGota.getBody().setAwake(false);
