@@ -56,6 +56,8 @@ public class PuasScreen extends InputAdapter implements Screen{
     private World world;
     private Box2DDebugRenderer debugRenderer;
     private float vel = 10;
+    private float deltaAcumulado = 0;
+    private float acumuladorCamara = 0;
     private Body ground;
     private Gota enki;
     private Puas pua;
@@ -70,7 +72,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         puasImg = new Texture (Gdx.files.internal("puasP.png"));
         gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
-        backgroundImage = new Texture(Gdx.files.internal("background.png"));
+        backgroundImage = new Texture(Gdx.files.internal("fondoMontanas.png"));
 
         gotaSprite = new Sprite(gotaImage);
         gotaMuertaSprite = new Sprite(gotaMuertaImage);
@@ -86,7 +88,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         buttonPause = new TextButton("Pausa", skin);
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, game.V_WIDTH, game.V_HEIGHT);
         sonido = SoundControl.getInstancia();
         escuchadorColision = MyContactListener.getInstancia(sonido);
 
@@ -95,28 +97,37 @@ public class PuasScreen extends InputAdapter implements Screen{
 
     @Override
     public void render(float delta) {
-        camera.update();
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(camera.combined);
         Matrix4 cameraCopy = camera.combined.cpy();
 
         //Si no esta en pausa actualiza las posiciones
-        if(!PAUSE){
-            debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
-            world.step(1/45f, 6, 2);
-            moveCamera(enki.getY() / 8 + 200);
+        if (!PAUSE) {
+            deltaAcumulado += delta;
+            //para pruebas, espera dos segundos antes de mover la camara
+            if (deltaAcumulado > 2) {
+                //pasar a metodo externo que mueve camara 768 pixeles para abajo
+                //prueba mueve 600 pixeles para abajo despues de dos segundos transcurridos.
+                acumuladorCamara += 3;
+                if (acumuladorCamara < 600) {
+                    moveCamera(acumuladorCamara);
+                }
+            }
             camera.update();
+            debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
+            world.step(1 / 60f, 6, 2);
+
         }
-        this.repintar();
+        this.actualizarSprites();
 
     }
 
     private void moveCamera(float y) {
-        camera.position.set(camera.viewportWidth / 2, y, 0);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2 - y, 0);
     }
 
-    public void repintar(){
+    public void actualizarSprites() {
         gotaSprite.setPosition(enki.getX(), enki.getY());
         gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
 

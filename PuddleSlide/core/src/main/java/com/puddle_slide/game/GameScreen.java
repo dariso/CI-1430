@@ -156,7 +156,7 @@ public class GameScreen extends InputAdapter implements Screen {
     @Override
     public void render(float delta) {
         /**
-         * delta - viejoDelta >= 300
+         * delta - viejoDelta >= 0.3
          *  mover camara 
          * */
         camera.update();
@@ -168,16 +168,15 @@ public class GameScreen extends InputAdapter implements Screen {
         //Si no esta en pausa actualiza las posiciones
         if(!PAUSE){
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
-            world.step(1/45f, 6, 2);
-            moveCamera(enki.getY() / 12 + 200);
+            world.step(1 / 60f, 6, 2);
             camera.update();
-            // En vec se va a actualizar la posicion del cuerpo de la hoja
+
         }
-        this.repintar();
+        this.renderizarSprites();
 
     }
 
-    public void repintar(){
+    public void renderizarSprites() {
         gotaSprite.setPosition(enki.getX(), enki.getY());
         gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
 
