@@ -39,7 +39,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class GameScreen extends InputAdapter implements Screen {
 
     final Puddle_Slide game;
-    private float deltaAcumulado = 0;
+    private float acumuladorCamara = 0;
     private OrthographicCamera camera;
     private FileHandle filehandle;
     private TextureAtlas textura;
@@ -164,18 +164,9 @@ public class GameScreen extends InputAdapter implements Screen {
 
         //Si no esta en pausa actualiza las posiciones
         if(!PAUSE){
-            //if gota esta en checkpoint, bajar camara
-            /* acumuladorCamara += 3;
-                if (acumuladorCamara < 768) {
-                    acumuladorCamara = 768
-                    moveCamera(acumuladorCamara);
-                    acumuladorCamara = 0;
-               }
-             else{
-               }
-             *
-             *
-             * */
+            /*if gota esta en checkpoint, bajar camara
+            * else renderizar normalmente
+            */
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1 / 60f, 6, 2);
             camera.update();
@@ -440,8 +431,27 @@ public class GameScreen extends InputAdapter implements Screen {
 
     }
 
-    public void moveCamera(float y) {
-        camera.position.set(camera.viewportWidth / 2, y, 0);
+    public boolean bajarSiguienteSeccion() {
+
+        acumuladorCamara += 3;
+        if (acumuladorCamara > 768) {
+            acumuladorCamara = 768;
+        }
+
+        moveCamera(camera.viewportWidth / 2, acumuladorCamara);
+
+        if (acumuladorCamara == 768) {
+            acumuladorCamara = 0;
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+    public void moveCamera(float x, float y) {
+        camera.position.set(x, y, 0);
     }
 
 
