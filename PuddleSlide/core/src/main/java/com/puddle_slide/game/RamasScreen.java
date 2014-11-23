@@ -52,8 +52,10 @@ public class RamasScreen extends InputAdapter implements Screen {
     private TextButton buttonRegresar;
     private Sprite gotaSprite;
     private Sprite hojaSprite;
+    private Sprite ramaSprite;
     private Texture gotaImage;
     private Texture hojaImg;
+    private Texture ramaImg;
     private Texture backgroundImage;
     MyContactListener escuchadorColision;
     private static final float WORLD_TO_BOX = 0.01f;
@@ -66,40 +68,27 @@ public class RamasScreen extends InputAdapter implements Screen {
     private Body ground;
     private Gota enki;
     private HojaBasica hoja;
-    private Hongo hongo;
-    private Puas puas1;
-    private Puas puas2;
-    private Manzana manzana;
-    private Tronco troncoTecho;
-    private Tronco troncoAuxiliar;
-    private Tronco troncoDinamico;
-
-    //troncos estructurales
-    private Tronco tronco1;
-    private Tronco tronco2;
-    private Tronco tronco3;
-    private Tronco tronco4;
-    private Tronco tronco5;
+    private Rama rama;
 
     private DistanceJoint hojaRamaJoint;
     private MouseJoint mouseJoint;
     private MouseJoint pruebaResorteJoint;
 
     boolean PAUSE = false;
-    float volar = (float) 0.01;
-
 
     public RamasScreen(final com.puddle_slide.game.Puddle_Slide elJuego, World world) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty1.png"));
         hojaImg = new Texture(Gdx.files.internal("hoja2.png"));
+        ramaImg = new Texture(Gdx.files.internal("RamaIzquierdaParaHojas.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondoMontanas.png"));
         stage = new Stage(new StretchViewport(game.V_WIDTH, game.V_HEIGHT));
         table = new Table();
 
         gotaSprite = new Sprite(gotaImage);
         hojaSprite = new Sprite(hojaImg);
+        ramaSprite = new Sprite(ramaImg);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -128,8 +117,8 @@ public class RamasScreen extends InputAdapter implements Screen {
         if (!PAUSE) {
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1 / 45f, 6, 2);
-            moveCamera(enki.getX(), enki.getY());
-            camera.update();
+           // moveCamera(enki.getX(), enki.getY());
+            //camera.update();
             // En vec se va a actualizar la posicion del cuerpo de la hoja
         }
         this.repintar();
@@ -144,10 +133,13 @@ public class RamasScreen extends InputAdapter implements Screen {
         hojaSprite.setOrigin(hoja.getOrigen().x, hoja.getOrigen().y);
         hojaSprite.setRotation(hoja.getAngulo() * MathUtils.radiansToDegrees);
 
+        ramaSprite.setPosition(rama.getX(), rama.getY());
+
         this.game.batch.begin();
-        //this.game.batch.draw(backgroundImage, 0, 0);
+        this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getOriginX(), hojaSprite.getOriginY(), hojaSprite.getWidth(),
                 hojaSprite.getHeight(), hojaSprite.getScaleX(), hojaSprite.getScaleY(), hojaSprite.getRotation());
+        this.game.batch.draw(ramaSprite, ramaSprite.getX(), ramaSprite.getY());
 
         this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                 gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
@@ -191,14 +183,37 @@ public class RamasScreen extends InputAdapter implements Screen {
             }
         });
 
-        gotaSprite.setPosition((camera.viewportWidth - 875) * WORLD_TO_BOX, (camera.viewportHeight - 210) * WORLD_TO_BOX);
-        hojaSprite.setPosition(0, (camera.viewportHeight - 350) * WORLD_TO_BOX);
+        gotaSprite.setPosition((camera.viewportWidth - 825) * WORLD_TO_BOX, (camera.viewportHeight - 300) * WORLD_TO_BOX);
+        hojaSprite.setPosition((camera.viewportWidth - 900) * WORLD_TO_BOX, (camera.viewportHeight - 400) * WORLD_TO_BOX);
+        ramaSprite.setPosition(0, (camera.viewportHeight - 300) * WORLD_TO_BOX);
 
         //Creacion de la hoja
         hoja = new HojaBasica(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
 
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
+
+        //Creacion de la rama para hojas
+        rama = new Rama(world, ramaSprite.getX(), ramaSprite.getY(), ramaSprite.getWidth(), ramaSprite.getHeight(), 1);
+
+        //Definicion del joint entre la hoja y la rama
+        DistanceJointDef jointDef = new DistanceJointDef();
+        jointDef.localAnchorA.set(rama.getRamaBody().getLocalPoint(new Vector2(1.3920f, 5.2f)));
+        jointDef.localAnchorB.set(hoja.getHojaBody().getLocalPoint(new Vector2(1.4079f, 4.736f)));
+        jointDef.bodyA = rama.getRamaBody();
+        jointDef.bodyB = hoja.getHojaBody();
+        jointDef.length = 0.3f;
+
+        hojaRamaJoint = (DistanceJoint) world.createJoint(jointDef);
+
+        //Prueba MouseJoint como resorte
+
+        MouseJointDef md = new MouseJointDef();
+        md.bodyA = rama.getRamaBody();
+        md.bodyB = hoja.getHojaBody();
+        md.maxForce = 500 * hoja.getHojaBody().getMass();
+        md.target.set(hoja.getX()*WORLD_TO_BOX, hoja.getY()*WORLD_TO_BOX);
+        pruebaResorteJoint = (MouseJoint) world.createJoint(md);
 
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
@@ -218,16 +233,6 @@ public class RamasScreen extends InputAdapter implements Screen {
         fixtureDefIzq.filter.categoryBits = FigureId.BIT_BORDE;
         fixtureDefIzq.filter.maskBits = FigureId.BIT_HOJABASICA | FigureId.BIT_HOJA | FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
-
-        //Definicion de primer Joint entre el tronco y la hoja
-        DistanceJointDef jointDef = new DistanceJointDef();
-
-        //Definicion del segundo joint entre el tronco que estara colgando
-        jointDef.localAnchorA.set(troncoAuxiliar.getTroncoBody().getLocalPoint(new Vector2(7.3279f, 7.0234f)));
-        jointDef.localAnchorB.set(troncoDinamico.getTroncoBody().getLocalPoint(new Vector2(7.3279f, 5.4223f)));
-        jointDef.bodyA = troncoAuxiliar.getTroncoBody();
-        jointDef.bodyB = troncoDinamico.getTroncoBody();
-        jointDef.length = 1.75f;
 
         //definicion Piso
         groundEdge.set(-1 * WORLD_TO_BOX, 5 * WORLD_TO_BOX, camera.viewportWidth * WORLD_TO_BOX, 5 * WORLD_TO_BOX);
