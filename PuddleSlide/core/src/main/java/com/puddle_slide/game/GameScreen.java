@@ -155,10 +155,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public void render(float delta) {
-        /**
-         * delta - viejoDelta >= 0.3
-         *  mover camara 
-         * */
+
         camera.update();
         Gdx.gl.glClearColor(0,0,1f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -167,6 +164,18 @@ public class GameScreen extends InputAdapter implements Screen {
 
         //Si no esta en pausa actualiza las posiciones
         if(!PAUSE){
+            //if gota esta en checkpoint, bajar camara
+            /* acumuladorCamara += 3;
+                if (acumuladorCamara < 768) {
+                    acumuladorCamara = 768
+                    moveCamera(acumuladorCamara);
+                    acumuladorCamara = 0;
+               }
+             else{
+               }
+             *
+             *
+             * */
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1 / 60f, 6, 2);
             camera.update();
