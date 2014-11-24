@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -63,6 +66,9 @@ public class PuasScreen extends InputAdapter implements Screen{
     float volar= (float) 0.01;
     MyContactListener escuchadorColision;
     SoundControl sonido;
+
+    private TiledMap tileMap;
+    private OrthogonalTiledMapRenderer mapRender;
     public PuasScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
         this.game = elJuego;
@@ -70,7 +76,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         puasImg = new Texture (Gdx.files.internal("puasP.png"));
         gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
-        backgroundImage = new Texture(Gdx.files.internal("background.png"));
+       // backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         gotaSprite = new Sprite(gotaImage);
         gotaMuertaSprite = new Sprite(gotaMuertaImage);
@@ -90,6 +96,9 @@ public class PuasScreen extends InputAdapter implements Screen{
         sonido = new SoundControl();
         escuchadorColision = MyContactListener.getInstancia(sonido);
 
+        //iniciar mapa
+        tileMap=new TmxMapLoader().load("maps/nivel.tmx");
+        mapRender=new OrthogonalTiledMapRenderer(tileMap);
     }
     private Vector2 vec = new Vector2();
 
@@ -107,6 +116,14 @@ public class PuasScreen extends InputAdapter implements Screen{
             world.step(1/45f, 6, 2);
             moveCamera(enki.getX(), enki.getY());
             camera.update();
+            //dibujar mapa
+            mapRender.setView(camera);
+            mapRender.render();
+
+
+
+
+
         }
         this.repintar();
 
@@ -128,7 +145,7 @@ public class PuasScreen extends InputAdapter implements Screen{
 
         //Dibuja los sprites
         this.game.batch.begin();
-        this.game.batch.draw(backgroundImage, 0, 0);
+        //this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.draw(puasSprite, puasSprite.getX(), puasSprite.getY(), pua.getOrigen().x, pua.getOrigen().y, puasSprite.getWidth(),
                 puasSprite.getHeight(), puasSprite.getScaleX(), puasSprite.getScaleY(), puasSprite.getRotation());
         if(!escuchadorColision.getMuerta()) {
@@ -244,7 +261,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         skin.dispose();
         gotaImage.dispose();
         puasImg.dispose();
-        backgroundImage.dispose();
+       // backgroundImage.dispose();
         gotaMuertaImage.dispose();
         gotaFantasmaImage.dispose();
         escuchadorColision.setMuerta(false);
