@@ -442,7 +442,6 @@ public class GameScreen extends InputAdapter implements Screen {
         }
     }
 
-
     public void moveCamera(float x, float y) {
         camera.position.set(x, y, 0);
     }
