@@ -27,7 +27,9 @@ public class MainStartScreen implements Screen {
     private Label titulo;
     private Label titulo2;
     private Texture imagent;
+    private Texture backgroundImage;
     private Image imagen;
+
 
     public MainStartScreen(final com.puddle_slide.game.Puddle_Slide gam) {
         game = gam;
@@ -44,16 +46,21 @@ public class MainStartScreen implements Screen {
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
         imagent = new Texture(Gdx.files.internal("gotitaYagua_1.png"));
         imagen = new Image(imagent);
+        backgroundImage = new Texture(Gdx.files.internal("fondotemp.png"));
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        this.game.batch.begin();
+        this.game.batch.draw(backgroundImage, 0, 0);
+        this.game.batch.end();
         stage.act();
         stage.draw();
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
+
 
         if (Gdx.input.isTouched()) {
             game.setScreen(new MainMenuScreen(game));
