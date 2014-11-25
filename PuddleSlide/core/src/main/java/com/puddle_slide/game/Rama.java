@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 /**
  * Created by xia on 11/21/14.
  */
-public class Rama {
+public class Rama implements ObjetoJuego{
     private Body ramaBody;
     private Vector2 puntoRef;
     private int tipo;               //El cuerpo a cargar
@@ -71,24 +71,35 @@ public class Rama {
 
     }
 
+    @Override
     public float getX(){
         return ramaBody.getPosition().x * BOX_TO_WORLD;
     }
 
+    @Override
     public float getY(){
         return ramaBody.getPosition().y * BOX_TO_WORLD;
     }
 
+    @Override
     public float getAngulo(){
         return ramaBody.getAngle();
     }
 
+    @Override
     public float getWidth(){return ancho;}
 
+    @Override
     public float getHeight(){return largo;}
 
+    @Override
     public Vector2 getOrigen(){
         return puntoRef;
+    }
+
+    @Override
+    public float getMasa() {
+        return ramaBody.getMass();
     }
 
     public Body getRamaBody() {
