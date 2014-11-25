@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -29,6 +28,7 @@ public class LevelScreen implements Screen {
     private Table table;
     private TextButton buttonPuas;
     private TextButton buttonRama;
+    private TextButton buttonTercera;
     private TextButton buttonReturn;
     private Label title;
     private World world;
@@ -41,6 +41,7 @@ public class LevelScreen implements Screen {
         skin = new Skin(filehandle,textura);
         buttonPuas = new TextButton("Puas", skin);
         buttonRama = new TextButton("Ramas", skin);
+        buttonTercera = new TextButton("Tercera", skin);
         buttonReturn = new TextButton("Regresar",skin);
         title = new Label("Niveles de prueba",skin);
         title.setFontScale(2.0f);
@@ -87,10 +88,17 @@ public class LevelScreen implements Screen {
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new RamasScreen(game, world));
             }
         });
+        buttonTercera.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new TerceraScreen(game));
+            }
+        });
 
         table.add(title).colspan(2).center().padBottom(60).row();
         table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
         table.add(buttonRama).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
+        table.add(buttonTercera).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
         table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6);
 
         table.setFillParent(true);
