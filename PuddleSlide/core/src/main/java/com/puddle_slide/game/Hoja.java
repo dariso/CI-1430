@@ -13,10 +13,11 @@ import com.badlogic.gdx.physics.box2d.World;
 /**
  * Created by xia on 9/30/14.
  */
-public class Hoja {
+public class Hoja implements ObjetoJuego {
 
     private Body hojaBody;
     private Vector2 puntoRef;
+    private float largo, ancho;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
 
@@ -35,6 +36,8 @@ public class Hoja {
         hojaDef.type = BodyDef.BodyType.DynamicBody;
         hojaDef.position.set(x, y);
         hojaBody = world.createBody(hojaDef);
+        largo = alto;
+        this.ancho = ancho;
 
         PolygonShape polygonShape = new PolygonShape();
 
@@ -54,26 +57,37 @@ public class Hoja {
 
     }
 
+    @Override
     public float getX(){
         return hojaBody.getPosition().x * BOX_TO_WORLD;
     }
 
+    @Override
     public float getY(){
         return hojaBody.getPosition().y * BOX_TO_WORLD;
     }
 
+    @Override
+    public float getWidth() {
+        return ancho;
+    }
+
+    @Override
+    public float getHeight() {
+        return largo;
+    }
+
+    @Override
     public float getAngulo(){
         return hojaBody.getAngle();
     }
 
+    @Override
     public Vector2 getOrigen(){
         return puntoRef;
     }
 
-    public void mover(Vector2 v){
-        hojaBody.applyForceToCenter(v, true);
-    }
-
+    @Override
     public float getMasa(){
         return hojaBody.getMass();
     }

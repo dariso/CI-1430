@@ -13,10 +13,12 @@ package com.puddle_slide.game;
 /**
  * Created by Meli.
  */
-public class Manzana{
+public class Manzana implements ObjetoJuego{
 
     private Body manzanaBody;
     private Vector2 puntoRef;
+    private float largo;
+    private float ancho;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
 
@@ -30,6 +32,9 @@ public class Manzana{
      * */
     public Manzana(World world, float x, float y, float ancho, float alto) {
         BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/manzana.json"));
+
+        largo = alto;
+        this.ancho = ancho;
 
         BodyDef manzanaDef = new BodyDef();
         manzanaDef.type = BodyDef.BodyType.DynamicBody;
@@ -55,26 +60,37 @@ public class Manzana{
 
     }
 
+    @Override
     public float getX(){
         return manzanaBody.getPosition().x * BOX_TO_WORLD;
     }
 
+    @Override
     public float getY(){
         return manzanaBody.getPosition().y * BOX_TO_WORLD;
     }
 
+    @Override
+    public float getWidth() {
+        return ancho;
+    }
+
+    @Override
+    public float getHeight() {
+        return largo;
+    }
+
+    @Override
     public float getAngulo(){
         return manzanaBody.getAngle();
     }
 
+    @Override
     public Vector2 getOrigen(){
         return puntoRef;
     }
 
-    public void mover(Vector2 v){
-        manzanaBody.applyForceToCenter(v, true);
-    }
-
+    @Override
     public float getMasa(){
         return manzanaBody.getMass();
     }

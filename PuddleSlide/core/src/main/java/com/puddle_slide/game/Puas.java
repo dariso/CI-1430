@@ -12,10 +12,11 @@ import com.badlogic.gdx.physics.box2d.World;
 /**
  * Created by Meli 20/10/2014.
  */
-public class Puas{
+public class Puas implements ObjetoJuego{
 
     private Body puasBody;
     private Vector2 puntoRef;
+    private float largo, ancho;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
 
@@ -29,6 +30,9 @@ public class Puas{
      * */
     public Puas(World world, float x, float y, float ancho, float alto, boolean vuelto) {
         BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/puas.json"));
+
+        largo = alto;
+        this.ancho = ancho;
 
         BodyDef puasDef = new BodyDef();
         puasDef.type = BodyDef.BodyType.DynamicBody;
@@ -56,26 +60,37 @@ public class Puas{
 
     }
 
+    @Override
     public float getX(){
         return puasBody.getPosition().x * BOX_TO_WORLD;
     }
 
+    @Override
     public float getY(){
         return puasBody.getPosition().y * BOX_TO_WORLD;
     }
 
+    @Override
+    public float getWidth() {
+        return ancho;
+    }
+
+    @Override
+    public float getHeight() {
+        return largo;
+    }
+
+    @Override
     public float getAngulo(){
         return puasBody.getAngle();
     }
 
+    @Override
     public Vector2 getOrigen(){
         return puntoRef;
     }
 
-    public void mover(Vector2 v){
-        puasBody.applyForceToCenter(v, true);
-    }
-
+    @Override
     public float getMasa(){
         return puasBody.getMass();
     }
