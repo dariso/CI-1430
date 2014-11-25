@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -29,6 +28,7 @@ public class LevelScreen implements Screen {
     private Table table;
     private TextButton buttonPuas;
     private TextButton buttonRama;
+    private TextButton buttonManzana;
     private TextButton buttonReturn;
     private Label title;
     private World world;
@@ -40,6 +40,7 @@ public class LevelScreen implements Screen {
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
         skin = new Skin(filehandle,textura);
         buttonPuas = new TextButton("Puas", skin);
+        buttonManzana = new TextButton("Manzana", skin);
         buttonRama = new TextButton("Ramas", skin);
         buttonReturn = new TextButton("Regresar",skin);
         title = new Label("Niveles de prueba",skin);
@@ -74,10 +75,10 @@ public class LevelScreen implements Screen {
             }
         });
 
-        buttonPuas.addListener(new ClickListener(){
+        buttonManzana.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new PuasScreen(game));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new ManzanaScreen(game));
             }
         });
 
@@ -88,9 +89,17 @@ public class LevelScreen implements Screen {
             }
         });
 
+        buttonPuas.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new PuasScreen(game));
+            }
+        });
+
         table.add(title).colspan(2).center().padBottom(60).row();
-        table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
+        table.add(buttonManzana).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
         table.add(buttonRama).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
+        table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
         table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6);
 
         table.setFillParent(true);
