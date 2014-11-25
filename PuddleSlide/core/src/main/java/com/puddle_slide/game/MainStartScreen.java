@@ -33,9 +33,9 @@ public class MainStartScreen implements Screen {
 
     public MainStartScreen(final com.puddle_slide.game.Puddle_Slide gam) {
         game = gam;
-        filehandle= Gdx.files.internal("skins/menuSkin.json");
-        textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
-        skin= new Skin(filehandle,textura);
+        filehandle = Gdx.files.internal("skins/menuSkin.json");
+        textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
+        skin = new Skin(filehandle,textura);
         titulo = new Label("Puddle Slide",skin);
         titulo2 = new Label("Presionar Pantalla",skin);
         stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
