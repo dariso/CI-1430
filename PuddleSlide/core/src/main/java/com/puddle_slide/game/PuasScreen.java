@@ -21,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -48,6 +49,7 @@ public class PuasScreen extends InputAdapter implements Screen{
     private Texture gotaMuertaImage;
     private Texture gotaFantasmaImage;
     private Texture puasImg;
+    private Label texto;
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
@@ -91,6 +93,9 @@ public class PuasScreen extends InputAdapter implements Screen{
         camera.setToOrtho(false, game.V_WIDTH, game.V_HEIGHT);
         sonido = SoundControl.getInstancia();
         escuchadorColision = MyContactListener.getInstancia(sonido);
+        texto = new Label(" ", skin);
+        texto.setFontScale(0.8f);
+
 
     }
     private Vector2 vec = new Vector2();
@@ -152,8 +157,10 @@ public class PuasScreen extends InputAdapter implements Screen{
             this.game.batch.draw(gotafantasmaSprite, enki.getX()-64, enki.getY() + volar);
             volar++;
         }
+
         this.game.batch.end();
 
+        texto.setText(Integer.toString(Gdx.graphics.getFramesPerSecond()));
         stage.act();
         stage.draw();
     }
@@ -228,7 +235,8 @@ public class PuasScreen extends InputAdapter implements Screen{
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
-        table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
+        table.add(buttonRegresar).size(140, 40).padTop(-30).padBottom(250).padLeft(450).row();
+        table.add(texto).size(20, 20).padTop(-30).padBottom(250).padLeft(450);
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
