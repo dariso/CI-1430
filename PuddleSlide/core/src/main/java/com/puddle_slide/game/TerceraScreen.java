@@ -99,7 +99,6 @@ public class TerceraScreen extends InputAdapter implements Screen{
         tronco1_sprite_Kalam = new Sprite(tronco1_Img_Kalam);
         tronco2_sprite_Kalam = new Sprite(tronco2_Img_Kalam);
 
-
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
         skin = new Skin(filehandle,textura);
@@ -174,9 +173,6 @@ public class TerceraScreen extends InputAdapter implements Screen{
         tronco2_sprite_Kalam.setPosition(tronco2_kalam.getX(), tronco2_kalam.getY());
         tronco2_sprite_Kalam.setRotation(pua.getAngulo() * MathUtils.radiansToDegrees);
 
-
-
-
         //Dibuja los sprites
         this.game.batch.begin();
        // this.game.batch.draw(backgroundImage, 0,0);
@@ -190,7 +186,6 @@ public class TerceraScreen extends InputAdapter implements Screen{
         this.game.batch.draw(tronco2_sprite_Kalam, tronco2_kalam.getX(), tronco2_kalam.getY(), tronco2_kalam.getOrigen().x, tronco2_kalam.getOrigen().y, tronco2_sprite_Kalam.getWidth()/2,
                 tronco2_sprite_Kalam.getHeight()/2 , tronco2_sprite_Kalam.getScaleX(), tronco2_sprite_Kalam.getScaleY(), tronco2_kalam.getAngulo() * MathUtils.radiansToDegrees);
 
-
         if(!escuchadorColision.getMuerta()) {
             this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                     gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
@@ -201,7 +196,6 @@ public class TerceraScreen extends InputAdapter implements Screen{
             volar++;
         }
         this.game.batch.end();
-
 
         stage.act();
         stage.draw();
@@ -286,7 +280,6 @@ public class TerceraScreen extends InputAdapter implements Screen{
         //Creación tronco
         tronco1_kalam = new Tronco(world, (camera.viewportWidth - 900) * WORLD_TO_BOX, (camera.viewportHeight - 250) * WORLD_TO_BOX, tronco1_sprite_Kalam.getWidth()/2, tronco1_sprite_Kalam.getHeight()/2, -0.34f, true, false);
         tronco2_kalam = new Tronco(world, (camera.viewportWidth - 400) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX, tronco1_sprite_Kalam.getWidth()/2, tronco1_sprite_Kalam.getHeight()/2, 0.34f, false, false);
-
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
