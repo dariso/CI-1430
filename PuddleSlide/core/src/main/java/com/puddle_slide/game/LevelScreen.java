@@ -29,6 +29,7 @@ public class LevelScreen implements Screen {
     private TextButton buttonPuas;
     private TextButton buttonRama;
     private TextButton buttonTercera;
+    private TextButton buttonManzana;
     private TextButton buttonReturn;
     private Label title;
     private World world;
@@ -40,6 +41,7 @@ public class LevelScreen implements Screen {
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
         skin = new Skin(filehandle,textura);
         buttonPuas = new TextButton("Puas", skin);
+        buttonManzana = new TextButton("Manzana", skin);
         buttonRama = new TextButton("Ramas", skin);
         buttonTercera = new TextButton("Tercera", skin);
         buttonReturn = new TextButton("Regresar",skin);
@@ -75,10 +77,10 @@ public class LevelScreen implements Screen {
             }
         });
 
-        buttonPuas.addListener(new ClickListener(){
+        buttonManzana.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new PuasScreen(game));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new ManzanaScreen(game));
             }
         });
 
@@ -88,16 +90,28 @@ public class LevelScreen implements Screen {
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new RamasScreen(game, world));
             }
         });
+
         buttonTercera.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new TerceraScreen(game));
             }
         });
+
+
+        buttonPuas.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new PuasScreen(game));
+            }
+        });
+
+
         table.add(title).colspan(2).center().padBottom(60).row();
-        table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
+        table.add(buttonManzana).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
         table.add(buttonRama).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
         table.add(buttonTercera).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
+        table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
         table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6);
 
         table.setFillParent(true);
