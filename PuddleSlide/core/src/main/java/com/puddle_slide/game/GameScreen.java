@@ -173,7 +173,7 @@ public class GameScreen extends InputAdapter implements Screen {
             * else renderizar normalmente
             */
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
-            world.step(1 / 60f, 6, 2);
+            world.step(1 / 45f, 6, 2);
             camera.update();
         }
         this.renderizarSprites();

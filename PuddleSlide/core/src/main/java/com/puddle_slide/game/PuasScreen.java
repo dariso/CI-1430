@@ -27,9 +27,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-/**
- * Created by Meli on 3/11/2014.
- */
 public class PuasScreen extends InputAdapter implements Screen{
 
     final Puddle_Slide game;
@@ -57,7 +54,6 @@ public class PuasScreen extends InputAdapter implements Screen{
     //Objetos del mundo
     private World world;
     private Box2DDebugRenderer debugRenderer;
-    private float vel = 10;
     private float deltaAcumulado = 0;
     private float acumuladorCamara = 0;
     private Body ground;
@@ -98,7 +94,7 @@ public class PuasScreen extends InputAdapter implements Screen{
 
 
     }
-    private Vector2 vec = new Vector2();
+
 
     @Override
     public void render(float delta) {
@@ -121,7 +117,7 @@ public class PuasScreen extends InputAdapter implements Screen{
             }
             camera.update();
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
-            world.step(1 / 60f, 6, 2);
+            world.step(1 / 45f, 6, 2);
 
         }
         this.actualizarSprites();
