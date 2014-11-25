@@ -121,7 +121,7 @@ public class GameScreen extends InputAdapter implements Screen {
         troncoDerImg = new Texture(Gdx.files.internal("troncoDer.png"));
         troncoIzqImg = new Texture(Gdx.files.internal("troncoIzq.png"));
         lianaImage = new Texture(Gdx.files.internal("LianaJoin.png"));
-        puasImg = new Texture(Gdx.files.internal("Puas3.png"));
+        puasImg = new Texture(Gdx.files.internal("puasP.png"));
         hongoImg = new Texture(Gdx.files.internal("hongosNaranja2.png"));
         manzanaImg = new Texture(Gdx.files.internal("manzana.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondoMontanas.png"));
@@ -152,6 +152,7 @@ public class GameScreen extends InputAdapter implements Screen {
         this.escuchadorColision = escuchadorColision;
         this.world = world;
         camera.setToOrtho(false, game.V_WIDTH, game.V_HEIGHT);
+        camera.position.set(camera.viewportWidth / 2, -camera.viewportHeight, 0);
 
     }
 
