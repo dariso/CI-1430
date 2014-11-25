@@ -98,7 +98,7 @@ public class HojaScreen extends InputAdapter implements Screen {
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1/45f, 6, 2);
             // En vec se va a actualizar la posicion del cuerpo de la hoja
-            hoja.mover(vec);
+//            hoja.mover(vec);
         }
         this.repintar();
     }

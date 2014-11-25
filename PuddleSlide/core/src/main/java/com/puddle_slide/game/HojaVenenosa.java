@@ -11,8 +11,9 @@ import com.badlogic.gdx.physics.box2d.World;
 /**
  * Created by Meli on 12/11/2014.
  */
-public class HojaVenenosa {
+public class HojaVenenosa implements ObjetoJuego {
 
+    private float largo, ancho;
     private Body hojaVenenosaBody;
     private Vector2 puntoRef;
     private static final float WORLD_TO_BOX = 0.01f;
@@ -20,6 +21,9 @@ public class HojaVenenosa {
 
     public HojaVenenosa(World world, float x, float y, float ancho, float alto) {
         BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/hojaVenenosa.json"));
+
+        this.ancho = ancho;
+        largo = alto;
 
         BodyDef hojaVenenosaDef = new BodyDef();
         hojaVenenosaDef.type = BodyDef.BodyType.DynamicBody;
@@ -43,28 +47,41 @@ public class HojaVenenosa {
         puntoRef = bodyEditorLoader.getOrigin("hojaVenenosa", ancho * WORLD_TO_BOX);
     }
 
+    @Override
     public float getX(){
         return this.hojaVenenosaBody.getPosition().x * BOX_TO_WORLD;
     }
 
+    @Override
     public float getY(){
         return this.hojaVenenosaBody.getPosition().y * BOX_TO_WORLD;
     }
 
+    @Override
+    public float getWidth() {
+        return ancho;
+    }
+
+    @Override
+    public float getHeight() {
+        return largo;
+    }
+
+    @Override
     public float getAngulo(){
         return this.hojaVenenosaBody.getAngle();
     }
 
+    @Override
     public Vector2 getOrigen(){
         return puntoRef;
     }
-
-    public void mover(Vector2 vec){this.hojaVenenosaBody.applyForceToCenter(vec, true);}
 
     public Body getHojaVenenosaBody(){
         return this.hojaVenenosaBody;
     }
 
+    @Override
     public float getMasa(){
         return this.hojaVenenosaBody.getMass();
     }

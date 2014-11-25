@@ -9,31 +9,23 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
- * Created by daniel on 07/10/14.
+ * Created by xia on 11/24/14.
  */
-public class Tronco implements ObjetoJuego{
-
+public class TroncoQuebradizo implements ObjetoJuego {
     private Body troncoBody;
     private Vector2 puntoRef;
-    private boolean esTroncoDerecho;
     private float ancho;
     private float largo;
     private final float WORLD_TO_BOX = 0.01f;
     private final float BOX_TO_WORLD = 100f;
 
-    public Tronco(World world, float x, float y,float anch,float larg,float angulo,boolean esDer, boolean esDinamico){
+    public TroncoQuebradizo(World world, float x, float y,float anch,float larg,float angulo, boolean esDinamico){
         BodyEditorLoader bodyEditorLoader;
         ancho = anch;
         largo = larg;
-        esTroncoDerecho = esDer;
-        if(esDer){
-            bodyEditorLoader =
-                    new BodyEditorLoader(Gdx.files.internal("Shapes/troncoDer.json"));
-        }
-        else{
-            bodyEditorLoader =
-                    new BodyEditorLoader(Gdx.files.internal("Shapes/troncoIzq.json"));
-        }
+
+        bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/troncoQuebradizo.json"));
+
         if(esDinamico) {
             BodyDef troncoDef = new BodyDef();
             troncoDef.type = BodyDef.BodyType.DynamicBody;
@@ -48,7 +40,7 @@ public class Tronco implements ObjetoJuego{
 
         FixtureDef fixtureDef = new FixtureDef();
 
-         //Define la cetegoria de objeto a la que pertenece
+        //Define la cetegoria de objeto a la que pertenece
         fixtureDef.filter.categoryBits = FigureId.BIT_TRONCO;
         //Define los objetos con los que debe colisionar
         fixtureDef.filter.maskBits = FigureId.BIT_GOTA|FigureId.BIT_TRONCO|FigureId.BIT_BORDE|FigureId.BIT_HOJABASICA|FigureId.BIT_HONGO|FigureId.BIT_MANZANA;
@@ -56,40 +48,28 @@ public class Tronco implements ObjetoJuego{
         fixtureDef.density = 1500f;
         fixtureDef.restitution = 0.1f;
 
-        if(esDer){
-            bodyEditorLoader.attachFixture(troncoBody,"troncoDer",fixtureDef,ancho * WORLD_TO_BOX);
-            puntoRef = bodyEditorLoader.getOrigin("troncoDer", ancho * WORLD_TO_BOX);
-        }
-        else{
-            bodyEditorLoader.attachFixture(troncoBody,"troncoIzq",fixtureDef,ancho * WORLD_TO_BOX);
-            puntoRef = bodyEditorLoader.getOrigin("troncoIzq", ancho * WORLD_TO_BOX);
-        }
+        bodyEditorLoader.attachFixture(troncoBody,"troncoQuebradizo",fixtureDef, ancho * WORLD_TO_BOX);
+        puntoRef = bodyEditorLoader.getOrigin("troncoQuebradizo", ancho * WORLD_TO_BOX);
 
         troncoBody.setTransform(troncoBody.getPosition(),angulo * MathUtils.radiansToDegrees);
     }
 
-    @Override
     public float getX(){
         return troncoBody.getPosition().x * BOX_TO_WORLD;
     }
 
-    @Override
     public float getY(){
         return troncoBody.getPosition().y * BOX_TO_WORLD;
     }
 
-    @Override
     public float getAngulo(){
         return troncoBody.getAngle();
     }
 
-    @Override
     public float getWidth(){return ancho;}
 
-    @Override
     public float getHeight(){return largo;}
 
-    @Override
     public Vector2 getOrigen(){
         return puntoRef;
     }
