@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
@@ -29,9 +27,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-/**
- * Created by Meli on 3/11/2014.
- */
 public class TerceraScreen extends InputAdapter implements Screen{
 
     final Puddle_Slide game;
@@ -46,13 +41,18 @@ public class TerceraScreen extends InputAdapter implements Screen{
     private Sprite gotaSprite;
     private Sprite gotafantasmaSprite;
     private Sprite puasSprite;
+
     private Sprite tronco1_sprite_Kalam;
+    private Sprite tronco2_sprite_Kalam;
+
     private Sprite gotaMuertaSprite;
     private Texture gotaImage;
     private Texture gotaMuertaImage;
     private Texture gotaFantasmaImage;
     private Texture puasImg;
+
     private Texture tronco1_Img_Kalam;
+    private Texture tronco2_Img_Kalam;
 
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
@@ -68,7 +68,10 @@ public class TerceraScreen extends InputAdapter implements Screen{
     private Body ground;
     private Gota enki;
     private Puas pua;
+
     private Tronco tronco1_kalam;
+    private Tronco tronco2_kalam;
+
     boolean PAUSE = false;
     float volar = (float) 0.01;
     MyContactListener escuchadorColision;
@@ -81,7 +84,9 @@ public class TerceraScreen extends InputAdapter implements Screen{
         gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondo3.png"));
+
         tronco1_Img_Kalam = new Texture(Gdx.files.internal("troncoDer.png"));
+        tronco2_Img_Kalam = new Texture(Gdx.files.internal("troncoIzq.png"));
 
         gotaSprite = new Sprite(gotaImage);
         gotaMuertaSprite = new Sprite(gotaMuertaImage);
@@ -89,7 +94,11 @@ public class TerceraScreen extends InputAdapter implements Screen{
         puasSprite = new Sprite(puasImg);
         gotaSprite.setPosition((Gdx.graphics.getWidth() / 2) * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
         gotaMuertaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
-        puasSprite.setPosition(1,-16);
+
+        puasSprite.setPosition(1,0);
+
+        tronco1_sprite_Kalam = new Sprite(tronco1_Img_Kalam);
+        tronco2_sprite_Kalam = new Sprite(tronco2_Img_Kalam);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -132,12 +141,11 @@ public class TerceraScreen extends InputAdapter implements Screen{
 
 */
 
-
             camera.update();
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1 / 60f, 6, 2);
-            mapRenderer.setView(camera);
-            mapRenderer.render();
+            //mapRenderer.setView(camera);
+            //mapRenderer.render();
 
             System.out.println("X: "+pua.getX()+" Y: "+pua.getY());
 
@@ -160,15 +168,19 @@ public class TerceraScreen extends InputAdapter implements Screen{
         puasSprite.setPosition(pua.getX(), pua.getY());
         puasSprite.setRotation(pua.getAngulo() * MathUtils.radiansToDegrees);
 
-
         //Dibuja los sprites
-
-
         this.game.batch.begin();
-        this.game.batch.draw(backgroundImage, 0,0);
-       // this.game.batch.draw(backgroundImage, 0,-camera.viewportHeight*2);
+       // this.game.batch.draw(backgroundImage, 0,0);
+        // this.game.batch.draw(backgroundImage, 0,-camera.viewportHeight*2);
         this.game.batch.draw(puasSprite, puasSprite.getX(), puasSprite.getY(), pua.getOrigen().x, pua.getOrigen().y, puasSprite.getWidth(),
                 puasSprite.getHeight(), puasSprite.getScaleX(), puasSprite.getScaleY(), puasSprite.getRotation());
+
+        this.game.batch.draw(tronco1_sprite_Kalam, tronco1_kalam.getX(), tronco1_kalam.getY(), tronco1_kalam.getOrigen().x, tronco1_kalam.getOrigen().y, tronco1_sprite_Kalam.getWidth()/2,
+                tronco1_sprite_Kalam.getHeight()/2 , tronco1_sprite_Kalam.getScaleX(), tronco1_sprite_Kalam.getScaleY(), tronco1_kalam.getAngulo() * MathUtils.radiansToDegrees);
+
+        this.game.batch.draw(tronco2_sprite_Kalam, tronco2_kalam.getX(), tronco2_kalam.getY(), tronco2_kalam.getOrigen().x, tronco2_kalam.getOrigen().y, tronco2_sprite_Kalam.getWidth()/2,
+                tronco2_sprite_Kalam.getHeight()/2 , tronco2_sprite_Kalam.getScaleX(), tronco2_sprite_Kalam.getScaleY(), tronco2_kalam.getAngulo() * MathUtils.radiansToDegrees);
+
         if(!escuchadorColision.getMuerta()) {
             this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                     gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
@@ -180,11 +192,8 @@ public class TerceraScreen extends InputAdapter implements Screen{
         }
         this.game.batch.end();
 
-
         stage.act();
         stage.draw();
-
-
 
     }
 
@@ -199,9 +208,9 @@ public class TerceraScreen extends InputAdapter implements Screen{
         world.setContactListener(this.escuchadorColision);
         debugRenderer = new Box2DDebugRenderer();
 
-        TiledMap map = new TmxMapLoader().load("mapas/nivel.tmx");
+        //TiledMap map = new TmxMapLoader().load("mapas/nivel.tmx");
 
-        mapRenderer = new OrthogonalTiledMapRenderer(map);
+       // mapRenderer = new OrthogonalTiledMapRenderer(map);
 
         //Boton de Pausa
         buttonPause.addListener(new ClickListener(){
@@ -262,6 +271,10 @@ public class TerceraScreen extends InputAdapter implements Screen{
 
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
+
+        //Creación tronco
+        tronco1_kalam = new Tronco(world, (camera.viewportWidth - 900) * WORLD_TO_BOX, (camera.viewportHeight - 250) * WORLD_TO_BOX, tronco1_sprite_Kalam.getWidth()/2, tronco1_sprite_Kalam.getHeight()/2, -0.34f, true, false);
+        tronco2_kalam = new Tronco(world, (camera.viewportWidth - 400) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX, tronco1_sprite_Kalam.getWidth()/2, tronco1_sprite_Kalam.getHeight()/2, 0.34f, false, false);
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);

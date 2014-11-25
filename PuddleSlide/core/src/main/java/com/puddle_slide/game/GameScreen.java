@@ -121,7 +121,7 @@ public class GameScreen extends InputAdapter implements Screen {
         troncoDerImg = new Texture(Gdx.files.internal("troncoDer.png"));
         troncoIzqImg = new Texture(Gdx.files.internal("troncoIzq.png"));
         lianaImage = new Texture(Gdx.files.internal("LianaJoin.png"));
-        puasImg = new Texture(Gdx.files.internal("Puas3.png"));
+        puasImg = new Texture(Gdx.files.internal("PuasP.png"));
         hongoImg = new Texture(Gdx.files.internal("hongosNaranja2.png"));
         manzanaImg = new Texture(Gdx.files.internal("manzana.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondoMontanas.png"));
@@ -205,6 +205,7 @@ public class GameScreen extends InputAdapter implements Screen {
         manzanaSprite.setPosition(manzana.getX(), manzana.getY());
         manzanaSprite.setOrigin(manzana.getOrigen().x, manzana.getOrigen().y);
         manzanaSprite.setRotation(manzana.getAngulo() * MathUtils.radiansToDegrees);
+
 
         lianaSprite.setPosition(hoja.getHojaBody().getLocalPoint(jointHojaTroncoIzq.getLocalAnchorA()).x, hoja.getHojaBody().getLocalPoint(jointHojaTroncoIzq.getLocalAnchorA()).y);
 

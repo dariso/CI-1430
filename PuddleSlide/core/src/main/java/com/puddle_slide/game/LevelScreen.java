@@ -90,6 +90,12 @@ public class LevelScreen implements Screen {
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new RamasScreen(game, world));
             }
         });
+        buttonTercera.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new TerceraScreen(game));
+            }
+        });
 
         buttonTercera.addListener(new ClickListener(){
             @Override
@@ -108,11 +114,11 @@ public class LevelScreen implements Screen {
 
 
         table.add(title).colspan(2).center().padBottom(60).row();
-        table.add(buttonManzana).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
-        table.add(buttonRama).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
-        table.add(buttonTercera).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
-        table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
-        table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6);
+        table.add(buttonManzana).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
+        table.add(buttonRama).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
+        table.add(buttonTercera).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
+        table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
+        table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10);
 
         table.setFillParent(true);
         stage.addActor(table);
