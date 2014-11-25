@@ -12,9 +12,10 @@ import com.badlogic.gdx.utils.Array;
 /**
  * Created by xia on 9/30/14.
  */
-public class Gota {
+public class Gota implements ObjetoJuego {
 
     private Body gotaBody;
+    private float largo, ancho;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
     private Vector2 puntoRef;
@@ -29,6 +30,9 @@ public class Gota {
      * */
     public Gota(World world, float x, float y, float ancho){
         BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/gota.json"));
+
+        largo = ancho;
+        this.ancho = ancho;
 
         BodyDef gotaDef = new BodyDef();
         gotaDef.type = BodyDef.BodyType.DynamicBody;
@@ -58,19 +62,38 @@ public class Gota {
         fixtures.first().setRestitution(rest);
     }
 
+    @Override
     public float getX(){
         return gotaBody.getPosition().x * BOX_TO_WORLD;
     }
 
+    @Override
     public float getY(){
         return gotaBody.getPosition().y * BOX_TO_WORLD;
     }
 
+    @Override
+    public float getWidth() {
+        return ancho;
+    }
+
+    @Override
+    public float getHeight() {
+        return largo;
+    }
+
+    @Override
     public float getAngulo(){
         return gotaBody.getAngle();
     }
 
+    @Override
     public Vector2 getOrigen(){
         return puntoRef;
+    }
+
+    @Override
+    public float getMasa() {
+        return gotaBody.getMass();
     }
 }

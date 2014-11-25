@@ -11,7 +11,9 @@ import com.badlogic.gdx.physics.box2d.World;
 /**
  * Created by xia on 10/14/14.
  */
-public class Hongo {
+public class Hongo implements ObjetoJuego{
+
+    private float largo, ancho;
     private Body hongoBody;
     private Vector2 puntoRef;
     private static final float WORLD_TO_BOX = 0.01f;
@@ -33,6 +35,9 @@ public class Hongo {
         hongoDef.position.set(x, y);
         hongoBody = world.createBody(hongoDef);
 
+        this.ancho = ancho;
+        largo = alto;
+
         PolygonShape polygonShape = new PolygonShape();
 
         FixtureDef fixtureDef = new FixtureDef();
@@ -51,22 +56,37 @@ public class Hongo {
 
     }
 
+    @Override
     public float getX(){
         return hongoBody.getPosition().x * BOX_TO_WORLD;
     }
 
+    @Override
     public float getY(){
         return hongoBody.getPosition().y * BOX_TO_WORLD;
     }
 
+    @Override
+    public float getWidth() {
+        return ancho;
+    }
+
+    @Override
+    public float getHeight() {
+        return largo;
+    }
+
+    @Override
     public float getAngulo(){
         return hongoBody.getAngle();
     }
 
+    @Override
     public Vector2 getOrigen(){
         return puntoRef;
     }
 
+    @Override
     public float getMasa(){
         return hongoBody.getMass();
     }

@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 /**
  * Created by xia on 11/24/14.
  */
-public class TroncoQuebradizo {
+public class TroncoQuebradizo implements ObjetoJuego {
     private Body troncoBody;
     private Vector2 puntoRef;
     private float ancho;
@@ -72,6 +72,11 @@ public class TroncoQuebradizo {
 
     public Vector2 getOrigen(){
         return puntoRef;
+    }
+
+    @Override
+    public float getMasa() {
+        return troncoBody.getMass();
     }
 
     public Body getTroncoBody() {

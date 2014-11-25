@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 /**
  * Created by daniel on 07/10/14.
  */
-public class Tronco{
+public class Tronco implements ObjetoJuego{
 
     private Body troncoBody;
     private Vector2 puntoRef;
@@ -68,24 +68,35 @@ public class Tronco{
         troncoBody.setTransform(troncoBody.getPosition(),angulo * MathUtils.radiansToDegrees);
     }
 
+    @Override
     public float getX(){
         return troncoBody.getPosition().x * BOX_TO_WORLD;
     }
 
+    @Override
     public float getY(){
         return troncoBody.getPosition().y * BOX_TO_WORLD;
     }
 
+    @Override
     public float getAngulo(){
         return troncoBody.getAngle();
     }
 
+    @Override
     public float getWidth(){return ancho;}
 
+    @Override
     public float getHeight(){return largo;}
 
+    @Override
     public Vector2 getOrigen(){
         return puntoRef;
+    }
+
+    @Override
+    public float getMasa() {
+        return troncoBody.getMass();
     }
 
     public Body getTroncoBody() {

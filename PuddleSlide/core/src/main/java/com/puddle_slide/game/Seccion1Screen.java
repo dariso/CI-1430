@@ -22,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
+import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -47,10 +48,14 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     private Sprite gotafantasmaSprite;
     private Sprite puasSprite;
     private Sprite gotaMuertaSprite;
+    private Sprite hojaSprite;
+    private Sprite ramaSprite;
+    private Texture ramaImg;
     private Texture gotaImage;
     private Texture gotaMuertaImage;
     private Texture gotaFantasmaImage;
     private Texture puasImg;
+    private Texture hojaImg;
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
@@ -63,10 +68,75 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     private float acumuladorCamara = 0;
     private Body ground;
     private Gota enki;
-    private Puas pua;
     boolean PAUSE = false;
     float volar = (float) 0.01;
     MyContactListener escuchadorColision;
+
+    //Troncos Estructurales
+    private TroncoQuebradizo tronco1;
+    private TroncoQuebradizo tronco2;
+    private TroncoQuebradizo tronco3;
+    private TroncoQuebradizo tronco4;
+    private TroncoQuebradizo tronco5;
+    private TroncoQuebradizo tronco6;
+    private TroncoQuebradizo tronco7;
+    private TroncoQuebradizo tronco8;
+    private TroncoQuebradizo tronco9;
+    private TroncoQuebradizo tronco10;
+    private TroncoQuebradizo tronco11;
+    private TroncoQuebradizo tronco12;
+    private TroncoQuebradizo tronco13;
+    private TroncoQuebradizo tronco14;
+    private TroncoQuebradizo tronco15;
+    private TroncoQuebradizo tronco16;
+    private TroncoQuebradizo tronco17;
+    private TroncoQuebradizo tronco18;
+    private TroncoQuebradizo troncoSalida;
+    private Tronco troncoGrande1;
+
+    //Inicio (hoja y rama)
+    private Hoja hoja;
+    private Rama rama;
+
+    //Objetos intensos
+    private Hongo hongo1;
+    private Hongo hongo2;
+    private Hongo hongo3;
+    private Hongo hongo4;
+    private Hongo hongo5;
+
+    private Puas pua1;
+    private Puas pua2;
+    private Puas pua3;
+    private Puas pua4;
+    private Puas pua5;
+    private Puas pua6;
+    private Puas pua7;
+    private Puas pua8;
+    private Puas pua9;
+    private Puas pua10;
+    private Puas pua11;
+    private Puas pua12;
+
+    //Objetos auxiliares
+    private TroncoQuebradizo troncoSuspendido1;
+    private TroncoQuebradizo troncoSuspendido2;
+    private TroncoQuebradizo troncoSuspendido3;
+
+    private Manzana manzana1;
+    private Manzana manzana2;
+    private Manzana manzana3;
+
+    //Joints
+    private MouseJoint dragJoint;
+    private MouseJoint resorteJoint;
+    private DistanceJoint troncoTecho1_joint1;
+    private DistanceJoint troncoTecho1_joint2;
+    private DistanceJoint troncoTecho2_joint1;
+    private DistanceJoint troncoTecho2_joint2;
+    private DistanceJoint troncoTecho3_joint1;
+    private DistanceJoint troncoTecho3_joint2;
+
 
     public Seccion1Screen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
@@ -75,15 +145,16 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         puasImg = new Texture (Gdx.files.internal("puasP.png"));
         gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
-        backgroundImage = new Texture(Gdx.files.internal("fondo3.png"));
+        hojaImg = new Texture(Gdx.files.internal("hoja2.png"));
+        ramaImg = new Texture(Gdx.files.internal("ramaIzquierdaAbajo.png"));
+        backgroundImage = new Texture(Gdx.files.internal("fondoMontanas.png"));
 
         gotaSprite = new Sprite(gotaImage);
         gotaMuertaSprite = new Sprite(gotaMuertaImage);
         gotafantasmaSprite = new Sprite(gotaFantasmaImage);
         puasSprite = new Sprite(puasImg);
-        gotaSprite.setPosition((Gdx.graphics.getWidth() / 4) * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
-        gotaMuertaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
-        puasSprite.setPosition(1,0);
+        hojaSprite = new Sprite(hojaImg);
+        ramaSprite = new Sprite(ramaImg);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -95,7 +166,6 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         escuchadorColision = MyContactListener.getInstancia(SoundControl.getInstancia());
 
     }
-    private Vector2 vec = new Vector2();
 
     @Override
     public void render(float delta) {
@@ -126,15 +196,10 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         gotaMuertaSprite.setPosition(enki.getX(), enki.getY());
         gotaMuertaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
 
-        puasSprite.setPosition(pua.getX(), pua.getY());
-        puasSprite.setRotation(pua.getAngulo() * MathUtils.radiansToDegrees);
-
 
         //Dibuja los sprites
         this.game.batch.begin();
         this.game.batch.draw(backgroundImage, 0, -camera.viewportHeight*2);
-        this.game.batch.draw(puasSprite, puasSprite.getX(), puasSprite.getY(), pua.getOrigen().x, pua.getOrigen().y, puasSprite.getWidth(),
-                puasSprite.getHeight(), puasSprite.getScaleX(), puasSprite.getScaleY(), puasSprite.getRotation());
         if(!escuchadorColision.getMuerta()) {
             this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                     gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
@@ -152,6 +217,10 @@ public class Seccion1Screen extends InputAdapter implements Screen {
 
     @Override
     public void resize(int width, int height) {
+    }
+
+    public void paintSprite(Sprite sprite, ObjetoJuego objeto){
+        
     }
 
     @Override
@@ -173,6 +242,15 @@ public class Seccion1Screen extends InputAdapter implements Screen {
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
             }
         });
+
+
+
+
+        //Creacion de la gota
+        enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
+
+        //Creacion de la hoja
+        hoja = new Hoja(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
 
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
@@ -213,12 +291,6 @@ public class Seccion1Screen extends InputAdapter implements Screen {
 
         groundEdge.dispose();
 
-        //Creacion del puas
-        pua = new Puas(world, puasSprite.getX(), puasSprite.getY(), puasSprite.getWidth(), puasSprite.getHeight(), false);
-
-        //Creacion de la gota
-        enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
-
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
         table.setFillParent(true);
@@ -251,6 +323,8 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         backgroundImage.dispose();
         gotaMuertaImage.dispose();
         gotaFantasmaImage.dispose();
+        ramaImg.dispose();
+        hojaImg.dispose();
         escuchadorColision.setMuerta(false);
     }
 
