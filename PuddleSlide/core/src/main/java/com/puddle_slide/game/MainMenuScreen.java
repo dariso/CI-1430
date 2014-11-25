@@ -51,7 +51,7 @@ public class MainMenuScreen implements Screen {
         table = new Table();
         world = new World(new Vector2(0, -9.8f), true);
         sonido = SoundControl.getInstancia();
-        escuchadorColision= MyContactListener.getInstancia(sonido);
+        escuchadorColision = MyContactListener.getInstancia(sonido);
     }
 
     @Override

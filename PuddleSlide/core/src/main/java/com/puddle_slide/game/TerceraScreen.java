@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -29,7 +32,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 /**
  * Created by Meli on 3/11/2014.
  */
-public class PuasScreen extends InputAdapter implements Screen{
+public class TerceraScreen extends InputAdapter implements Screen{
 
     final Puddle_Slide game;
     private OrthographicCamera camera;
@@ -43,11 +46,14 @@ public class PuasScreen extends InputAdapter implements Screen{
     private Sprite gotaSprite;
     private Sprite gotafantasmaSprite;
     private Sprite puasSprite;
+    private Sprite tronco1_sprite_Kalam;
     private Sprite gotaMuertaSprite;
     private Texture gotaImage;
     private Texture gotaMuertaImage;
     private Texture gotaFantasmaImage;
     private Texture puasImg;
+    private Texture tronco1_Img_Kalam;
+
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
@@ -55,24 +61,27 @@ public class PuasScreen extends InputAdapter implements Screen{
     //Objetos del mundo
     private World world;
     private Box2DDebugRenderer debugRenderer;
+    private OrthogonalTiledMapRenderer mapRenderer;
     private float vel = 10;
     private float deltaAcumulado = 0;
     private float acumuladorCamara = 0;
     private Body ground;
     private Gota enki;
     private Puas pua;
+    private Tronco tronco1_kalam;
     boolean PAUSE = false;
     float volar = (float) 0.01;
     MyContactListener escuchadorColision;
     SoundControl sonido;
-    public PuasScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
+    public TerceraScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty1.png"));
         puasImg = new Texture (Gdx.files.internal("puasP.png"));
         gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
-        backgroundImage = new Texture(Gdx.files.internal("fondoMontanas.png"));
+        backgroundImage = new Texture(Gdx.files.internal("fondo3.png"));
+        tronco1_Img_Kalam = new Texture(Gdx.files.internal("troncoDer.png"));
 
         gotaSprite = new Sprite(gotaImage);
         gotaMuertaSprite = new Sprite(gotaMuertaImage);
@@ -80,7 +89,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         puasSprite = new Sprite(puasImg);
         gotaSprite.setPosition((Gdx.graphics.getWidth() / 2) * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
         gotaMuertaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
-        puasSprite.setPosition(1,0);
+        puasSprite.setPosition(1,-16);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -91,7 +100,6 @@ public class PuasScreen extends InputAdapter implements Screen{
         camera.setToOrtho(false, game.V_WIDTH, game.V_HEIGHT);
         sonido = SoundControl.getInstancia();
         escuchadorColision = MyContactListener.getInstancia(sonido);
-
     }
     private Vector2 vec = new Vector2();
 
@@ -106,17 +114,32 @@ public class PuasScreen extends InputAdapter implements Screen{
         if (!PAUSE) {
             deltaAcumulado += delta;
             //para pruebas, espera dos segundos antes de mover la camara
+
+
+/*
+
             if (deltaAcumulado > 2) {
                 //pasar a metodo externo que mueve camara 768 pixeles para abajo
                 //prueba mueve 600 pixeles para abajo despues de dos segundos transcurridos.
                 acumuladorCamara += 3;
-                if (acumuladorCamara < 600) {
+                System.out.println(acumuladorCamara);
+                if (acumuladorCamara < 1534 ) {
                     moveCamera(acumuladorCamara);
+
+
                 }
             }
+
+*/
+
+
             camera.update();
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1 / 60f, 6, 2);
+            mapRenderer.setView(camera);
+            mapRenderer.render();
+
+            System.out.println("X: "+pua.getX()+" Y: "+pua.getY());
 
         }
         this.actualizarSprites();
@@ -139,8 +162,11 @@ public class PuasScreen extends InputAdapter implements Screen{
 
 
         //Dibuja los sprites
+
+
         this.game.batch.begin();
-        this.game.batch.draw(backgroundImage, 0, 0);
+        this.game.batch.draw(backgroundImage, 0,0);
+       // this.game.batch.draw(backgroundImage, 0,-camera.viewportHeight*2);
         this.game.batch.draw(puasSprite, puasSprite.getX(), puasSprite.getY(), pua.getOrigen().x, pua.getOrigen().y, puasSprite.getWidth(),
                 puasSprite.getHeight(), puasSprite.getScaleX(), puasSprite.getScaleY(), puasSprite.getRotation());
         if(!escuchadorColision.getMuerta()) {
@@ -154,12 +180,17 @@ public class PuasScreen extends InputAdapter implements Screen{
         }
         this.game.batch.end();
 
+
         stage.act();
         stage.draw();
+
+
+
     }
 
     @Override
     public void resize(int width, int height) {
+
     }
 
     @Override
@@ -167,6 +198,10 @@ public class PuasScreen extends InputAdapter implements Screen{
         world = new World(new Vector2(0, -9.8f), true);
         world.setContactListener(this.escuchadorColision);
         debugRenderer = new Box2DDebugRenderer();
+
+        TiledMap map = new TmxMapLoader().load("mapas/nivel.tmx");
+
+        mapRenderer = new OrthogonalTiledMapRenderer(map);
 
         //Boton de Pausa
         buttonPause.addListener(new ClickListener(){
@@ -193,7 +228,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         ground = world.createBody(groundDef);
 
         //definicion borde Izquierdo
-        groundEdge.set(-1 * WORLD_TO_BOX,-35 * WORLD_TO_BOX,-1 * WORLD_TO_BOX, camera.viewportHeight * WORLD_TO_BOX);
+        groundEdge.set(-1 * WORLD_TO_BOX,-1536 * WORLD_TO_BOX,-1 * WORLD_TO_BOX, camera.viewportHeight * WORLD_TO_BOX);
         fixtureDefIzq.shape = groundEdge;
         fixtureDefIzq.density = 0;
         ground.createFixture(fixtureDefIzq);
@@ -203,8 +238,7 @@ public class PuasScreen extends InputAdapter implements Screen{
 
         //definicion Piso
 
-
-        groundEdge.set(-180 * WORLD_TO_BOX, -1 * WORLD_TO_BOX, camera.viewportWidth * WORLD_TO_BOX, -1 * WORLD_TO_BOX);
+        groundEdge.set(-1 * WORLD_TO_BOX, 5 * WORLD_TO_BOX, camera.viewportWidth * WORLD_TO_BOX, 5 * WORLD_TO_BOX);
         fixtureDefPiso.shape = groundEdge;
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
@@ -213,7 +247,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
 
         //definicion borde Derecho
-        groundEdge.set((camera.viewportWidth+1) * WORLD_TO_BOX, -35*WORLD_TO_BOX, (camera.viewportWidth+1)*WORLD_TO_BOX, camera.viewportHeight*WORLD_TO_BOX);
+        groundEdge.set((camera.viewportWidth+1) * WORLD_TO_BOX, -1536*WORLD_TO_BOX, (camera.viewportWidth+1)*WORLD_TO_BOX, camera.viewportHeight*WORLD_TO_BOX);
         fixtureDefDer.shape = groundEdge;
         fixtureDefDer.density = 0;
         ground.createFixture(fixtureDefDer);
@@ -244,7 +278,7 @@ public class PuasScreen extends InputAdapter implements Screen{
 
     @Override
     public void pause() {
-         pauseGame();
+        pauseGame();
     }
 
     @Override

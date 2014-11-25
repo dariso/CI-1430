@@ -27,6 +27,8 @@ public class LevelScreen implements Screen {
     private Stage stage;
     private Table table;
     private TextButton buttonPuas;
+    private TextButton buttonRama;
+    private TextButton buttonTercera;
     private TextButton buttonReturn;
     private Label title;
     private World world;
@@ -35,9 +37,11 @@ public class LevelScreen implements Screen {
 
         game = elJuego;
         filehandle= Gdx.files.internal("skins/menuSkin.json");
-        textura=new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
-        skin= new Skin(filehandle,textura);
+        textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
+        skin = new Skin(filehandle,textura);
         buttonPuas = new TextButton("Puas", skin);
+        buttonRama = new TextButton("Ramas", skin);
+        buttonTercera = new TextButton("Tercera", skin);
         buttonReturn = new TextButton("Regresar",skin);
         title = new Label("Niveles de prueba",skin);
         title.setFontScale(2.0f);
@@ -78,8 +82,22 @@ public class LevelScreen implements Screen {
             }
         });
 
+        buttonRama.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new RamasScreen(game, world));
+            }
+        });
+        buttonTercera.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new TerceraScreen(game));
+            }
+        });
         table.add(title).colspan(2).center().padBottom(60).row();
         table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
+        table.add(buttonRama).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
+        table.add(buttonTercera).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6).padBottom(40).row();
         table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/6);
 
         table.setFillParent(true);
