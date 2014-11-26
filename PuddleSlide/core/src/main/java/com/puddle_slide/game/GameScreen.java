@@ -40,7 +40,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class GameScreen extends InputAdapter implements Screen {
 
     final Puddle_Slide game;
-    //animaciones
+
+
     private Sprite hojaSpriteEstrellitas1;
     private Sprite hojaSpriteEstrellitas2;
     private Sprite manzanaSpriteEstrellitas1;
@@ -272,8 +273,10 @@ public class GameScreen extends InputAdapter implements Screen {
         }
 
         if (!escuchadorColision.getMuerta()) {
-            if (enki.getY() < 10) {
+            if (enki.getY() < 50) {
                 gotaFeliz = true;
+            }
+            if (gotaFeliz) {
                 this.paintSprite(gotaFelizSprite, enki);
             } else {
                 if (!gotaFeliz) {
