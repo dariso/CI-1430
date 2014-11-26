@@ -61,6 +61,9 @@ public class MyContactListener implements ContactListener {
             String contrario;
             contrario = (String) objetoContrario.getUserData();
             if(contrario.equals("hoja")){
+
+               // objetoGota.getBody().applyAngularImpulse(100,true);
+
                 //  objetoGota.getBody().applyAngularImpulse(100,true);
                 sonido.sonidoGota();
 

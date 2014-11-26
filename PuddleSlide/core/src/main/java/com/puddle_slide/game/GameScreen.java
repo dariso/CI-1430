@@ -29,6 +29,7 @@ import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -48,6 +49,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private Table table;
     private TextButton buttonPause;
     private TextButton buttonRegresar;
+    private Label textoFPS;
     private Sprite gotaSprite;
     private Sprite gotaMuertaSprite;
     private Sprite gotafantasmaSprite;
@@ -119,7 +121,7 @@ public class GameScreen extends InputAdapter implements Screen {
         troncoDerImg = new Texture(Gdx.files.internal("troncoDer.png"));
         troncoIzqImg = new Texture(Gdx.files.internal("troncoIzq.png"));
         lianaImage = new Texture(Gdx.files.internal("LianaJoin.png"));
-        puasImg = new Texture(Gdx.files.internal("Puas3.png"));
+        puasImg = new Texture(Gdx.files.internal("puasP.png"));
         hongoImg = new Texture(Gdx.files.internal("hongosNaranja2.png"));
         manzanaImg = new Texture(Gdx.files.internal("manzana.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondoMontanas.png"));
@@ -144,6 +146,8 @@ public class GameScreen extends InputAdapter implements Screen {
         skin = new Skin(filehandle, textura);
         buttonPause = new TextButton("Pausa", skin);
         buttonRegresar = new TextButton("Menu", skin);
+        textoFPS = new Label(" ", skin);
+        textoFPS.setFontScale(1.2f);
         camera = new OrthographicCamera();
         this.escuchadorColision = escuchadorColision;
         this.world = world;
@@ -202,6 +206,7 @@ public class GameScreen extends InputAdapter implements Screen {
         manzanaSprite.setOrigin(manzana.getOrigen().x, manzana.getOrigen().y);
         manzanaSprite.setRotation(manzana.getAngulo() * MathUtils.radiansToDegrees);
 
+
         lianaSprite.setPosition(hoja.getHojaBody().getLocalPoint(jointHojaTroncoIzq.getLocalAnchorA()).x, hoja.getHojaBody().getLocalPoint(jointHojaTroncoIzq.getLocalAnchorA()).y);
 
         this.game.batch.begin();
@@ -247,6 +252,7 @@ public class GameScreen extends InputAdapter implements Screen {
         }
         this.game.batch.end();
 
+        textoFPS.setText(Integer.toString(Gdx.graphics.getFramesPerSecond()));
         stage.act();
         stage.draw();
     }
@@ -423,7 +429,8 @@ public class GameScreen extends InputAdapter implements Screen {
         groundEdge.dispose();
 
         table.add(buttonPause).size(camera.viewportWidth / 6, camera.viewportHeight / 12).padTop(-650).padLeft(stage.getCamera().viewportWidth - 250).row();
-        table.add(buttonRegresar).size(camera.viewportWidth / 6, camera.viewportHeight / 12).padTop(-675).padBottom(-200).padLeft(stage.getCamera().viewportWidth - 250);
+        table.add(buttonRegresar).size(camera.viewportWidth / 6, camera.viewportHeight / 12).padTop(-675).padBottom(-200).padLeft(stage.getCamera().viewportWidth - 250).row();
+        table.add(textoFPS).size(camera.viewportWidth / 6, camera.viewportHeight / 12).padTop(-675).padBottom(-300).padLeft(stage.getCamera().viewportWidth - 125);
         table.setFillParent(true);
         stage.addActor(table);
     }

@@ -208,16 +208,6 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     }
 
     public void actualizarSprites() {
-        gotaSprite.setPosition(enki.getX(), enki.getY());
-        gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
-
-
-        gotaMuertaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
-
-        hojaSprite.setRotation(hoja.getAngulo() * MathUtils.radiansToDegrees);
-
-        hongo1Sprite.setRotation(hongo1.getAngulo() * MathUtils.radiansToDegrees);
-
 
         //Dibuja los sprites
         //Pintar un tronco sin nada en esta posicion (camera.viewportWidth - 500) * WORLD_TO_BOX, (camera.viewportHeight - 175) * WORLD_TO_BOX
@@ -236,6 +226,7 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         paintSprite(troncoGrandeSprite, troncoGrande2);
         paintSprite(troncoSprite,troncoSuspendido);
         paintSprite(puasSprite, pua1);
+        paintSprite(troncoSprite, tronco8);
 
         if(!escuchadorColision.getMuerta()) {
             paintSprite(gotaSprite, enki);
@@ -298,19 +289,24 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         puasSprite.setPosition( (camera.viewportWidth - 630) * WORLD_TO_BOX, (camera.viewportHeight - 420) * WORLD_TO_BOX);
 
         //Creacion de la gota
-        enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
+        enki = new Gota(world, (camera.viewportWidth - 920) * WORLD_TO_BOX, (camera.viewportHeight - 100) * WORLD_TO_BOX, gotaSprite.getWidth());
 
         //Creacion de la hoja
-        hoja = new HojaBasica(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
+        hoja = new HojaBasica(world, (camera.viewportWidth - 940) * WORLD_TO_BOX, (camera.viewportHeight - 250) * WORLD_TO_BOX,
+                hojaSprite.getWidth(), hojaSprite.getHeight());
 
         //Creacion de la rama
-        rama = new Rama(world, ramaSprite.getX(), ramaSprite.getY(), ramaSprite.getWidth(), ramaSprite.getHeight(), 2);
+        rama = new Rama(world, (-ramaSprite.getWidth()/2) * WORLD_TO_BOX, (camera.viewportHeight - ramaSprite.getHeight()/2) * WORLD_TO_BOX,
+                ramaSprite.getWidth(), ramaSprite.getHeight(), 2);
 
         //Creacion de hongos
-        hongo1 = new Hongo(world, hongo1Sprite.getX(), hongo1Sprite.getY(), hongo1Sprite.getWidth() * 2, hongo1Sprite.getHeight() * 2, true);
+        hongo1 = new Hongo(world, (camera.viewportWidth - 810) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX,
+                hongo1Sprite.getWidth() * 2, hongo1Sprite.getHeight() * 2, true);
+        hongo2 = new Hongo(world,  );
 
         //Creacion de puas
-        pua1 = new Puas(world, puasSprite.getX(), puasSprite.getY(), puasSprite.getWidth()/2, puasSprite.getHeight()/2, false);
+        pua1 = new Puas(world, (camera.viewportWidth - 630) * WORLD_TO_BOX, (camera.viewportHeight - 420) * WORLD_TO_BOX, puasSprite.getWidth()/2,
+               puasSprite.getHeight()/2, false);
 
         //Creacion de tronco suspendido
         troncoSuspendido = new TroncoQuebradizo(world, (camera.viewportWidth - 400) * WORLD_TO_BOX, (camera.viewportHeight - 250) * WORLD_TO_BOX,
@@ -342,6 +338,10 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         //Segundo tronco inclinado
         tronco7 = new TroncoQuebradizo(world, (camera.viewportWidth - 300) * WORLD_TO_BOX, (camera.viewportHeight - 550) * WORLD_TO_BOX,
                 troncoSprite.getWidth(), troncoSprite.getHeight(), -100, false);
+        //Cuarto tronco vertical
+        tronco8 = new TroncoQuebradizo(world, (camera.viewportWidth -300) * WORLD_TO_BOX, (camera.viewportHeight - 550) * WORLD_TO_BOX,
+                troncoSprite.getWidth()/2, troncoSprite.getHeight()/2, 40, false);
+
 
 
         //Definicion del joint entre la hoja y la rama

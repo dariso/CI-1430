@@ -44,7 +44,11 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     private TextButton buttonPause;
     private TextButton buttonRegresar;
     private Sprite gotaSprite;
+    private Sprite manzanaBrilla1Sprite;
+    private Sprite manzanaBrilla2Sprite;
 
+    private Texture manzanaBrilla1Img;
+    private Texture manzanaBrilla2Img;
     private Sprite manzanaSprite;
     private Texture gotaImage;
     private Texture manzanaImg;
@@ -69,6 +73,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     boolean PAUSE = false;
     private Body body;
     private Body body2;
+    int espere = 0;
 
     public ManzanaScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
@@ -78,7 +83,11 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         troncoDerImage = new Texture(Gdx.files.internal("troncoDer.png"));
         troncoIzqImage = new Texture(Gdx.files.internal("troncoIzq.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
+        manzanaBrilla1Img = new Texture(Gdx.files.internal("ManzanaBrillante1.png"));
+        manzanaBrilla2Img = new Texture(Gdx.files.internal("ManzanaBrillante2.png"));
 
+        manzanaBrilla1Sprite = new Sprite(manzanaBrilla1Img);
+        manzanaBrilla2Sprite = new Sprite(manzanaBrilla2Img);
         gotaSprite = new Sprite(gotaImage);
         manzanaSprite = new Sprite(manzanaImg);
         troncoDerSprite = new Sprite(troncoDerImage);
@@ -131,21 +140,38 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         manzanaSprite.setRotation(manzana.getAngulo() * MathUtils.radiansToDegrees);
         //Dibuja los sprites
 
-        this.game.batch.begin();
+        this.game.batch.begin();  //Creacion de la manzana
         this.game.batch.draw(backgroundImage, 0, 0);
-        this.game.batch.draw(manzanaSprite, manzanaSprite.getX(), manzanaSprite.getY(), manzana.getOrigen().x, manzana.getOrigen().y, manzanaSprite.getWidth(),
-                manzanaSprite.getHeight(), manzanaSprite.getScaleX(), manzanaSprite.getScaleY(), manzanaSprite.getRotation());
+        if(0<=espere && espere<15||PAUSE) {
+
+            this.game.batch.draw(manzanaSprite, manzanaSprite.getX(), manzanaSprite.getY(), manzana.getOrigen().x, manzana.getOrigen().y, manzanaSprite.getWidth(),
+                    manzanaSprite.getHeight(), manzanaSprite.getScaleX(), manzanaSprite.getScaleY(), manzanaSprite.getRotation());
+        }
+        if(15<=espere && espere<30&&!PAUSE){
+            this.game.batch.draw(manzanaBrilla1Sprite, manzanaSprite.getX(), manzanaSprite.getY(), manzana.getOrigen().x, manzana.getOrigen().y, manzanaBrilla1Sprite.getWidth(),
+                    manzanaBrilla1Sprite.getHeight(), manzanaBrilla1Sprite.getScaleX(), manzanaBrilla1Sprite.getScaleY(), manzanaSprite.getRotation());
+        }
+        if(30<=espere && espere<=45&&!PAUSE){
+            this.game.batch.draw(manzanaBrilla2Sprite, manzanaSprite.getX(), manzanaSprite.getY(), manzana.getOrigen().x, manzana.getOrigen().y, manzanaBrilla2Sprite.getWidth(),
+                    manzanaBrilla2Sprite.getHeight(), manzanaBrilla2Sprite.getScaleX(), manzanaBrilla2Sprite.getScaleY(), manzanaSprite.getRotation());
+        }
+
         this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                 gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
-        this.game.batch.draw(troncoDerSprite, troncoDerSprite.getX(), troncoDerSprite.getY()+150,troncoDerSprite.getX(),troncoDerSprite.getY(),troncoDerSprite.getWidth(),
-                troncoDerSprite.getHeight()-200, troncoDerSprite.getScaleX(), troncoDerSprite.getScaleY(),  0.16f*MathUtils.radiansToDegrees);
-        this.game.batch.draw(troncoIzqSprite, troncoIzqSprite.getX()+240, troncoIzqSprite.getY()+60,troncoIzqSprite.getX(),troncoIzqSprite.getY(),troncoIzqSprite.getWidth(),
-                troncoIzqSprite.getHeight()-200, troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(),  -0.18f*MathUtils.radiansToDegrees);
-
+        this.game.batch.draw(troncoDerSprite, troncoDerSprite.getX()-100, troncoDerSprite.getY()+310,troncoDerSprite.getX(),troncoDerSprite.getY(),troncoDerSprite.getWidth(),
+                troncoDerSprite.getHeight()-20, troncoDerSprite.getScaleX(), troncoDerSprite.getScaleY(),  -0.30f*MathUtils.radiansToDegrees);
+        this.game.batch.draw(troncoIzqSprite, troncoIzqSprite.getX()+250, troncoIzqSprite.getY()-70,troncoIzqSprite.getX(),troncoIzqSprite.getY(),troncoIzqSprite.getWidth(),
+                troncoIzqSprite.getHeight(), troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(),  0.23f*MathUtils.radiansToDegrees);
         this.game.batch.end();
+
+        if(espere==45){
+            espere=0;
+        }
+        espere++;
 
         stage.act();
         stage.draw();
+
     }
 
     @Override
@@ -211,7 +237,6 @@ public class ManzanaScreen extends InputAdapter implements Screen {
 
         groundEdge.dispose();
 
-
         BodyDef bd = new BodyDef();
         bd.type = BodyDef.BodyType.StaticBody;
         bd.position.set(0, 0);
@@ -244,14 +269,12 @@ public class ManzanaScreen extends InputAdapter implements Screen {
 
         body2.createFixture(fixtureDef).setUserData("tronco");
 
-
         //Creacion de la manzana
         manzana = new Manzana(world, manzanaSprite.getX(), manzanaSprite.getY(), manzanaSprite.getWidth(), manzanaSprite.getHeight());
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
-        //Otro tipo de Joint
-
+        //Joint
         DistanceJointDef jointDef = new DistanceJointDef();
         jointDef.initialize(body, manzana.getManzanaBody(), new Vector2(250*WORLD_TO_BOX, 390*WORLD_TO_BOX) , new Vector2(manzana.getX(),manzana.getY()) );
         jointDef.collideConnected = true;
@@ -263,7 +286,6 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
-
     }
 
     @Override
