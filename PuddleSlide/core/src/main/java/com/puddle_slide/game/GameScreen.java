@@ -41,6 +41,11 @@ public class GameScreen extends InputAdapter implements Screen {
 
     final Puddle_Slide game;
 
+
+    private Sprite hojaSpriteEstrellitas1;
+    private Sprite hojaSpriteEstrellitas2;
+    private Sprite manzanaSpriteEstrellitas1;
+    private Sprite manzanaSpriteEstrellitas2;
     private float acumuladorCamara = 0;
     private OrthographicCamera camera;
     private FileHandle filehandle;
@@ -62,10 +67,11 @@ public class GameScreen extends InputAdapter implements Screen {
     private Sprite troncoDinamicoSprite;
     private Sprite hongoSprite;
     private Sprite manzanaSprite;
-    private Sprite lianaSprite;
+    private Sprite gotaFelizSprite;
     private Sprite puas1Sprite;
     private Sprite puas2Sprite;
     private Texture gotaImage;
+    private Texture gottyImage;
     private Texture hojaImg;
     private Texture troncoDerImg;
     private Texture troncoIzqImg;
@@ -76,6 +82,10 @@ public class GameScreen extends InputAdapter implements Screen {
     private Texture gotaMuertaImage;
     private Texture gotaFantasmaImage;
     private Texture backgroundImage;
+    private Texture hojaStarImg1;
+    private Texture hojaStarImg2;
+    private Texture manzanaStarImg1;
+    private Texture manzanaStarImg2;
     MyContactListener escuchadorColision;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
@@ -129,6 +139,8 @@ public class GameScreen extends InputAdapter implements Screen {
     boolean PAUSE = false;
     float volar = (float) 0.01;
     private float acumuladorDelta = 0;
+    private int espere = 0;
+    private boolean gotaFeliz = false;
 
 
     public GameScreen(final com.puddle_slide.game.Puddle_Slide elJuego, MyContactListener escuchadorColision, World world) {
@@ -145,6 +157,16 @@ public class GameScreen extends InputAdapter implements Screen {
         hongoImg = new Texture(Gdx.files.internal("rsz_hongosnaranja2.png"));
         manzanaImg = new Texture(Gdx.files.internal("manzana.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondoConCharco.png"));
+        manzanaStarImg1 = new Texture(Gdx.files.internal("ManzanaBrillante1.png"));
+        manzanaStarImg2 = new Texture(Gdx.files.internal("ManzanaBrillante2.png"));
+        hojaStarImg1 = new Texture(Gdx.files.internal("hoja2Brillante1.png"));
+        hojaStarImg2 = new Texture(Gdx.files.internal("hoja2Brillante2.png"));
+        hojaSpriteEstrellitas1 = new Sprite(hojaStarImg1);
+        hojaSpriteEstrellitas2 = new Sprite(hojaStarImg2);
+        manzanaSpriteEstrellitas1 = new Sprite(manzanaStarImg1);
+        manzanaSpriteEstrellitas2 = new Sprite(manzanaStarImg2);
+        gottyImage = new Texture(Gdx.files.internal("gotty.png"));
+        gotaFelizSprite = new Sprite(gottyImage);
         stage = new Stage(new StretchViewport(game.V_WIDTH, game.V_HEIGHT));
         table = new Table();
 
@@ -190,7 +212,7 @@ public class GameScreen extends InputAdapter implements Screen {
         //Si no esta en pausa actualiza las posiciones
         if (!PAUSE) {
 
-            if (enki.getY() > 310 && !escuchadorColision.getMuerta()) {
+            if (enki.getY() > 320 && !escuchadorColision.getMuerta()) {
                 moveCamera(0, enki.getY() + 70);
             }
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
@@ -226,13 +248,39 @@ public class GameScreen extends InputAdapter implements Screen {
         this.paintSprite(puas1Sprite, puas2);
         this.paintSprite(puas1Sprite, puas3);
         this.paintSprite(puas1Sprite, puas4);
-        this.paintSprite(manzanaSprite, manzana);
-        this.paintSprite(manzanaSprite, manzana2);
         this.paintSprite(hongoSprite, hongo);
-        this.paintSprite(hojaSprite, hoja);
+
+        //Animacion estrellitas
+        if (0 <= espere && espere < 15 || PAUSE) {
+            this.paintSprite(hojaSprite, hoja);
+            this.paintSprite(manzanaSprite, manzana);
+            this.paintSprite(manzanaSprite, manzana2);
+        }
+        if (15 <= espere && espere < 30 && !PAUSE) {
+            this.paintSprite(hojaSpriteEstrellitas1, hoja);
+            this.paintSprite(manzanaSpriteEstrellitas1, manzana);
+            this.paintSprite(manzanaSpriteEstrellitas1, manzana2);
+        }
+        if (30 <= espere && espere <= 45 && !PAUSE) {
+            this.paintSprite(hojaSpriteEstrellitas2, hoja);
+            this.paintSprite(manzanaSpriteEstrellitas2, manzana);
+            this.paintSprite(manzanaSpriteEstrellitas2, manzana2);
+        }
+
+        espere++;
+        if (espere == 45) {
+            espere = 0;
+        }
 
         if (!escuchadorColision.getMuerta()) {
-            this.paintSprite(gotaSprite, enki);
+            if (enki.getY() < 10) {
+                gotaFeliz = true;
+                this.paintSprite(gotaFelizSprite, enki);
+            } else {
+                if (!gotaFeliz) {
+                    this.paintSprite(gotaSprite, enki);
+                }
+            }
         } else {
             this.game.batch.draw(gotaMuertaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaMuertaSprite.getWidth(),
                     gotaMuertaSprite.getHeight(), gotaMuertaSprite.getScaleX(), gotaMuertaSprite.getScaleY(), gotaSprite.getRotation());
