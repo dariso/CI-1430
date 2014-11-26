@@ -48,7 +48,7 @@ public class LevelScreen implements Screen {
         buttonRama = new TextButton("Ramas", skin);
         buttonSeccion1 = new TextButton("Seccion 1", skin);
         buttonTercera = new TextButton("Tercera", skin);
-        
+
         buttonReturn = new TextButton("Regresar", skin);
         title = new Label("Niveles de prueba", skin);
         title.setFontScale(2.0f);
