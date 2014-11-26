@@ -55,6 +55,7 @@ public class TerceraScreen extends InputAdapter implements Screen{
     private Sprite hojaSprite;
     private Sprite ramaSprite;
     private Sprite hongoSprite;
+    private Sprite hongoSprite2;
 
     private Sprite gotaMuertaSprite;
     private Texture gotaImage;
@@ -67,6 +68,7 @@ public class TerceraScreen extends InputAdapter implements Screen{
     private Texture hojaImg;
     private Texture ramaImg;
     private Texture hongoImg;
+    private Texture hongoImg2;
 
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
@@ -88,8 +90,10 @@ public class TerceraScreen extends InputAdapter implements Screen{
     private HojaBasica hoja;
     private Rama rama;
     private Hongo hongo;
+    private Hongo hongo2;
 
-    private DistanceJoint jointPuasTronco_Kalam;
+
+    private DistanceJoint jointHongosJoint;
     private DistanceJoint hojaRamaJoint;
     private MouseJoint mouseJoint;
     private MouseJoint pruebaResorteJoint;
@@ -108,15 +112,17 @@ public class TerceraScreen extends InputAdapter implements Screen{
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondo3.png"));
 
-        tronco1_Img_Kalam = new Texture(Gdx.files.internal("troncoQuebradizo.png"));
+        tronco1_Img_Kalam = new Texture(Gdx.files.internal("troncoIzq.png"));
         tronco2_Img_Kalam = new Texture(Gdx.files.internal("troncoIzq.png"));
         hojaImg = new Texture(Gdx.files.internal("hoja2.png"));
         ramaImg = new Texture(Gdx.files.internal("RamaIzquierdaParaHojas.png"));
         hongoImg = new Texture(Gdx.files.internal("hongosNaranja2.png"));
+        hongoImg2 = new Texture(Gdx.files.internal("hongosNaranja2.png"));
 
         hojaSprite = new Sprite(hojaImg);
         ramaSprite = new Sprite(ramaImg);
         hongoSprite = new Sprite(hongoImg);
+        hongoSprite2 = new Sprite(hongoImg2);
 
         gotaSprite = new Sprite(gotaImage);
         gotaMuertaSprite = new Sprite(gotaMuertaImage);
@@ -128,10 +134,8 @@ public class TerceraScreen extends InputAdapter implements Screen{
 
         puasSprite.setPosition(400* WORLD_TO_BOX,400* WORLD_TO_BOX);
 
-
         tronco1_sprite_Kalam = new Sprite(tronco1_Img_Kalam);
         tronco2_sprite_Kalam = new Sprite(tronco2_Img_Kalam);
-
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -199,7 +203,6 @@ public class TerceraScreen extends InputAdapter implements Screen{
         puasSprite.setPosition(pua.getX(), pua.getY());
         puasSprite.setRotation(pua.getAngulo() * MathUtils.radiansToDegrees);
 
-
         hojaSprite.setPosition(hoja.getX(), hoja.getY());
         hojaSprite.setOrigin(hoja.getOrigen().x, hoja.getOrigen().y);
         hojaSprite.setRotation(hoja.getAngulo() * MathUtils.radiansToDegrees);
@@ -207,6 +210,10 @@ public class TerceraScreen extends InputAdapter implements Screen{
         hongoSprite.setPosition(hongo.getX(), hongo.getY());
         hongoSprite.setOrigin(hongo.getOrigen().x, hongo.getOrigen().y);
         hongoSprite.setRotation(hongo.getAngulo() * MathUtils.radiansToDegrees);
+
+        hongoSprite2.setPosition(hongo2.getX(), hongo2.getY());
+        hongoSprite2.setOrigin(hongo2.getOrigen().x, hongo2.getOrigen().y);
+        hongoSprite2.setRotation(hongo2.getAngulo() * MathUtils.radiansToDegrees);
 
         ramaSprite.setPosition(rama.getX(), rama.getY());
 
@@ -228,8 +235,11 @@ public class TerceraScreen extends InputAdapter implements Screen{
         this.game.batch.draw(tronco2_sprite_Kalam, tronco2_kalam.getX(), tronco2_kalam.getY(), tronco2_kalam.getOrigen().x, tronco2_kalam.getOrigen().y, tronco2_sprite_Kalam.getWidth()/2,
                 tronco2_sprite_Kalam.getHeight()/2 , tronco2_sprite_Kalam.getScaleX(), tronco2_sprite_Kalam.getScaleY(), tronco2_kalam.getAngulo() * MathUtils.radiansToDegrees);
 
-        this.game.batch.draw(hongoSprite, hongoSprite.getX(), hongoSprite.getY(), hongo.getOrigen().x, hongo.getOrigen().y, 259,
-                250, hongoSprite.getScaleX(), hongoSprite.getScaleY(), hongoSprite.getRotation());
+        this.game.batch.draw(hongoSprite, hongoSprite.getX(), hongoSprite.getY(), hongo.getOrigen().x, hongo.getOrigen().y,hongoSprite.getWidth()/2,
+                hongoSprite.getHeight()/2, hongoSprite.getScaleX(), hongoSprite.getScaleY(), hongoSprite.getRotation());
+
+        this.game.batch.draw(hongoSprite2, hongoSprite2.getX(), hongoSprite2.getY(), hongo2.getOrigen().x, hongo2.getOrigen().y,hongoSprite2.getWidth()/2,
+                hongoSprite2.getHeight()/2, hongoSprite2.getScaleX(), hongoSprite2.getScaleY(), hongoSprite2.getRotation());
 
         if(!escuchadorColision.getMuerta()) {
             this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
@@ -258,12 +268,6 @@ public class TerceraScreen extends InputAdapter implements Screen{
         world.setContactListener(this.escuchadorColision);
         debugRenderer = new Box2DDebugRenderer();
 
-        //TiledMap map = new TmxMapLoader().load("mapas/nivel.tmx");
-
-       // mapRenderer = new OrthogonalTiledMapRenderer(map);
-
-
-
         //manejo de multiples input processors
         //primero se llama al procesador que responde a los objetos del juego
         //si este retorna falso, el input lo debe manejar el del UI ya que se toco un boton
@@ -290,12 +294,11 @@ public class TerceraScreen extends InputAdapter implements Screen{
         gotaSprite.setPosition((camera.viewportWidth - 825) * WORLD_TO_BOX, (camera.viewportHeight - 300) * WORLD_TO_BOX);
         hojaSprite.setPosition((camera.viewportWidth - 900) * WORLD_TO_BOX, (camera.viewportHeight - 400) * WORLD_TO_BOX);
         ramaSprite.setPosition(0, (camera.viewportHeight - 300) * WORLD_TO_BOX);
-        hongoSprite.setPosition((camera.viewportWidth - 250) * WORLD_TO_BOX, 5* WORLD_TO_BOX);
-
+        hongoSprite.setPosition(0 * WORLD_TO_BOX, 5* WORLD_TO_BOX);
+        hongoSprite2.setPosition((camera.viewportWidth - 250) * WORLD_TO_BOX, 5* WORLD_TO_BOX);
 
         //Creacion de la hoja
         hoja = new HojaBasica(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
-
 
         //Creacion de la rama para hojas
         rama = new Rama(world, ramaSprite.getX(), ramaSprite.getY(), ramaSprite.getWidth(), ramaSprite.getHeight(), 1);
@@ -303,10 +306,20 @@ public class TerceraScreen extends InputAdapter implements Screen{
         //Definicion del joint entre la hoja y la rama
         DistanceJointDef jointDef = new DistanceJointDef();
         jointDef.localAnchorA.set(rama.getRamaBody().getLocalPoint(new Vector2(1.3920f, 5.2f)));
-        jointDef.localAnchorB.set(hoja.getHojaBody().getLocalPoint(new Vector2( 9.392f, 1.7279998f)));
+        jointDef.localAnchorB.set(hoja.getHojaBody().getLocalPoint(new Vector2( 1.4079f, 4.736f)));
         jointDef.bodyA = rama.getRamaBody();
         jointDef.bodyB = hoja.getHojaBody();
         jointDef.length = 0.3f;
+
+        hojaRamaJoint = (DistanceJoint) world.createJoint(jointDef);
+
+        //Definicion del joint entre los hongos
+        DistanceJointDef jointDef2 = new DistanceJointDef();
+        jointDef2.localAnchorA.set(rama.getRamaBody().getLocalPoint(new Vector2(1.3920f, 5.2f)));
+        jointDef2.localAnchorB.set(hongo.getHongoBody().getLocalPoint(new Vector2( 1.4079f, 4.736f)));
+        jointDef2.bodyA = rama.getRamaBody();
+        jointDef2.bodyB = hoja.getHojaBody();
+        jointDef2.length = 0.3f;
 
         hojaRamaJoint = (DistanceJoint) world.createJoint(jointDef);
 
@@ -318,14 +331,6 @@ public class TerceraScreen extends InputAdapter implements Screen{
         md.maxForce = 500 * hoja.getHojaBody().getMass();
         md.target.set(hoja.getX()*WORLD_TO_BOX, hoja.getY()*WORLD_TO_BOX);
         pruebaResorteJoint = (MouseJoint) world.createJoint(md);
-
-
-
-
-
-
-
-
 
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
@@ -356,7 +361,6 @@ public class TerceraScreen extends InputAdapter implements Screen{
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
         fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA|FigureId.BIT_HONGO;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
-
 
         //definicion Piso
 
@@ -390,23 +394,17 @@ public class TerceraScreen extends InputAdapter implements Screen{
         tronco2_kalam = new Tronco(world, (camera.viewportWidth - 400) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX, tronco2_sprite_Kalam.getWidth()/2, tronco2_sprite_Kalam.getHeight()/2, 0.34f, false, false);
 
         //Creacion del hongo
-        hongo = new Hongo(world, hongoSprite.getX(), hongoSprite.getY(), hongoSprite.getWidth(),hongoSprite.getHeight());
+        hongo = new Hongo(world, hongoSprite.getX(), hongoSprite.getY(), hongoSprite.getWidth()/2,hongoSprite.getHeight()/2,true);
 
-
-
-
+        //Creacion del hongo2
+        hongo2 = new Hongo(world, hongoSprite2.getX(), hongoSprite2.getY(), hongoSprite2.getWidth()/2,hongoSprite2.getHeight()/2,true);
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
         table.setFillParent(true);
         stage.addActor(table);
-       // Gdx.input.setInputProcessor(stage);
 
     }
-
-
-
-
 
     //Para el arrastre de objetos de juego
     private Vector3 tmp = new Vector3();
