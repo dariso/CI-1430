@@ -58,6 +58,7 @@ public class TerceraScreen extends InputAdapter implements Screen{
     private Sprite ramaSprite;
     private Sprite hongoSprite;
     private Sprite hongoSprite2;
+    private Sprite puaGrandeSprite;
 
     private Sprite gotaMuertaSprite;
     private Texture gotaImage;
@@ -73,6 +74,7 @@ public class TerceraScreen extends InputAdapter implements Screen{
     private Texture ramaImg;
     private Texture hongoImg;
     private Texture hongoImg2;
+    private Texture puaGrandeImg;
 
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
@@ -97,6 +99,7 @@ public class TerceraScreen extends InputAdapter implements Screen{
     private Hongo hongo;
     private Hongo hongo2;
     private Manzana manzana;
+    private Puas puaGrande;
 
     private DistanceJoint puaJoint;
     private DistanceJoint hojaRamaJoint;
@@ -121,6 +124,7 @@ public class TerceraScreen extends InputAdapter implements Screen{
         tronco2_Img_Kalam = new Texture(Gdx.files.internal("troncoIzq.png"));
         tronco3_Img_Kalam = new Texture(Gdx.files.internal("troncoQuebradizo.png"));
         manzana_Img = new Texture(Gdx.files.internal("manzana.png"));
+        puaGrandeImg = new Texture(Gdx.files.internal("puasP.png"));
         hojaImg = new Texture(Gdx.files.internal("hoja2.png"));
         ramaImg = new Texture(Gdx.files.internal("RamaIzquierdaParaHojas.png"));
         hongoImg = new Texture(Gdx.files.internal("hongosNaranja2.png"));
@@ -143,6 +147,7 @@ public class TerceraScreen extends InputAdapter implements Screen{
         tronco2_sprite_Kalam = new Sprite(tronco2_Img_Kalam);
         tronco3_sprite_Kalam = new Sprite(tronco3_Img_Kalam);
         manzana_sprite = new Sprite(manzana_Img);
+        puaGrandeSprite = new Sprite(puaGrandeImg);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -187,7 +192,7 @@ public class TerceraScreen extends InputAdapter implements Screen{
 
             camera.update();
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
-            world.step(1 / 60f, 6, 2);
+            world.step(1 / 45f, 6, 2);
             //mapRenderer.setView(camera);
             //mapRenderer.render();
 
@@ -209,6 +214,9 @@ public class TerceraScreen extends InputAdapter implements Screen{
 
         puasSprite.setPosition(pua.getX(), pua.getY());
         puasSprite.setRotation(pua.getAngulo() * MathUtils.radiansToDegrees);
+
+        puaGrandeSprite.setPosition(pua.getX(), pua.getY());
+        puaGrandeSprite.setRotation(pua.getAngulo() * MathUtils.radiansToDegrees);
 
         hojaSprite.setPosition(hoja.getX(), hoja.getY());
         hojaSprite.setOrigin(hoja.getOrigen().x, hoja.getOrigen().y);
@@ -239,6 +247,8 @@ public class TerceraScreen extends InputAdapter implements Screen{
         paintSprite(tronco3_sprite_Kalam,tronco3_kalam);
         paintSprite(hongoSprite,hongo);
         paintSprite(hongoSprite2,hongo2);
+        paintSprite(manzana_sprite,manzana);
+        paintSprite(puasSprite,puaGrande);
 
         if(!escuchadorColision.getMuerta()) {
             this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
@@ -292,12 +302,13 @@ public class TerceraScreen extends InputAdapter implements Screen{
             }
         });
 
-        puasSprite.setPosition((camera.viewportWidth-624)* WORLD_TO_BOX,(camera.viewportHeight-268)* WORLD_TO_BOX);
+        puasSprite.setPosition((camera.viewportWidth-700)* WORLD_TO_BOX,(camera.viewportHeight-268)* WORLD_TO_BOX);
+        puaGrandeSprite.setPosition((camera.viewportWidth-300)* WORLD_TO_BOX,(camera.viewportHeight-763)* WORLD_TO_BOX);
         gotaSprite.setPosition((camera.viewportWidth - 825) * WORLD_TO_BOX, (camera.viewportHeight - 300) * WORLD_TO_BOX);
         hojaSprite.setPosition((camera.viewportWidth - 900) * WORLD_TO_BOX, (camera.viewportHeight - 400) * WORLD_TO_BOX);
-        ramaSprite.setPosition(0, (camera.viewportHeight - 300) * WORLD_TO_BOX);
+        ramaSprite.setPosition((camera.viewportWidth - 1024), (camera.viewportHeight - 300) * WORLD_TO_BOX);
         hongoSprite.setPosition((camera.viewportWidth-624) * WORLD_TO_BOX, (camera.viewportHeight-368)* WORLD_TO_BOX);
-        hongoSprite2.setPosition((camera.viewportWidth - 250) * WORLD_TO_BOX, 5* WORLD_TO_BOX);
+        hongoSprite2.setPosition((camera.viewportWidth - 250) * WORLD_TO_BOX, (camera.viewportHeight-763)* WORLD_TO_BOX);
 
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
@@ -326,10 +337,10 @@ public class TerceraScreen extends InputAdapter implements Screen{
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA|FigureId.BIT_HONGO;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA|FigureId.BIT_HONGO|FigureId.BIT_MANZANA;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
 
-        //definicion Piso
+        //definicion bloque
 
         groundEdge.set(400 * WORLD_TO_BOX, 400 * WORLD_TO_BOX, 600 * WORLD_TO_BOX, 400 * WORLD_TO_BOX);
         fixtureDefBloque.shape = groundEdge;
@@ -367,11 +378,17 @@ public class TerceraScreen extends InputAdapter implements Screen{
         //Creacion del hongo2
         hongo2 = new Hongo(world, hongoSprite2.getX(), hongoSprite2.getY(), hongoSprite2.getWidth()/2,hongoSprite2.getHeight()/2,true);
 
+        //Creacion del puas
+        puaGrande = new Puas(world, puaGrandeSprite.getX(),puaGrandeSprite.getY(), puaGrandeSprite.getWidth(), puaGrandeSprite.getHeight(), false);
         //Creacion de la hoja
         hoja = new HojaBasica(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
 
         //Creacion de la rama para hojas
         rama = new Rama(world, ramaSprite.getX(), ramaSprite.getY(), ramaSprite.getWidth(), ramaSprite.getHeight(), 1);
+
+        //Creacion de manzana
+        manzana = new Manzana(world, (camera.viewportWidth - 430) * WORLD_TO_BOX, (camera.viewportHeight - 500) * WORLD_TO_BOX,
+                manzana_sprite.getWidth(), manzana_sprite.getHeight());
 
         //Definicion del joint entre la hoja y la rama
         DistanceJointDef jointDef = new DistanceJointDef();
@@ -383,9 +400,9 @@ public class TerceraScreen extends InputAdapter implements Screen{
 
         hojaRamaJoint = (DistanceJoint) world.createJoint(jointDef);
 
-
+        //joint pua y tronco
         jointDef = new DistanceJointDef();
-        jointDef.localAnchorA.set(tronco1_kalam.getTroncoBody().getLocalPoint(new Vector2(5.279f ,7.391f)));
+        jointDef.localAnchorA.set(tronco1_kalam.getTroncoBody().getLocalPoint(new Vector2(3.792f ,7.375f)));
         jointDef.localAnchorB.set(new Vector2(0f, 1.3f));
         jointDef.bodyA = tronco1_kalam.getTroncoBody();
         jointDef.bodyB = pua.getPuasBody();
@@ -393,16 +410,17 @@ public class TerceraScreen extends InputAdapter implements Screen{
         jointDef.length = 0.01f;
         puaJoint = (DistanceJoint) world.createJoint(jointDef);
 
-/*
+
         jointDef = new DistanceJointDef();
-        jointDef.localAnchorA.set(tronco1_kalam.getTroncoBody().getLocalPoint(new Vector2(1.40799f, 2.3839f)));
-        jointDef.localAnchorB.set(manzana.getManzanaBody().getLocalPoint(new Vector2(2.496f, 3.1114f)));
-        jointDef.bodyA = tronco1_kalam.getTroncoBody();
+        jointDef.localAnchorA.set(tronco2_kalam.getTroncoBody().getLocalPoint(new Vector2(6.464f, 4.112f)));
+        jointDef.localAnchorB.set(manzana.getManzanaBody().getLocalPoint(new Vector2(6.448f, 4.063f)));
+        jointDef.bodyA = tronco2_kalam.getTroncoBody();
         jointDef.bodyB = manzana.getManzanaBody();
-        jointDef.length = 0.3f;
+        jointDef.collideConnected = false;
+        jointDef.length = 0.01f;
 
         jointManzanaTronco = (DistanceJoint) world.createJoint(jointDef);
-*/
+
         //Prueba MouseJoint como resorte
 
         MouseJointDef md = new MouseJointDef();
@@ -437,6 +455,10 @@ public class TerceraScreen extends InputAdapter implements Screen{
                 md.target.set(tmp.x, tmp.y);
                 mouseJoint = (MouseJoint) world.createJoint(md);
                 fixture.getBody().setAwake(true);
+            }
+            if (fixture.getBody() == manzana.getManzanaBody() && jointManzanaTronco != null) {
+                world.destroyJoint(jointManzanaTronco);
+                jointManzanaTronco = null;
             }
             return false;
         }
@@ -494,6 +516,14 @@ public class TerceraScreen extends InputAdapter implements Screen{
         skin.dispose();
         gotaImage.dispose();
         puasImg.dispose();
+        puaGrandeImg.dispose();
+        manzana_Img.dispose();
+        tronco1_Img_Kalam.dispose();
+        tronco2_Img_Kalam.dispose();
+        hongoImg.dispose();
+        hongoImg2.dispose();
+        hojaImg.dispose();
+        ramaImg.dispose();
         backgroundImage.dispose();
         gotaMuertaImage.dispose();
         gotaFantasmaImage.dispose();
