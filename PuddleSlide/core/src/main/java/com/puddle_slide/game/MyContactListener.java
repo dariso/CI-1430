@@ -65,7 +65,7 @@ public class MyContactListener implements ContactListener {
                 sonido.sonidoGota();
 
             }else if(contrario.equals("hojaBasica")){
-            }else if(contrario.equals("hongo")){
+            }else if(contrario.equals("hongo") || contrario.equals("hongoPequeño")){
 
                 impulso.x = 4 * objetoA.getBody().getMass();
                 impulso.y = 2 * objetoA.getBody().getMass();
