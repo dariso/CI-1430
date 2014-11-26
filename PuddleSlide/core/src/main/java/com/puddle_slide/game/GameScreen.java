@@ -40,8 +40,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class GameScreen extends InputAdapter implements Screen {
 
     final Puddle_Slide game;
-
-
+    //animaciones
     private Sprite hojaSpriteEstrellitas1;
     private Sprite hojaSpriteEstrellitas2;
     private Sprite manzanaSpriteEstrellitas1;
