@@ -84,7 +84,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty.png"));
-        manzanaImg = new Texture (Gdx.files.internal("manzana.png"));
+        manzanaImg = new Texture(Gdx.files.internal("manzana.png"));
         troncoDerImage = new Texture(Gdx.files.internal("troncoDer.png"));
         troncoIzqImage = new Texture(Gdx.files.internal("troncoIzq.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
@@ -102,14 +102,14 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         manzanaSprite = new Sprite(manzanaImg);
         troncoDerSprite = new Sprite(troncoDerImage);
         troncoIzqSprite = new Sprite(troncoIzqImage);
-        gotaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
-        manzanaSprite.setPosition(0,0);
-        troncoDerSprite.setPosition(200*WORLD_TO_BOX, 390*WORLD_TO_BOX);
-        troncoIzqSprite.setPosition(600*WORLD_TO_BOX, 200*WORLD_TO_BOX);
+        gotaSprite.setPosition(Gdx.graphics.getWidth() / 2 * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
+        manzanaSprite.setPosition(0, 0);
+        troncoDerSprite.setPosition(200 * WORLD_TO_BOX, 390 * WORLD_TO_BOX);
+        troncoIzqSprite.setPosition(600 * WORLD_TO_BOX, 200 * WORLD_TO_BOX);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
-        skin = new Skin(filehandle,textura);
+        skin = new Skin(filehandle, textura);
         buttonPause = new TextButton("Pausa", skin);
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
@@ -121,12 +121,12 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     @Override
     public void render(float delta) {
         camera.update();
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(camera.combined);
         Matrix4 cameraCopy = camera.combined.cpy();
 
-        if(Gdx.input.isTouched()) {
+        if (Gdx.input.isTouched()) {
             if (joint != null) {
                 world.destroyJoint(joint);
                 joint = null;
@@ -135,14 +135,14 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         }
 
         //Si no esta en pausa actualiza las posiciones
-        if(!PAUSE){
+        if (!PAUSE) {
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
-            world.step(1/45f, 6, 2);
+            world.step(1 / 45f, 6, 2);
         }
         this.repintar();
     }
 
-    public void repintar(){
+    public void repintar() {
         gotaSprite.setPosition(enki.getX(), enki.getY());
         gotaSprite.setRotation(enki.getAngulo() * MathUtils.radiansToDegrees);
 
@@ -153,29 +153,29 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         this.game.batch.begin();  //Creacion de la manzana
         this.game.batch.draw(backgroundImage, 0, 0);
         //Agregar para que brille el objeto y cambie de Sprite por rangos de tiempo, además en pausa deja de brillar
-        if(0<=espere && espere<15||PAUSE) {
+        if (0 <= espere && espere < 15 || PAUSE) {
             this.game.batch.draw(manzanaSprite, manzanaSprite.getX(), manzanaSprite.getY(), manzana.getOrigen().x, manzana.getOrigen().y, manzanaSprite.getWidth(),
                     manzanaSprite.getHeight(), manzanaSprite.getScaleX(), manzanaSprite.getScaleY(), manzanaSprite.getRotation());
         }
-        if(15<=espere && espere<30&&!PAUSE){
+        if (15 <= espere && espere < 30 && !PAUSE) {
             this.game.batch.draw(manzanaBrilla1Sprite, manzanaSprite.getX(), manzanaSprite.getY(), manzana.getOrigen().x, manzana.getOrigen().y, manzanaBrilla1Sprite.getWidth(),
                     manzanaBrilla1Sprite.getHeight(), manzanaBrilla1Sprite.getScaleX(), manzanaBrilla1Sprite.getScaleY(), manzanaSprite.getRotation());
         }
-        if(30<=espere && espere<=45&&!PAUSE){
+        if (30 <= espere && espere <= 45 && !PAUSE) {
             this.game.batch.draw(manzanaBrilla2Sprite, manzanaSprite.getX(), manzanaSprite.getY(), manzana.getOrigen().x, manzana.getOrigen().y, manzanaBrilla2Sprite.getWidth(),
                     manzanaBrilla2Sprite.getHeight(), manzanaBrilla2Sprite.getScaleX(), manzanaBrilla2Sprite.getScaleY(), manzanaSprite.getRotation());
         }
         this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                 gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
-        this.game.batch.draw(troncoDerSprite, troncoDerSprite.getX()-100, troncoDerSprite.getY()+310,troncoDerSprite.getX(),troncoDerSprite.getY(),troncoDerSprite.getWidth(),
-                troncoDerSprite.getHeight()-20, troncoDerSprite.getScaleX(), troncoDerSprite.getScaleY(),  -0.30f*MathUtils.radiansToDegrees);
-        this.game.batch.draw(troncoIzqSprite, troncoIzqSprite.getX()+250, troncoIzqSprite.getY()-70,troncoIzqSprite.getX(),troncoIzqSprite.getY(),troncoIzqSprite.getWidth(),
-                troncoIzqSprite.getHeight(), troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(),  0.23f*MathUtils.radiansToDegrees);
+        this.game.batch.draw(troncoDerSprite, troncoDerSprite.getX() - 100, troncoDerSprite.getY() + 310, troncoDerSprite.getX(), troncoDerSprite.getY(), troncoDerSprite.getWidth(),
+                troncoDerSprite.getHeight() - 20, troncoDerSprite.getScaleX(), troncoDerSprite.getScaleY(), -0.30f * MathUtils.radiansToDegrees);
+        this.game.batch.draw(troncoIzqSprite, troncoIzqSprite.getX() + 250, troncoIzqSprite.getY() - 70, troncoIzqSprite.getX(), troncoIzqSprite.getY(), troncoIzqSprite.getWidth(),
+                troncoIzqSprite.getHeight(), troncoIzqSprite.getScaleX(), troncoIzqSprite.getScaleY(), 0.23f * MathUtils.radiansToDegrees);
         this.game.batch.end();
 
         //Agregar para que brille un objeto en el intervalo
-        if(espere==45){
-            espere=0;
+        if (espere == 45) {
+            espere = 0;
         }
         espere++;
 
@@ -195,16 +195,16 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         //  world.setContactListener(new MyContactListener());
 
         //Boton de Pausa
-        buttonPause.addListener(new ClickListener(){
+        buttonPause.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 pauseGame();
             }
         });
-        buttonRegresar.addListener(new ClickListener(){
+        buttonRegresar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
             }
         });
 
@@ -214,17 +214,17 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         FixtureDef fixtureDefIzq = new FixtureDef();
         FixtureDef fixtureDefDer = new FixtureDef();
         FixtureDef fixtureDefPiso = new FixtureDef();
-        groundDef.position.set(new Vector2(0,0));
+        groundDef.position.set(new Vector2(0, 0));
         groundDef.type = BodyDef.BodyType.StaticBody;
         ground = world.createBody(groundDef);
 
         //definicion borde Izquierdo
-        groundEdge.set(-1 * WORLD_TO_BOX,-35 * WORLD_TO_BOX,-1 * WORLD_TO_BOX, camera.viewportHeight * WORLD_TO_BOX);
+        groundEdge.set(-1 * WORLD_TO_BOX, -35 * WORLD_TO_BOX, -1 * WORLD_TO_BOX, camera.viewportHeight * WORLD_TO_BOX);
         fixtureDefIzq.shape = groundEdge;
         fixtureDefIzq.density = 0;
         ground.createFixture(fixtureDefIzq);
         fixtureDefIzq.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefIzq.filter.maskBits = FigureId.BIT_MANZANA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefIzq.filter.maskBits = FigureId.BIT_MANZANA | FigureId.BIT_HOJA | FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
 
         //definicion Piso
@@ -233,16 +233,16 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefPiso.filter.maskBits = FigureId.BIT_MANZANA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_MANZANA | FigureId.BIT_HOJA | FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
 
         //definicion borde Derecho
-        groundEdge.set((camera.viewportWidth+1) * WORLD_TO_BOX, -35*WORLD_TO_BOX, (camera.viewportWidth+1)*WORLD_TO_BOX, camera.viewportHeight*WORLD_TO_BOX);
+        groundEdge.set((camera.viewportWidth + 1) * WORLD_TO_BOX, -35 * WORLD_TO_BOX, (camera.viewportWidth + 1) * WORLD_TO_BOX, camera.viewportHeight * WORLD_TO_BOX);
         fixtureDefDer.shape = groundEdge;
         fixtureDefDer.density = 0;
         ground.createFixture(fixtureDefDer);
         fixtureDefDer.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefDer.filter.maskBits = FigureId.BIT_MANZANA|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefDer.filter.maskBits = FigureId.BIT_MANZANA | FigureId.BIT_HOJA | FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefDer).setUserData("borde_der");
 
         groundEdge.dispose();
@@ -253,7 +253,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         body = world.createBody(bd);
 
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(10*WORLD_TO_BOX, 320*WORLD_TO_BOX, new Vector2(600*WORLD_TO_BOX, 200*WORLD_TO_BOX), 1.75f);
+        polygonShape.setAsBox(10 * WORLD_TO_BOX, 320 * WORLD_TO_BOX, new Vector2(600 * WORLD_TO_BOX, 200 * WORLD_TO_BOX), 1.75f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
@@ -269,7 +269,7 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         body2 = world.createBody(bd);
 
         polygonShape = new PolygonShape();
-        polygonShape.setAsBox(10*WORLD_TO_BOX, 250*WORLD_TO_BOX, new Vector2(200*WORLD_TO_BOX, 390*WORLD_TO_BOX),-1.80f);
+        polygonShape.setAsBox(10 * WORLD_TO_BOX, 250 * WORLD_TO_BOX, new Vector2(200 * WORLD_TO_BOX, 390 * WORLD_TO_BOX), -1.80f);
 
         fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
@@ -286,13 +286,13 @@ public class ManzanaScreen extends InputAdapter implements Screen {
 
         //Joint
         DistanceJointDef jointDef = new DistanceJointDef();
-        jointDef.initialize(body, manzana.getManzanaBody(), new Vector2(250*WORLD_TO_BOX, 390*WORLD_TO_BOX) , new Vector2(manzana.getX(),manzana.getY()) );
+        jointDef.initialize(body, manzana.getManzanaBody(), new Vector2(250 * WORLD_TO_BOX, 390 * WORLD_TO_BOX), new Vector2(manzana.getX(), manzana.getY()));
         jointDef.collideConnected = true;
         jointDef.length = 1;
         joint = (DistanceJoint) world.createJoint(jointDef);
 
-        table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
-        table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
+        table.add(buttonPause).size(140, 40).padTop(-160).padLeft(450).row();
+        table.add(buttonRegresar).size(140, 40).padTop(-30).padBottom(250).padLeft(450);
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
@@ -309,7 +309,8 @@ public class ManzanaScreen extends InputAdapter implements Screen {
     }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
     public void dispose() {
@@ -320,12 +321,12 @@ public class ManzanaScreen extends InputAdapter implements Screen {
         backgroundImage.dispose();
     }
 
-    public void pauseGame(){
-        if(PAUSE){
-            PAUSE=false;
+    public void pauseGame() {
+        if (PAUSE) {
+            PAUSE = false;
             buttonPause.setText("Pausa");
-        }else{
-            PAUSE=true;
+        } else {
+            PAUSE = true;
             buttonPause.setText("Atrás");
         }
     }

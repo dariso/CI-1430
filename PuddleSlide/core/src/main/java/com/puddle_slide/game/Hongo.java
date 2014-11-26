@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 /**
  * Created by xia on 10/14/14.
  */
-public class Hongo implements ObjetoJuego{
+public class Hongo implements ObjetoJuego {
 
     private float largo, ancho;
     private Body hongoBody;
@@ -21,12 +21,13 @@ public class Hongo implements ObjetoJuego{
 
     /**
      * Constructor del hongo
+     *
      * @param world Mundo en el que se dibujara la hongo
-     * @param x Posicion en el eje x en el que se dibujara el hongo
-     * @param y Posicion en el eje y en el que se dibujara el hongo
+     * @param x     Posicion en el eje x en el que se dibujara el hongo
+     * @param y     Posicion en el eje y en el que se dibujara el hongo
      * @param ancho Ancho del sprite del hongo
-     * @param alto Alto del sprite del hongo
-     * */
+     * @param alto  Alto del sprite del hongo
+     */
     public Hongo(World world, float x, float y, float ancho, float alto, boolean pequeño) {
         BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/hongo.json"));
 
@@ -51,10 +52,10 @@ public class Hongo implements ObjetoJuego{
         fixtureDef.friction = 0.42f;
         fixtureDef.restitution = 0.5f;
 
-        if(pequeño){
-            bodyEditorLoader.attachFixture( hongoBody,"hongoPequeño",  fixtureDef,ancho * WORLD_TO_BOX);
-        }else{
-            bodyEditorLoader.attachFixture( hongoBody,"hongo",  fixtureDef,ancho * WORLD_TO_BOX);
+        if (pequeño) {
+            bodyEditorLoader.attachFixture(hongoBody, "hongoPequeño", fixtureDef, ancho * WORLD_TO_BOX);
+        } else {
+            bodyEditorLoader.attachFixture(hongoBody, "hongo", fixtureDef, ancho * WORLD_TO_BOX);
         }
 
 
@@ -63,12 +64,12 @@ public class Hongo implements ObjetoJuego{
     }
 
     @Override
-    public float getX(){
+    public float getX() {
         return hongoBody.getPosition().x * BOX_TO_WORLD;
     }
 
     @Override
-    public float getY(){
+    public float getY() {
         return hongoBody.getPosition().y * BOX_TO_WORLD;
     }
 
@@ -83,17 +84,17 @@ public class Hongo implements ObjetoJuego{
     }
 
     @Override
-    public float getAngulo(){
+    public float getAngulo() {
         return hongoBody.getAngle();
     }
 
     @Override
-    public Vector2 getOrigen(){
+    public Vector2 getOrigen() {
         return puntoRef;
     }
 
     @Override
-    public float getMasa(){
+    public float getMasa() {
         return hongoBody.getMass();
     }
 

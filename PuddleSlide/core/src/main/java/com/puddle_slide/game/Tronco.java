@@ -51,7 +51,7 @@ public class Tronco implements ObjetoJuego{
          //Define la cetegoria de objeto a la que pertenece
         fixtureDef.filter.categoryBits = FigureId.BIT_TRONCO;
         //Define los objetos con los que debe colisionar
-        fixtureDef.filter.maskBits = FigureId.BIT_GOTA|FigureId.BIT_TRONCO|FigureId.BIT_BORDE|FigureId.BIT_HOJABASICA|FigureId.BIT_HONGO|FigureId.BIT_MANZANA|FigureId.BIT_PUAS;
+        fixtureDef.filter.maskBits = FigureId.BIT_GOTA | FigureId.BIT_TRONCO | FigureId.BIT_BORDE | FigureId.BIT_HOJABASICA | FigureId.BIT_HONGO | FigureId.BIT_MANZANA | FigureId.BIT_PUAS;
         fixtureDef.friction = 0f;
         fixtureDef.density = 1500f;
         fixtureDef.restitution = 0.1f;
@@ -70,12 +70,12 @@ public class Tronco implements ObjetoJuego{
 
     @Override
     public float getX(){
-        return troncoBody.getPosition().x * BOX_TO_WORLD;
+        return Math.round(troncoBody.getPosition().x * BOX_TO_WORLD);
     }
 
     @Override
     public float getY(){
-        return troncoBody.getPosition().y * BOX_TO_WORLD;
+        return Math.round(troncoBody.getPosition().y * BOX_TO_WORLD);
     }
 
     @Override
