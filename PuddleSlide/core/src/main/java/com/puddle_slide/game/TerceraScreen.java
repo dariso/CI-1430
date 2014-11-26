@@ -132,8 +132,6 @@ public class TerceraScreen extends InputAdapter implements Screen{
         gotaSprite.setPosition((Gdx.graphics.getWidth() / 2) * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
         gotaMuertaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
 
-        puasSprite.setPosition(400* WORLD_TO_BOX,400* WORLD_TO_BOX);
-
         tronco1_sprite_Kalam = new Sprite(tronco1_Img_Kalam);
         tronco2_sprite_Kalam = new Sprite(tronco2_Img_Kalam);
 
@@ -291,6 +289,7 @@ public class TerceraScreen extends InputAdapter implements Screen{
             }
         });
 
+        puasSprite.setPosition((camera.viewportWidth-624)* WORLD_TO_BOX,(camera.viewportHeight-368)* WORLD_TO_BOX);
         gotaSprite.setPosition((camera.viewportWidth - 825) * WORLD_TO_BOX, (camera.viewportHeight - 300) * WORLD_TO_BOX);
         hojaSprite.setPosition((camera.viewportWidth - 900) * WORLD_TO_BOX, (camera.viewportHeight - 400) * WORLD_TO_BOX);
         ramaSprite.setPosition(0, (camera.viewportHeight - 300) * WORLD_TO_BOX);
@@ -310,16 +309,6 @@ public class TerceraScreen extends InputAdapter implements Screen{
         jointDef.bodyA = rama.getRamaBody();
         jointDef.bodyB = hoja.getHojaBody();
         jointDef.length = 0.3f;
-
-        hojaRamaJoint = (DistanceJoint) world.createJoint(jointDef);
-
-        //Definicion del joint entre los hongos
-        DistanceJointDef jointDef2 = new DistanceJointDef();
-        jointDef2.localAnchorA.set(rama.getRamaBody().getLocalPoint(new Vector2(1.3920f, 5.2f)));
-        jointDef2.localAnchorB.set(hongo.getHongoBody().getLocalPoint(new Vector2( 1.4079f, 4.736f)));
-        jointDef2.bodyA = rama.getRamaBody();
-        jointDef2.bodyB = hoja.getHojaBody();
-        jointDef2.length = 0.3f;
 
         hojaRamaJoint = (DistanceJoint) world.createJoint(jointDef);
 
