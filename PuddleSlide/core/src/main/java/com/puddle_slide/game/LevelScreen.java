@@ -62,6 +62,7 @@ public class LevelScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        game.batch.setProjectionMatrix(camera.combined);
         this.game.batch.begin();
         this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.end();
