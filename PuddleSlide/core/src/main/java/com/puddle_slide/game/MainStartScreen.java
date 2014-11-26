@@ -61,7 +61,6 @@ public class MainStartScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
-
         if (Gdx.input.isTouched()) {
             game.setScreen(new MainMenuScreen(game));
         }
