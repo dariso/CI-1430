@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -36,9 +35,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-/**
- * Created by xia on 11/21/14.
- */
+
 public class RamasScreen extends InputAdapter implements Screen {
 
     final Puddle_Slide game;
@@ -64,7 +61,6 @@ public class RamasScreen extends InputAdapter implements Screen {
     //Objetos del mundo
     private World world;
     private Box2DDebugRenderer debugRenderer;
-    private float vel = 10;
     private Body ground;
     private Gota enki;
     private HojaBasica hoja;
@@ -103,7 +99,6 @@ public class RamasScreen extends InputAdapter implements Screen {
 
     }
 
-    private Vector2 vec = new Vector2();
 
     @Override
     public void render(float delta) {
@@ -136,7 +131,7 @@ public class RamasScreen extends InputAdapter implements Screen {
         ramaSprite.setPosition(rama.getX(), rama.getY());
 
         this.game.batch.begin();
-        this.game.batch.draw(backgroundImage, 0, 0);
+        // this.game.batch.draw(backgroundImage, 0, 0);
         this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getOriginX(), hojaSprite.getOriginY(), hojaSprite.getWidth(),
                 hojaSprite.getHeight(), hojaSprite.getScaleX(), hojaSprite.getScaleY(), hojaSprite.getRotation());
         this.game.batch.draw(ramaSprite, ramaSprite.getX(), ramaSprite.getY());

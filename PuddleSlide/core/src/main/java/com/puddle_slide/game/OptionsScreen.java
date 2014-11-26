@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class OptionsScreen implements Screen {
     final Puddle_Slide game;
+    private final Texture backgroundImage;
     OrthographicCamera camera;
     FileHandle filehandle;
     TextureAtlas textura;
@@ -45,12 +47,18 @@ public class OptionsScreen implements Screen {
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
         stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
         table = new Table();
+        backgroundImage = new Texture(Gdx.files.internal("fondotemp.png"));
+        
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        game.batch.setProjectionMatrix(camera.combined);
+        this.game.batch.begin();
+        this.game.batch.draw(backgroundImage, 0, 0);
+        this.game.batch.end();
         stage.act();
         stage.draw();
     }
