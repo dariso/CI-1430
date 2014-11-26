@@ -88,7 +88,7 @@ public class MyContactListener implements ContactListener {
 
             }else if(contrario.equals("manzana")){
                 sonido.sonidoGota();
-            }else if(contrario.equals("troncoIzq") || contrario.equals("troncoDer")){
+            }else if(contrario.equals("troncoIzq") || contrario.equals("troncoDer") || contrario.equals("troncoQuebradizo")){
                 sonido.sonidoGota();
             }else if(contrario.equals("puas")){
                 muerta = true;

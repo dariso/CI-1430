@@ -57,11 +57,13 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     private Sprite ramaSprite;
     private Sprite hongo1Sprite;
     private Sprite puasSprite;
+    private Sprite manzanaSprite;
     private Sprite troncoSprite;
     private Sprite troncoTechoSprite;
     private Sprite troncoGrandeSprite;
     private Texture ramaImg;
     private Texture hongoImg;
+    private Texture manzanaImg;
     private Texture troncoQuebradizoImg;
     private Texture troncoGrandeImg;
     private Texture gotaImage;
@@ -94,15 +96,7 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     private TroncoQuebradizo tronco9;
     private TroncoQuebradizo tronco10;
     private TroncoQuebradizo tronco11;
-    private TroncoQuebradizo tronco12;
-    private TroncoQuebradizo tronco13;
-    private TroncoQuebradizo tronco14;
-    private TroncoQuebradizo tronco15;
-    private TroncoQuebradizo tronco16;
-    private TroncoQuebradizo tronco17;
-    private TroncoQuebradizo tronco18;
-    private TroncoQuebradizo troncoSalida;
-    private Tronco troncoGrande1;
+
     private Tronco troncoGrande2;       //El que sostiene al quebradizo suspendido
 
     //Inicio (hoja y rama)
@@ -119,24 +113,11 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     private Puas pua1;
     private Puas pua2;
     private Puas pua3;
-    private Puas pua4;
-    private Puas pua5;
-    private Puas pua6;
-    private Puas pua7;
-    private Puas pua8;
-    private Puas pua9;
-    private Puas pua10;
-    private Puas pua11;
-    private Puas pua12;
 
     //Objetos auxiliares
     private TroncoQuebradizo troncoSuspendido;
-    private TroncoQuebradizo troncoSuspendido2;
-    private TroncoQuebradizo troncoSuspendido3;
 
     private Manzana manzana1;
-    private Manzana manzana2;
-    private Manzana manzana3;
 
     //Joints
     private MouseJoint mouseJoint;
@@ -144,10 +125,8 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     private DistanceJoint hojaRamaJoint;
     private DistanceJoint troncoTecho1_joint1;
     private DistanceJoint troncoTecho1_joint2;
-    private DistanceJoint troncoTecho2_joint1;
-    private DistanceJoint troncoTecho2_joint2;
-    private DistanceJoint troncoTecho3_joint1;
-    private DistanceJoint troncoTecho3_joint2;
+    private DistanceJoint puaJoint;
+    private DistanceJoint manzanaJoint;
 
 
     public Seccion1Screen(final com.puddle_slide.game.Puddle_Slide elJuego) {
@@ -160,6 +139,7 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         hojaImg = new Texture(Gdx.files.internal("hoja2.png"));
         ramaImg = new Texture(Gdx.files.internal("RamaIzquierdaParaHojasAbajo.png"));
         hongoImg = new Texture(Gdx.files.internal("rsz_hongosnaranja2.png"));
+        manzanaImg = new Texture(Gdx.files.internal("manzana.png"));
         troncoQuebradizoImg = new Texture(Gdx.files.internal("troncoQuebradizo.png"));
         troncoGrandeImg = new Texture(Gdx.files.internal("troncoDer.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondoMontanas.png"));
@@ -172,6 +152,7 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         ramaSprite = new Sprite(ramaImg);
         troncoSprite = new Sprite(troncoQuebradizoImg);
         hongo1Sprite = new Sprite(hongoImg);
+        manzanaSprite = new Sprite(manzanaImg);
         troncoGrandeSprite = new Sprite(troncoGrandeImg);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
@@ -212,7 +193,7 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         //Dibuja los sprites
         //Pintar un tronco sin nada en esta posicion (camera.viewportWidth - 500) * WORLD_TO_BOX, (camera.viewportHeight - 175) * WORLD_TO_BOX
         this.game.batch.begin();
-       // this.game.batch.draw(backgroundImage, 0, 0);
+        this.game.batch.draw(backgroundImage, 0, 0);
         paintSprite(hojaSprite, hoja);
         paintSprite(ramaSprite, rama);
         paintSprite(hongo1Sprite, hongo1);
@@ -227,6 +208,14 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         paintSprite(troncoSprite,troncoSuspendido);
         paintSprite(puasSprite, pua1);
         paintSprite(troncoSprite, tronco8);
+        paintSprite(puasSprite, pua2);
+        paintSprite(puasSprite, pua3);
+        paintSprite(manzanaSprite, manzana1);
+        paintSprite(troncoSprite, tronco8);
+        paintSprite(troncoSprite, tronco9);
+        paintSprite(troncoSprite, tronco10);
+        paintSprite(troncoSprite, tronco11);
+        paintSprite(hongo1Sprite, hongo2);
 
         if(!escuchadorColision.getMuerta()) {
             paintSprite(gotaSprite, enki);
@@ -235,6 +224,7 @@ public class Seccion1Screen extends InputAdapter implements Screen {
             this.game.batch.draw(gotafantasmaSprite, enki.getX()-64, enki.getY() + volar);
             volar++;
         }
+        this.game.batch.draw(troncoGrandeImg, (camera.viewportWidth - 500), (camera.viewportHeight - 175));
 
 
 
@@ -281,13 +271,6 @@ public class Seccion1Screen extends InputAdapter implements Screen {
             }
         });
 
-
-        gotaSprite.setPosition((camera.viewportWidth - 920) * WORLD_TO_BOX, (camera.viewportHeight - 100) * WORLD_TO_BOX);
-        hojaSprite.setPosition((camera.viewportWidth - 940) * WORLD_TO_BOX, (camera.viewportHeight - 250) * WORLD_TO_BOX);
-        ramaSprite.setPosition((0 - ramaSprite.getWidth()/2) * WORLD_TO_BOX, (camera.viewportHeight - ramaSprite.getHeight()/2) * WORLD_TO_BOX );
-        hongo1Sprite.setPosition((camera.viewportWidth - 810) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX);
-        puasSprite.setPosition( (camera.viewportWidth - 630) * WORLD_TO_BOX, (camera.viewportHeight - 420) * WORLD_TO_BOX);
-
         //Creacion de la gota
         enki = new Gota(world, (camera.viewportWidth - 920) * WORLD_TO_BOX, (camera.viewportHeight - 100) * WORLD_TO_BOX, gotaSprite.getWidth());
 
@@ -302,11 +285,19 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         //Creacion de hongos
         hongo1 = new Hongo(world, (camera.viewportWidth - 810) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX,
                 hongo1Sprite.getWidth() * 2, hongo1Sprite.getHeight() * 2, true);
-        hongo2 = new Hongo(world,  );
+        hongo2 = new Hongo(world, (camera.viewportWidth - 400) * WORLD_TO_BOX, 0, hongo1Sprite.getWidth() * 2, hongo1Sprite.getHeight() * 2, true);
 
         //Creacion de puas
         pua1 = new Puas(world, (camera.viewportWidth - 630) * WORLD_TO_BOX, (camera.viewportHeight - 420) * WORLD_TO_BOX, puasSprite.getWidth()/2,
                puasSprite.getHeight()/2, false);
+        pua2 = new Puas(world, (camera.viewportWidth - 630) * WORLD_TO_BOX, 0, puasSprite.getWidth()/2,
+                puasSprite.getHeight()/2, false);
+        pua3 = new Puas(world, (camera.viewportWidth - 930) * WORLD_TO_BOX, (camera.viewportHeight - 430) * WORLD_TO_BOX, puasSprite.getWidth()/2,
+                puasSprite.getHeight()/2, false);
+
+        //Creacion de manzana
+        manzana1 = new Manzana(world, (camera.viewportWidth - 630) * WORLD_TO_BOX, (camera.viewportHeight - 600) * WORLD_TO_BOX,
+                manzanaSprite.getWidth(), manzanaSprite.getHeight());
 
         //Creacion de tronco suspendido
         troncoSuspendido = new TroncoQuebradizo(world, (camera.viewportWidth - 400) * WORLD_TO_BOX, (camera.viewportHeight - 250) * WORLD_TO_BOX,
@@ -341,6 +332,14 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         //Cuarto tronco vertical
         tronco8 = new TroncoQuebradizo(world, (camera.viewportWidth -300) * WORLD_TO_BOX, (camera.viewportHeight - 550) * WORLD_TO_BOX,
                 troncoSprite.getWidth()/2, troncoSprite.getHeight()/2, 40, false);
+        //Quinto tronco vertical
+        tronco9 = new TroncoQuebradizo(world, (camera.viewportWidth - 500) * WORLD_TO_BOX, (camera.viewportHeight - 630) * WORLD_TO_BOX,
+                troncoSprite.getWidth()/2, troncoSprite.getHeight()/2, 40, false);
+        //Sexto tronco vertical
+        tronco10 = new TroncoQuebradizo(world, (camera.viewportWidth - 680) * WORLD_TO_BOX, (camera.viewportHeight - 630) * WORLD_TO_BOX,
+                troncoSprite.getWidth()/2, troncoSprite.getHeight()/2, 40, false);
+        tronco11 = new TroncoQuebradizo(world, (camera.viewportWidth - 1050) * WORLD_TO_BOX, (camera.viewportHeight - 300) * WORLD_TO_BOX,
+                troncoSprite.getWidth(), troncoSprite.getHeight(), 40, false);
 
 
 
@@ -374,12 +373,33 @@ public class Seccion1Screen extends InputAdapter implements Screen {
 
         troncoTecho1_joint2 = (DistanceJoint)world.createJoint(jointDef);
 
+        //Definicion del joint entre la manzana y el tronco
+        jointDef = new DistanceJointDef();
+        jointDef.localAnchorA.set(tronco5.getTroncoBody().getLocalPoint(new Vector2(4.6879f, 3.2640f)));
+        jointDef.localAnchorB.set(manzana1.getManzanaBody().getLocalPoint(new Vector2(4.704f, 3.072f)));
+        jointDef.bodyA = tronco5.getTroncoBody();
+        jointDef.bodyB = manzana1.getManzanaBody();
+        jointDef.length = 0.1f;
+
+        manzanaJoint = (DistanceJoint)world.createJoint(jointDef);
+
+        //Definicion del Joint entre las puas y el tronco
+        jointDef = new DistanceJointDef();
+        jointDef.localAnchorA.set(tronco2.getTroncoBody().getLocalPoint(new Vector2(1.8399f, 3.5679f)));
+        jointDef.localAnchorB.set(pua3.getPuasBody().getLocalPoint(new Vector2(1.8399f, 3.5679f)));
+        jointDef.bodyA = tronco2.getTroncoBody();
+        jointDef.bodyB = pua3.getPuasBody();
+        jointDef.length = 0.1f;
+
+        puaJoint = (DistanceJoint)world.createJoint(jointDef);
+
         //MouseJoint para resorte de hoja
         MouseJointDef md = new MouseJointDef();
         md.bodyA = rama.getRamaBody();
         md.bodyB = hoja.getHojaBody();
         md.maxForce = 500 * hoja.getHojaBody().getMass();
         md.target.set(hoja.getX()*WORLD_TO_BOX, hoja.getY()*WORLD_TO_BOX);
+
         resorteJoint = (MouseJoint) world.createJoint(md);
 
         //Definicion de Bordes de Pantalla de Juego
@@ -407,7 +427,7 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA|FigureId.BIT_HONGO|FigureId.BIT_MANZANA;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
 
         //definicion borde Derecho
@@ -421,8 +441,8 @@ public class Seccion1Screen extends InputAdapter implements Screen {
 
         groundEdge.dispose();
 
-        table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
-        table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
+        table.add(buttonPause).size(camera.viewportWidth / 6, camera.viewportHeight / 12).padTop(-550).padLeft(stage.getCamera().viewportWidth - 250).row();
+        table.add(buttonRegresar).size(camera.viewportWidth / 6, camera.viewportHeight / 12).padTop(-575).padBottom(-200).padLeft(stage.getCamera().viewportWidth - 250);
         table.setFillParent(true);
         stage.addActor(table);
 
@@ -455,6 +475,11 @@ public class Seccion1Screen extends InputAdapter implements Screen {
             if (fixture.getBody() == troncoSuspendido.getTroncoBody() && troncoTecho1_joint1 != null) {
                 world.destroyJoint(troncoTecho1_joint1);
                 troncoTecho1_joint1 = null;
+            }
+
+            if (fixture.getBody() == manzana1.getManzanaBody() && manzanaJoint != null) {
+                world.destroyJoint(manzanaJoint);
+                manzanaJoint = null;
             }
 
             if (fixture.getBody() == hoja.getHojaBody()) {
