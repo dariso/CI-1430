@@ -441,8 +441,8 @@ public class Seccion1Screen extends InputAdapter implements Screen {
 
         groundEdge.dispose();
 
-        table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
-        table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
+        table.add(buttonPause).size(camera.viewportWidth / 6, camera.viewportHeight / 12).padTop(-550).padLeft(stage.getCamera().viewportWidth - 250).row();
+        table.add(buttonRegresar).size(camera.viewportWidth / 6, camera.viewportHeight / 12).padTop(-575).padBottom(-200).padLeft(stage.getCamera().viewportWidth - 250);
         table.setFillParent(true);
         stage.addActor(table);
 
