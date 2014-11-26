@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -34,6 +35,7 @@ public class MainMenuScreen implements Screen {
     private World world;
     MyContactListener escuchadorColision;
     SoundControl sonido;
+    private Texture backgroundImage;
     public MainMenuScreen(final Puddle_Slide elJuego) {
 
         this.game = elJuego;
@@ -52,12 +54,16 @@ public class MainMenuScreen implements Screen {
         world = new World(new Vector2(0, -9.8f), true);
         sonido = SoundControl.getInstancia();
         escuchadorColision = MyContactListener.getInstancia(sonido);
+        backgroundImage = new Texture(Gdx.files.internal("fondotemp.png"));
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        this.game.batch.begin();
+        this.game.batch.draw(backgroundImage, 0, 0);
+        this.game.batch.end();
         stage.act();
         stage.draw();
     }

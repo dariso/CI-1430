@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -34,6 +35,7 @@ public class LevelScreen implements Screen {
     private TextButton buttonReturn;
     private Label title;
     private World world;
+    private Texture backgroundImage;
 
     public LevelScreen(final Puddle_Slide elJuego){
 
@@ -53,12 +55,15 @@ public class LevelScreen implements Screen {
         camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
         stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
         table = new Table();
-
+        backgroundImage = new Texture(Gdx.files.internal("fondotemp.png"));
     }
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        this.game.batch.begin();
+        this.game.batch.draw(backgroundImage, 0, 0);
+        this.game.batch.end();
         stage.act();
         stage.draw();
     }
@@ -125,7 +130,7 @@ public class LevelScreen implements Screen {
 
         table.add(title).colspan(2).center().padBottom(60).row();
         table.add(buttonManzana).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
-        table.add(buttonRama).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
+        table.add(buttonRama).colspan(2).center().size(camera.viewportWidth / 4, camera.viewportHeight / 10).padBottom(40).row();
         table.add(buttonSeccion1).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
         table.add(buttonTercera).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
         table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();

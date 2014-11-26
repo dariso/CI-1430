@@ -168,11 +168,14 @@ public class PuasScreen extends InputAdapter implements Screen{
         if(!escuchadorColision.getMuerta()) {
             this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                     gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
-        }else{
+        }else {
             this.game.batch.draw(gotaMuertaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaMuertaSprite.getWidth(),
                     gotaMuertaSprite.getHeight(), gotaMuertaSprite.getScaleX(), gotaMuertaSprite.getScaleY(), gotaSprite.getRotation());
-            this.game.batch.draw(gotafantasmaSprite, enki.getX()-64, enki.getY() + volar);
+
+                this.game.batch.draw(gotafantasmaSprite, enki.getX() - 64, enki.getY() + volar);
+            if (!PAUSE){
             volar++;
+            }
         }
 
         this.game.batch.end();
