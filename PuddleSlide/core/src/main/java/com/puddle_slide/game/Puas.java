@@ -46,7 +46,7 @@ public class Puas implements ObjetoJuego{
         fixtureDef.filter.categoryBits = FigureId.BIT_PUAS;
 
         //Define los objetos con los que debe colisionar
-        fixtureDef.filter.maskBits = FigureId.BIT_GOTA | FigureId.BIT_BORDE | FigureId.BIT_MANZANA;
+        fixtureDef.filter.maskBits = FigureId.BIT_GOTA | FigureId.BIT_BORDE | FigureId.BIT_TRONCO;
         fixtureDef.density = 1000f;
         fixtureDef.friction = 0.42f;
         fixtureDef.restitution = 0.5f;

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="68" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="hongosNaranja2" tilewidth="32" tileheight="32">
+  <image source="hongosNaranja2.png" width="259" height="262"/>
+ </tileset>
+ <layer name="Capa de Patrones 1" width="32" height="68">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAAAAAAAAAHg2IgAAAQ==
+  </data>
+ </layer>
+ <layer name="Capa de patrones 2" width="32" height="68">
+  <data encoding="base64" compression="zlib">
+   eJzt1EdWQlEURNFPFgQEQZAgIDlJUpJKmP+oPG8Q3tups9ZuV6+iSCmllFJKKaWUUkoppZRSSnkVQxwJJJFCGhk8GOxnkcMj8iigiCeUDPbLeEYFVbyghjpeDfYbaKKFNt7QQRc9g/139DHAECOMMcHUYH+GORZY4gMrrLEx2N9ih098YY8DjjgZ7J/xjR/84oIrbrgb7P9Hnn8S8vyTkOefhDz/JOT5JyHPPwl5/knI+0/+ACzVD1k=
+  </data>
+ </layer>
+ <objectgroup name="Capa de Objetos 1">
+  <object x="219" y="2107">
+   <polyline points="0,0 -31,-49 -72,-47 -92,-47 -72,-10 -99,5 -115,-59 -25,-95 -18,-101 -73,-144 -125,-188 -165,-160 -190,-126 -218,-108 -207,-63 -151,-59 -160,-9 -164,10 -203,-2 -204,-12 -192,-26 -206,-41 -125,40 -2,0"/>
+  </object>
+  <object x="194" y="1961">
+   <polyline points="0,0 351,-177 385,19"/>
+  </object>
+ </objectgroup>
+</map>

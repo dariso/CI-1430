@@ -27,7 +27,7 @@ public class Hongo implements ObjetoJuego{
      * @param ancho Ancho del sprite del hongo
      * @param alto Alto del sprite del hongo
      * */
-    public Hongo(World world, float x, float y, float ancho, float alto) {
+    public Hongo(World world, float x, float y, float ancho, float alto, boolean pequeño) {
         BodyEditorLoader bodyEditorLoader = new BodyEditorLoader(Gdx.files.internal("Shapes/hongo.json"));
 
         BodyDef hongoDef = new BodyDef();
@@ -51,7 +51,13 @@ public class Hongo implements ObjetoJuego{
         fixtureDef.friction = 0.42f;
         fixtureDef.restitution = 0.5f;
 
-        bodyEditorLoader.attachFixture( hongoBody,"hongo",  fixtureDef,ancho * WORLD_TO_BOX);
+        if(pequeño){
+            bodyEditorLoader.attachFixture( hongoBody,"hongoPequeño",  fixtureDef,ancho * WORLD_TO_BOX);
+        }else{
+            bodyEditorLoader.attachFixture( hongoBody,"hongo",  fixtureDef,ancho * WORLD_TO_BOX);
+        }
+
+
         puntoRef = bodyEditorLoader.getOrigin("hongo", ancho * WORLD_TO_BOX);
 
     }
@@ -89,6 +95,10 @@ public class Hongo implements ObjetoJuego{
     @Override
     public float getMasa(){
         return hongoBody.getMass();
+    }
+
+    public Body getHongoBody() {
+        return hongoBody;
     }
 
 }
