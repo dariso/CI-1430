@@ -3,6 +3,7 @@ package com.puddle_slide.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -14,12 +15,19 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
+import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
+import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -44,6 +52,9 @@ public class TerceraScreen extends InputAdapter implements Screen{
 
     private Sprite tronco1_sprite_Kalam;
     private Sprite tronco2_sprite_Kalam;
+    private Sprite hojaSprite;
+    private Sprite ramaSprite;
+    private Sprite hongoSprite;
 
     private Sprite gotaMuertaSprite;
     private Texture gotaImage;
@@ -53,6 +64,9 @@ public class TerceraScreen extends InputAdapter implements Screen{
 
     private Texture tronco1_Img_Kalam;
     private Texture tronco2_Img_Kalam;
+    private Texture hojaImg;
+    private Texture ramaImg;
+    private Texture hongoImg;
 
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
@@ -71,6 +85,15 @@ public class TerceraScreen extends InputAdapter implements Screen{
 
     private Tronco tronco1_kalam;
     private Tronco tronco2_kalam;
+    private HojaBasica hoja;
+    private Rama rama;
+    private Hongo hongo;
+
+    private DistanceJoint jointPuasTronco_Kalam;
+    private DistanceJoint hojaRamaJoint;
+    private MouseJoint mouseJoint;
+    private MouseJoint pruebaResorteJoint;
+
 
     boolean PAUSE = false;
     float volar = (float) 0.01;
@@ -85,20 +108,30 @@ public class TerceraScreen extends InputAdapter implements Screen{
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondo3.png"));
 
-        tronco1_Img_Kalam = new Texture(Gdx.files.internal("troncoDer.png"));
+        tronco1_Img_Kalam = new Texture(Gdx.files.internal("troncoQuebradizo.png"));
         tronco2_Img_Kalam = new Texture(Gdx.files.internal("troncoIzq.png"));
+        hojaImg = new Texture(Gdx.files.internal("hoja2.png"));
+        ramaImg = new Texture(Gdx.files.internal("RamaIzquierdaParaHojas.png"));
+        hongoImg = new Texture(Gdx.files.internal("hongosNaranja2.png"));
+
+        hojaSprite = new Sprite(hojaImg);
+        ramaSprite = new Sprite(ramaImg);
+        hongoSprite = new Sprite(hongoImg);
 
         gotaSprite = new Sprite(gotaImage);
         gotaMuertaSprite = new Sprite(gotaMuertaImage);
         gotafantasmaSprite = new Sprite(gotaFantasmaImage);
         puasSprite = new Sprite(puasImg);
+
         gotaSprite.setPosition((Gdx.graphics.getWidth() / 2) * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
         gotaMuertaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
 
-        puasSprite.setPosition(1,0);
+        puasSprite.setPosition(400* WORLD_TO_BOX,400* WORLD_TO_BOX);
+
 
         tronco1_sprite_Kalam = new Sprite(tronco1_Img_Kalam);
         tronco2_sprite_Kalam = new Sprite(tronco2_Img_Kalam);
+
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -147,8 +180,6 @@ public class TerceraScreen extends InputAdapter implements Screen{
             //mapRenderer.setView(camera);
             //mapRenderer.render();
 
-            System.out.println("X: "+pua.getX()+" Y: "+pua.getY());
-
         }
         this.actualizarSprites();
 
@@ -168,18 +199,37 @@ public class TerceraScreen extends InputAdapter implements Screen{
         puasSprite.setPosition(pua.getX(), pua.getY());
         puasSprite.setRotation(pua.getAngulo() * MathUtils.radiansToDegrees);
 
+
+        hojaSprite.setPosition(hoja.getX(), hoja.getY());
+        hojaSprite.setOrigin(hoja.getOrigen().x, hoja.getOrigen().y);
+        hojaSprite.setRotation(hoja.getAngulo() * MathUtils.radiansToDegrees);
+
+        hongoSprite.setPosition(hongo.getX(), hongo.getY());
+        hongoSprite.setOrigin(hongo.getOrigen().x, hongo.getOrigen().y);
+        hongoSprite.setRotation(hongo.getAngulo() * MathUtils.radiansToDegrees);
+
+        ramaSprite.setPosition(rama.getX(), rama.getY());
+
         //Dibuja los sprites
         this.game.batch.begin();
        // this.game.batch.draw(backgroundImage, 0,0);
         // this.game.batch.draw(backgroundImage, 0,-camera.viewportHeight*2);
-        this.game.batch.draw(puasSprite, puasSprite.getX(), puasSprite.getY(), pua.getOrigen().x, pua.getOrigen().y, puasSprite.getWidth(),
-                puasSprite.getHeight(), puasSprite.getScaleX(), puasSprite.getScaleY(), puasSprite.getRotation());
+
+        this.game.batch.draw(hojaSprite, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getOriginX(), hojaSprite.getOriginY(), hojaSprite.getWidth(),
+                hojaSprite.getHeight(), hojaSprite.getScaleX(), hojaSprite.getScaleY(), hojaSprite.getRotation());
+        this.game.batch.draw(ramaSprite, ramaSprite.getX(), ramaSprite.getY());
+
+        this.game.batch.draw(puasSprite, puasSprite.getX(), puasSprite.getY(), pua.getOrigen().x, pua.getOrigen().y, puasSprite.getWidth()/2,
+                puasSprite.getHeight()/2, puasSprite.getScaleX(), puasSprite.getScaleY(), puasSprite.getRotation());
 
         this.game.batch.draw(tronco1_sprite_Kalam, tronco1_kalam.getX(), tronco1_kalam.getY(), tronco1_kalam.getOrigen().x, tronco1_kalam.getOrigen().y, tronco1_sprite_Kalam.getWidth()/2,
                 tronco1_sprite_Kalam.getHeight()/2 , tronco1_sprite_Kalam.getScaleX(), tronco1_sprite_Kalam.getScaleY(), tronco1_kalam.getAngulo() * MathUtils.radiansToDegrees);
 
         this.game.batch.draw(tronco2_sprite_Kalam, tronco2_kalam.getX(), tronco2_kalam.getY(), tronco2_kalam.getOrigen().x, tronco2_kalam.getOrigen().y, tronco2_sprite_Kalam.getWidth()/2,
                 tronco2_sprite_Kalam.getHeight()/2 , tronco2_sprite_Kalam.getScaleX(), tronco2_sprite_Kalam.getScaleY(), tronco2_kalam.getAngulo() * MathUtils.radiansToDegrees);
+
+        this.game.batch.draw(hongoSprite, hongoSprite.getX(), hongoSprite.getY(), hongo.getOrigen().x, hongo.getOrigen().y, 259,
+                250, hongoSprite.getScaleX(), hongoSprite.getScaleY(), hongoSprite.getRotation());
 
         if(!escuchadorColision.getMuerta()) {
             this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
@@ -212,6 +262,17 @@ public class TerceraScreen extends InputAdapter implements Screen{
 
        // mapRenderer = new OrthogonalTiledMapRenderer(map);
 
+
+
+        //manejo de multiples input processors
+        //primero se llama al procesador que responde a los objetos del juego
+        //si este retorna falso, el input lo debe manejar el del UI ya que se toco un boton
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(this);
+        Gdx.input.setInputProcessor(multiplexer);
+
+
         //Boton de Pausa
         buttonPause.addListener(new ClickListener(){
             @Override
@@ -226,12 +287,53 @@ public class TerceraScreen extends InputAdapter implements Screen{
             }
         });
 
+        gotaSprite.setPosition((camera.viewportWidth - 825) * WORLD_TO_BOX, (camera.viewportHeight - 300) * WORLD_TO_BOX);
+        hojaSprite.setPosition((camera.viewportWidth - 900) * WORLD_TO_BOX, (camera.viewportHeight - 400) * WORLD_TO_BOX);
+        ramaSprite.setPosition(0, (camera.viewportHeight - 300) * WORLD_TO_BOX);
+        hongoSprite.setPosition((camera.viewportWidth - 250) * WORLD_TO_BOX, 5* WORLD_TO_BOX);
+
+
+        //Creacion de la hoja
+        hoja = new HojaBasica(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
+
+
+        //Creacion de la rama para hojas
+        rama = new Rama(world, ramaSprite.getX(), ramaSprite.getY(), ramaSprite.getWidth(), ramaSprite.getHeight(), 1);
+
+        //Definicion del joint entre la hoja y la rama
+        DistanceJointDef jointDef = new DistanceJointDef();
+        jointDef.localAnchorA.set(rama.getRamaBody().getLocalPoint(new Vector2(1.3920f, 5.2f)));
+        jointDef.localAnchorB.set(hoja.getHojaBody().getLocalPoint(new Vector2( 9.392f, 1.7279998f)));
+        jointDef.bodyA = rama.getRamaBody();
+        jointDef.bodyB = hoja.getHojaBody();
+        jointDef.length = 0.3f;
+
+        hojaRamaJoint = (DistanceJoint) world.createJoint(jointDef);
+
+        //Prueba MouseJoint como resorte
+
+        MouseJointDef md = new MouseJointDef();
+        md.bodyA = rama.getRamaBody();
+        md.bodyB = hoja.getHojaBody();
+        md.maxForce = 500 * hoja.getHojaBody().getMass();
+        md.target.set(hoja.getX()*WORLD_TO_BOX, hoja.getY()*WORLD_TO_BOX);
+        pruebaResorteJoint = (MouseJoint) world.createJoint(md);
+
+
+
+
+
+
+
+
+
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
         BodyDef groundDef = new BodyDef();
         FixtureDef fixtureDefIzq = new FixtureDef();
         FixtureDef fixtureDefDer = new FixtureDef();
         FixtureDef fixtureDefPiso = new FixtureDef();
+        FixtureDef fixtureDefBloque = new FixtureDef();
         groundDef.position.set(new Vector2(0,0));
         groundDef.type = BodyDef.BodyType.StaticBody;
         ground = world.createBody(groundDef);
@@ -242,7 +344,7 @@ public class TerceraScreen extends InputAdapter implements Screen{
         fixtureDefIzq.density = 0;
         ground.createFixture(fixtureDefIzq);
         fixtureDefIzq.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefIzq.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefIzq.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA|FigureId.BIT_HONGO;
         ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
 
         //definicion Piso
@@ -252,8 +354,19 @@ public class TerceraScreen extends InputAdapter implements Screen{
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA|FigureId.BIT_HONGO;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
+
+
+        //definicion Piso
+
+        groundEdge.set(400 * WORLD_TO_BOX, 400 * WORLD_TO_BOX, 600 * WORLD_TO_BOX, 400 * WORLD_TO_BOX);
+        fixtureDefBloque.shape = groundEdge;
+        fixtureDefBloque.density = 0;
+        ground.createFixture(fixtureDefBloque);
+        fixtureDefBloque.filter.categoryBits = FigureId.BIT_BORDE;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        ground.createFixture(fixtureDefBloque).setUserData("borde_piso");
 
         //definicion borde Derecho
         groundEdge.set((camera.viewportWidth+1) * WORLD_TO_BOX, -1536*WORLD_TO_BOX, (camera.viewportWidth+1)*WORLD_TO_BOX, camera.viewportHeight*WORLD_TO_BOX);
@@ -267,21 +380,86 @@ public class TerceraScreen extends InputAdapter implements Screen{
         groundEdge.dispose();
 
         //Creacion del puas
-        pua = new Puas(world, puasSprite.getX(), puasSprite.getY(), puasSprite.getWidth(), puasSprite.getHeight(), false);
+        pua = new Puas(world, puasSprite.getX(), puasSprite.getY(), puasSprite.getWidth()/2, puasSprite.getHeight()/2, false);
 
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
         //Creación tronco
-        tronco1_kalam = new Tronco(world, (camera.viewportWidth - 900) * WORLD_TO_BOX, (camera.viewportHeight - 250) * WORLD_TO_BOX, tronco1_sprite_Kalam.getWidth()/2, tronco1_sprite_Kalam.getHeight()/2, -0.34f, true, false);
-        tronco2_kalam = new Tronco(world, (camera.viewportWidth - 400) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX, tronco1_sprite_Kalam.getWidth()/2, tronco1_sprite_Kalam.getHeight()/2, 0.34f, false, false);
+        tronco1_kalam = new Tronco(world, (camera.viewportWidth - 624) * WORLD_TO_BOX, (camera.viewportHeight - 50) * WORLD_TO_BOX, tronco1_sprite_Kalam.getWidth()/2, tronco1_sprite_Kalam.getHeight()/2, 0.1f ,false,false);
+        tronco2_kalam = new Tronco(world, (camera.viewportWidth - 400) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX, tronco2_sprite_Kalam.getWidth()/2, tronco2_sprite_Kalam.getHeight()/2, 0.34f, false, false);
+
+        //Creacion del hongo
+        hongo = new Hongo(world, hongoSprite.getX(), hongoSprite.getY(), hongoSprite.getWidth(),hongoSprite.getHeight());
+
+
+
+
 
         table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
         table.setFillParent(true);
         stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
+       // Gdx.input.setInputProcessor(stage);
 
+    }
+
+
+
+
+
+    //Para el arrastre de objetos de juego
+    private Vector3 tmp = new Vector3();
+    private Vector2 tmp2 = new Vector2();
+
+    private QueryCallback queryCallback = new QueryCallback() {
+
+        @Override
+        public boolean reportFixture(Fixture fixture) {
+
+            if (fixture.getBody() == hoja.getHojaBody()) {
+                MouseJointDef md = new MouseJointDef();
+                md.bodyA = ground;
+                md.bodyB = fixture.getBody();
+                md.collideConnected = true;
+                md.maxForce = 1000 * fixture.getBody().getMass();
+                md.target.set(tmp.x, tmp.y);
+                mouseJoint = (MouseJoint) world.createJoint(md);
+                fixture.getBody().setAwake(true);
+            }
+            return false;
+        }
+    };
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        System.out.println("X = " + tmp.x + " Y = " + tmp.y);
+        camera.unproject(tmp.set(screenX, screenY, 0));
+        tmp.x *= WORLD_TO_BOX;
+        tmp.y *= WORLD_TO_BOX;
+        world.QueryAABB(queryCallback, tmp.x, tmp.y, tmp.x, tmp.y);
+        return true;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if (mouseJoint == null)
+            return false;
+        camera.unproject(tmp.set(screenX, screenY, 0));
+        tmp.x *= WORLD_TO_BOX;
+        tmp.y *= WORLD_TO_BOX;
+        mouseJoint.setTarget(tmp2.set(tmp.x, tmp.y));
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (mouseJoint == null)
+            return false;
+
+        world.destroyJoint(mouseJoint);
+        mouseJoint = null;
+        return true;
     }
 
     @Override

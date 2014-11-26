@@ -91,6 +91,10 @@ public class Hongo implements ObjetoJuego{
         return hongoBody.getMass();
     }
 
+    public Body getHongoBody() {
+        return hongoBody;
+    }
+
 }
 
 
