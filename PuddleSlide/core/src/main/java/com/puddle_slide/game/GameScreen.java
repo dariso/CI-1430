@@ -296,7 +296,7 @@ public class GameScreen extends InputAdapter implements Screen {
         puas1Sprite.setPosition((camera.viewportWidth - 25) * WORLD_TO_BOX, (camera.viewportHeight - 225) * WORLD_TO_BOX);
         hongoSprite.setPosition((camera.viewportWidth - 250) * WORLD_TO_BOX, 0);
         puas2Sprite.setPosition((camera.viewportWidth - 1075) * WORLD_TO_BOX, 0);
-        manzanaSprite.setPosition((camera.viewportWidth - 850) * WORLD_TO_BOX, (camera.viewportHeight - 550) * WORLD_TO_BOX);
+        manzanaSprite.setPosition(300 * WORLD_TO_BOX, 500 * WORLD_TO_BOX);
 
         //Creacion de la hoja
         hoja = new HojaBasica(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
