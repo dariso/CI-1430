@@ -491,8 +491,8 @@ public class TerceraScreen extends InputAdapter implements Screen {
         md.target.set(hoja.getX() * WORLD_TO_BOX, hoja.getY() * WORLD_TO_BOX);
         pruebaResorteJoint = (MouseJoint) world.createJoint(md);
 
-        table.add(buttonPause).size(140, 40).padTop(-160).padLeft(450).row();
-        table.add(buttonRegresar).size(140, 40).padTop(-30).padBottom(250).padLeft(450);
+        table.add(buttonPause).size(camera.viewportWidth/6, camera.viewportHeight/12).padTop(-140).padLeft(450).row();
+        table.add(buttonRegresar).size(camera.viewportWidth/6, camera.viewportHeight/12).padTop(-30).padBottom(250).padLeft(450);
         table.setFillParent(true);
         stage.addActor(table);
 
