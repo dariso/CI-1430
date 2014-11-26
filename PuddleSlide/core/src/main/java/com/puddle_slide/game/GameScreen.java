@@ -90,6 +90,8 @@ public class GameScreen extends InputAdapter implements Screen {
     private Hongo hongo;
     private Puas puas1;
     private Puas puas2;
+    private Puas puas3;
+
     private Manzana manzana;
 
 
@@ -107,6 +109,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private TroncoQuebradizo troncoQ5;
     private TroncoQuebradizo troncoQ6;
     private TroncoQuebradizo troncoQ7;
+    private TroncoQuebradizo troncoQ8;
 
 
     private DistanceJoint jointManzanaTronco;
@@ -116,9 +119,11 @@ public class GameScreen extends InputAdapter implements Screen {
     private DistanceJoint troncoQ4PuasJoint;
     private DistanceJoint troncoQ4Puas2Joint;
     private DistanceJoint troncoQ3ManzanaJoint;
+    private DistanceJoint troncoQ1Puas3Joint;
 
     boolean PAUSE = false;
     float volar = (float) 0.01;
+    private float acumuladorDelta = 0;
 
 
     public GameScreen(final com.puddle_slide.game.Puddle_Slide elJuego, MyContactListener escuchadorColision, World world) {
@@ -132,7 +137,7 @@ public class GameScreen extends InputAdapter implements Screen {
         troncoIzqImg = new Texture(Gdx.files.internal("troncoIzq.png"));
         troncoQuebraImg = new Texture(Gdx.files.internal("troncoQuebradizo.png"));
         puasImg = new Texture(Gdx.files.internal("puasP.png"));
-        hongoImg = new Texture(Gdx.files.internal("hongosNaranja2.png"));
+        hongoImg = new Texture(Gdx.files.internal("rsz_hongosnaranja2.png"));
         manzanaImg = new Texture(Gdx.files.internal("manzana.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondoConCharco.png"));
         stage = new Stage(new StretchViewport(game.V_WIDTH, game.V_HEIGHT));
@@ -172,7 +177,6 @@ public class GameScreen extends InputAdapter implements Screen {
     @Override
     public void render(float delta) {
 
-        camera.update();
         Gdx.gl.glClearColor(0, 0, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(camera.combined);
@@ -180,9 +184,8 @@ public class GameScreen extends InputAdapter implements Screen {
 
         //Si no esta en pausa actualiza las posiciones
         if (!PAUSE) {
-            /*if gota esta en checkpoint, bajar camara
-            * else renderizar normalmente
-            */
+
+            moveCamera(0, enki.getY() + 70);
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
             world.step(1 / 45f, 6, 2);
             camera.update();
@@ -198,6 +201,8 @@ public class GameScreen extends InputAdapter implements Screen {
         this.paintSprite(troncoDerSprite, tronco1);
         this.paintSprite(troncoIzqSprite, tronco2);
         this.paintSprite(troncoDerSprite, tronco3);
+        this.paintSprite(troncoDerSprite, tronco4);
+
         this.paintSprite(troncoQuebraSprite, troncoQ1);
         this.paintSprite(troncoQuebraSprite, troncoQ2);
         this.paintSprite(troncoQuebraSprite, troncoQ3);
@@ -205,9 +210,12 @@ public class GameScreen extends InputAdapter implements Screen {
         this.paintSprite(troncoQuebraSprite, troncoQ5);
         this.paintSprite(troncoQuebraSprite, troncoQ6);
         this.paintSprite(troncoQuebraSprite, troncoQ7);
+        this.paintSprite(troncoQuebraSprite, troncoQ8);
         this.paintSprite(puas1Sprite, puas1);
         this.paintSprite(puas1Sprite, puas2);
+        this.paintSprite(puas1Sprite, puas3);
         this.paintSprite(manzanaSprite, manzana);
+        this.paintSprite(hongoSprite, hongo);
         this.paintSprite(hojaSprite, hoja);
 
         if (!escuchadorColision.getMuerta()) {
@@ -284,19 +292,19 @@ public class GameScreen extends InputAdapter implements Screen {
                 -0.310f, true, false);
 
         tronco4 = new Tronco(world, (camera.viewportWidth - 1150) * WORLD_TO_BOX,
-                (camera.viewportHeight - 320) * WORLD_TO_BOX,
+                (camera.viewportHeight - 360) * WORLD_TO_BOX,
                 troncoDerSprite.getWidth() / 2, troncoDerSprite.getHeight() / 2,
                 0f, true, false);
 
-        tronco5 = new Tronco(world, (camera.viewportWidth - 800) * WORLD_TO_BOX,
-                (camera.viewportHeight - 400) * WORLD_TO_BOX,
-                troncoDerSprite.getWidth() / 2, troncoDerSprite.getHeight() / 2,
-                0.027f, true, false);
+
+        hongo = new Hongo(world, (camera.viewportWidth - 1010) * WORLD_TO_BOX,
+                (camera.viewportHeight - 265) * WORLD_TO_BOX, hongoSprite.getWidth() * 2
+                , hongoSprite.getHeight() * 2, true);
 
 
         troncoQ1 = new TroncoQuebradizo(world, (camera.viewportWidth - 800) * WORLD_TO_BOX,
                 (camera.viewportHeight - 455 + game.V_HEIGHT) * WORLD_TO_BOX,
-                troncoQuebraSprite.getWidth(), troncoQuebraSprite.getHeight() / 2,
+                troncoQuebraSprite.getWidth(), troncoQuebraSprite.getHeight(),
                 0.050f, false);
 
         troncoQ2 = new TroncoQuebradizo(world, (camera.viewportWidth - 690) * WORLD_TO_BOX,
@@ -321,17 +329,22 @@ public class GameScreen extends InputAdapter implements Screen {
                 troncoQuebraSprite.getWidth(), troncoQuebraSprite.getHeight(),
                 0, false);
 
-        troncoQ6 = new TroncoQuebradizo(world, (camera.viewportWidth - 350) * WORLD_TO_BOX,
+        troncoQ6 = new TroncoQuebradizo(world, (camera.viewportWidth - 370) * WORLD_TO_BOX,
                 (camera.viewportHeight - 720 + game.V_HEIGHT) * WORLD_TO_BOX,
                 troncoQuebraSprite.getWidth(), troncoQuebraSprite.getHeight(),
                 0.004f, false);
 
         //seccion 2
 
-        troncoQ7 = new TroncoQuebradizo(world, (camera.viewportWidth - 730) * WORLD_TO_BOX,
-                (camera.viewportHeight - 90) * WORLD_TO_BOX,
+        troncoQ7 = new TroncoQuebradizo(world, (camera.viewportWidth - 750) * WORLD_TO_BOX,
+                (camera.viewportHeight - 60) * WORLD_TO_BOX,
                 troncoQuebraSprite.getWidth(), troncoQuebraSprite.getHeight(),
                 0.004f, false);
+
+        troncoQ8 = new TroncoQuebradizo(world, (camera.viewportWidth - 850) * WORLD_TO_BOX,
+                (camera.viewportHeight - 480) * WORLD_TO_BOX,
+                troncoQuebraSprite.getWidth(), troncoQuebraSprite.getHeight(),
+                0.027f, false);
 
         manzana = new Manzana(world, (camera.viewportWidth - 470) * WORLD_TO_BOX,
                 (camera.viewportHeight - 520 + game.V_HEIGHT) * WORLD_TO_BOX,
@@ -343,6 +356,10 @@ public class GameScreen extends InputAdapter implements Screen {
 
         puas2 = new Puas(world, (camera.viewportWidth - 430) * WORLD_TO_BOX,
                 (camera.viewportHeight - 70 + game.V_HEIGHT) * WORLD_TO_BOX,
+                puas1Sprite.getWidth() / 2, puas1Sprite.getHeight() / 2, true);
+
+        puas3 = new Puas(world, (camera.viewportWidth - 880) * WORLD_TO_BOX,
+                (camera.viewportHeight - 500 + game.V_HEIGHT) * WORLD_TO_BOX,
                 puas1Sprite.getWidth() / 2, puas1Sprite.getHeight() / 2, true);
 
 
@@ -368,13 +385,21 @@ public class GameScreen extends InputAdapter implements Screen {
 
         troncoQ4PuasJoint = (DistanceJoint) world.createJoint(jointDef);
 
-        jointDef.localAnchorA.set(troncoQ4.getTroncoBody().getLocalPoint(new Vector2(5.12f, 14.90f)));
-        jointDef.localAnchorB.set(puas2.getPuasBody().getLocalPoint(new Vector2(5.12f, 14.90f)));
+        jointDef.localAnchorA.set(troncoQ4.getTroncoBody().getLocalPoint(new Vector2(5.12f, 14.87f)));
+        jointDef.localAnchorB.set(puas2.getPuasBody().getLocalPoint(new Vector2(5.12f, 14.87f)));
         jointDef.bodyA = troncoQ4.getTroncoBody();
         jointDef.bodyB = puas2.getPuasBody();
         jointDef.length = 0.3f;
 
         troncoQ4Puas2Joint = (DistanceJoint) world.createJoint(jointDef);
+
+        jointDef.localAnchorA.set(troncoQ1.getTroncoBody().getLocalPoint(new Vector2(0.57f, 10.97f)));
+        jointDef.localAnchorB.set(puas3.getPuasBody().getLocalPoint(new Vector2(0.57f, 10.97f)));
+        jointDef.bodyA = troncoQ1.getTroncoBody();
+        jointDef.bodyB = puas3.getPuasBody();
+        jointDef.length = 0.1f;
+
+        troncoQ1Puas3Joint = (DistanceJoint) world.createJoint(jointDef);
 
         jointDef.localAnchorA.set(troncoQ3.getTroncoBody().getLocalPoint(new Vector2(6.35f, 11.45f)));
         jointDef.localAnchorB.set(manzana.getManzanaBody().getLocalPoint(new Vector2(6.35f, 11.45f)));
@@ -483,7 +508,7 @@ public class GameScreen extends InputAdapter implements Screen {
     }
 
     public void moveCamera(float x, float y) {
-        camera.position.set(x, y, 0);
+        camera.position.set(camera.viewportWidth / 2, y, 0);
     }
 
     //Para el arrastre de objetos de juego
