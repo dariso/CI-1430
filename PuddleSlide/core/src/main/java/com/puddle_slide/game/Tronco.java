@@ -70,12 +70,12 @@ public class Tronco implements ObjetoJuego{
 
     @Override
     public float getX(){
-        return troncoBody.getPosition().x * BOX_TO_WORLD;
+        return Math.round(troncoBody.getPosition().x * BOX_TO_WORLD);
     }
 
     @Override
     public float getY(){
-        return troncoBody.getPosition().y * BOX_TO_WORLD;
+        return Math.round(troncoBody.getPosition().y * BOX_TO_WORLD);
     }
 
     @Override
