@@ -121,7 +121,7 @@ public class GameScreen extends InputAdapter implements Screen {
         troncoDerImg = new Texture(Gdx.files.internal("troncoDer.png"));
         troncoIzqImg = new Texture(Gdx.files.internal("troncoIzq.png"));
         lianaImage = new Texture(Gdx.files.internal("LianaJoin.png"));
-        puasImg = new Texture(Gdx.files.internal("PuasP.png"));
+        puasImg = new Texture(Gdx.files.internal("puasP.png"));
         hongoImg = new Texture(Gdx.files.internal("hongosNaranja2.png"));
         manzanaImg = new Texture(Gdx.files.internal("manzana.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondoMontanas.png"));
@@ -305,7 +305,7 @@ public class GameScreen extends InputAdapter implements Screen {
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
         //Creacion del hongo
-        hongo = new Hongo(world, hongoSprite.getX(), hongoSprite.getY(), 259, 250);
+        hongo = new Hongo(world, hongoSprite.getX(), hongoSprite.getY(), 259, 250, false);
 
         //Creacion de la manzana
         manzana = new Manzana(world, manzanaSprite.getX(), manzanaSprite.getY(), manzanaSprite.getWidth(), manzanaSprite.getHeight());

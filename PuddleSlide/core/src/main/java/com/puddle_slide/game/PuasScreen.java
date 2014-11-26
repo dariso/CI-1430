@@ -134,7 +134,7 @@ public class PuasScreen extends InputAdapter implements Screen{
             mapRender.setView(camera);
             mapRender.render();
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
-            world.step(1 / 60f, 6, 2);
+            world.step(1 / 45f, 6, 2);
 
         }
         this.actualizarSprites();

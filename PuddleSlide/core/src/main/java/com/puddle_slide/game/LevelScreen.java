@@ -28,6 +28,7 @@ public class LevelScreen implements Screen {
     private Table table;
     private TextButton buttonPuas;
     private TextButton buttonRama;
+    private TextButton buttonSeccion1;
     private TextButton buttonTercera;
     private TextButton buttonManzana;
     private TextButton buttonReturn;
@@ -43,6 +44,7 @@ public class LevelScreen implements Screen {
         buttonPuas = new TextButton("Puas", skin);
         buttonManzana = new TextButton("Manzana", skin);
         buttonRama = new TextButton("Ramas", skin);
+        buttonSeccion1 = new TextButton("Seccion 1", skin);
         buttonTercera = new TextButton("Tercera", skin);
         buttonReturn = new TextButton("Regresar",skin);
         title = new Label("Niveles de prueba",skin);
@@ -113,9 +115,18 @@ public class LevelScreen implements Screen {
         });
 
 
+        buttonSeccion1.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new Seccion1Screen(game));
+            }
+        });
+
+
         table.add(title).colspan(2).center().padBottom(60).row();
         table.add(buttonManzana).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
         table.add(buttonRama).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
+        table.add(buttonSeccion1).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
         table.add(buttonTercera).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
         table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
         table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10);

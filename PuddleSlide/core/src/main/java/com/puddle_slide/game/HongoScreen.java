@@ -185,7 +185,7 @@ public class HongoScreen extends InputAdapter implements Screen{
         groundEdge.dispose();
 
         //Creacion del hongo
-        hongo = new Hongo(world, hongoSprite.getX(), hongoSprite.getY(), hongoSprite.getWidth(), hongoSprite.getHeight());
+        hongo = new Hongo(world, hongoSprite.getX(), hongoSprite.getY(), hongoSprite.getWidth(), hongoSprite.getHeight(), false);
 
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
