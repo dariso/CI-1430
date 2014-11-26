@@ -11,7 +11,7 @@ public class Puddle_Slide extends Game {
     float V_HEIGHT;
 
     @Override
-    public void create () {
+    public void create() {
         batch = new SpriteBatch();
         font = new BitmapFont();
         V_WIDTH = 1024;
@@ -21,7 +21,7 @@ public class Puddle_Slide extends Game {
     }
 
     @Override
-    public void render () {
+    public void render() {
         super.render();
     }
 

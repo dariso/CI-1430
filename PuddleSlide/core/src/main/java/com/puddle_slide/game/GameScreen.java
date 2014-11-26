@@ -164,7 +164,7 @@ public class GameScreen extends InputAdapter implements Screen {
         this.escuchadorColision = escuchadorColision;
         this.world = world;
         camera.setToOrtho(false, game.V_WIDTH, game.V_HEIGHT);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2 + game.V_HEIGHT / 2 - 100, 0);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2 + game.V_HEIGHT, 0);
     }
 
     private Vector2 vec = new Vector2();

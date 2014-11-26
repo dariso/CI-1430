@@ -37,26 +37,27 @@ public class LevelScreen implements Screen {
     private World world;
     private Texture backgroundImage;
 
-    public LevelScreen(final Puddle_Slide elJuego){
+    public LevelScreen(final Puddle_Slide elJuego) {
 
         game = elJuego;
-        filehandle= Gdx.files.internal("skins/menuSkin.json");
+        filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
-        skin = new Skin(filehandle,textura);
+        skin = new Skin(filehandle, textura);
         buttonPuas = new TextButton("Puas", skin);
         buttonManzana = new TextButton("Manzana", skin);
         buttonRama = new TextButton("Ramas", skin);
         buttonSeccion1 = new TextButton("Seccion 1", skin);
         buttonTercera = new TextButton("Tercera", skin);
-        buttonReturn = new TextButton("Regresar",skin);
-        title = new Label("Niveles de prueba",skin);
+        buttonReturn = new TextButton("Regresar", skin);
+        title = new Label("Niveles de prueba", skin);
         title.setFontScale(2.0f);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,game.V_WIDTH,game.V_HEIGHT);
-        stage = new Stage(new StretchViewport(game.V_WIDTH,game.V_HEIGHT));
+        camera.setToOrtho(false, game.V_WIDTH, game.V_HEIGHT);
+        stage = new Stage(new StretchViewport(game.V_WIDTH, game.V_HEIGHT));
         table = new Table();
         backgroundImage = new Texture(Gdx.files.internal("fondotemp.png"));
     }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
@@ -76,65 +77,65 @@ public class LevelScreen implements Screen {
     @Override
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
-       // world.setContactListener(new MyContactListener());
-        buttonReturn.addListener(new ClickListener(){
+        // world.setContactListener(new MyContactListener());
+        buttonReturn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
             }
         });
 
-        buttonManzana.addListener(new ClickListener(){
+        buttonManzana.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new ManzanaScreen(game));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ManzanaScreen(game));
             }
         });
 
-        buttonRama.addListener(new ClickListener(){
+        buttonRama.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new RamasScreen(game, world));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new RamasScreen(game, world));
             }
         });
-        buttonTercera.addListener(new ClickListener(){
+        buttonTercera.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new TerceraScreen(game));
-            }
-        });
-
-        buttonTercera.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new TerceraScreen(game));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new TerceraScreen(game));
             }
         });
 
-
-        buttonPuas.addListener(new ClickListener(){
+        buttonTercera.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new PuasScreen(game));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new TerceraScreen(game));
             }
         });
 
 
-        buttonSeccion1.addListener(new ClickListener(){
+        buttonPuas.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new Seccion1Screen(game));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new PuasScreen(game));
+            }
+        });
+
+
+        buttonSeccion1.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Seccion1Screen(game));
             }
         });
 
 
         table.add(title).colspan(2).center().padBottom(60).row();
-        table.add(buttonManzana).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
+        table.add(buttonManzana).colspan(2).center().size(camera.viewportWidth / 4, camera.viewportHeight / 10).padBottom(40).row();
         table.add(buttonRama).colspan(2).center().size(camera.viewportWidth / 4, camera.viewportHeight / 10).padBottom(40).row();
-        table.add(buttonSeccion1).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
-        table.add(buttonTercera).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
-        table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10).padBottom(40).row();
-        table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth/4,camera.viewportHeight/10);
+        table.add(buttonSeccion1).colspan(2).center().size(camera.viewportWidth / 4, camera.viewportHeight / 10).padBottom(40).row();
+        table.add(buttonTercera).colspan(2).center().size(camera.viewportWidth / 4, camera.viewportHeight / 10).padBottom(40).row();
+        table.add(buttonPuas).colspan(2).center().size(camera.viewportWidth / 4, camera.viewportHeight / 10).padBottom(40).row();
+        table.add(buttonReturn).colspan(2).center().size(camera.viewportWidth / 4, camera.viewportHeight / 10);
 
         table.setFillParent(true);
         stage.addActor(table);

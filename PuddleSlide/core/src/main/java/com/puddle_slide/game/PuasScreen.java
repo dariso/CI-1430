@@ -30,7 +30,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class PuasScreen extends InputAdapter implements Screen{
+public class PuasScreen extends InputAdapter implements Screen {
 
     final Puddle_Slide game;
     private OrthographicCamera camera;
@@ -69,12 +69,13 @@ public class PuasScreen extends InputAdapter implements Screen{
 
     private TiledMap tileMap;
     private OrthogonalTiledMapRenderer mapRender;
+
     public PuasScreen(final com.puddle_slide.game.Puddle_Slide elJuego) {
 
         this.game = elJuego;
         gotaImage = new Texture(Gdx.files.internal("gotty1.png"));
-        puasImg = new Texture (Gdx.files.internal("puasP.png"));
-        gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
+        puasImg = new Texture(Gdx.files.internal("puasP.png"));
+        gotaFantasmaImage = new Texture(Gdx.files.internal("fantasmita.png"));
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondo3.png"));
 
@@ -83,12 +84,12 @@ public class PuasScreen extends InputAdapter implements Screen{
         gotafantasmaSprite = new Sprite(gotaFantasmaImage);
         puasSprite = new Sprite(puasImg);
         gotaSprite.setPosition((Gdx.graphics.getWidth() / 2) * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
-        gotaMuertaSprite.setPosition(Gdx.graphics.getWidth()/2 *WORLD_TO_BOX , Gdx.graphics.getHeight() * WORLD_TO_BOX);
-        puasSprite.setPosition(1,0);
+        gotaMuertaSprite.setPosition(Gdx.graphics.getWidth() / 2 * WORLD_TO_BOX, Gdx.graphics.getHeight() * WORLD_TO_BOX);
+        puasSprite.setPosition(1, 0);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
-        skin = new Skin(filehandle,textura);
+        skin = new Skin(filehandle, textura);
         buttonPause = new TextButton("Pausa", skin);
         buttonRegresar = new TextButton("Menu", skin);
         camera = new OrthographicCamera();
@@ -100,14 +101,14 @@ public class PuasScreen extends InputAdapter implements Screen{
 
 
         //iniciar mapa
-        tileMap=new TmxMapLoader().load("maps/nivel.tmx");
-        mapRender=new OrthogonalTiledMapRenderer(tileMap);
+        tileMap = new TmxMapLoader().load("maps/nivel.tmx");
+        mapRender = new OrthogonalTiledMapRenderer(tileMap);
     }
 
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(camera.combined);
         Matrix4 cameraCopy = camera.combined.cpy();
@@ -161,16 +162,16 @@ public class PuasScreen extends InputAdapter implements Screen{
 
         this.game.batch.draw(puasSprite, puasSprite.getX(), puasSprite.getY(), pua.getOrigen().x, pua.getOrigen().y, puasSprite.getWidth(),
                 puasSprite.getHeight(), puasSprite.getScaleX(), puasSprite.getScaleY(), puasSprite.getRotation());
-        if(!escuchadorColision.getMuerta()) {
+        if (!escuchadorColision.getMuerta()) {
             this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
                     gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
-        }else {
+        } else {
             this.game.batch.draw(gotaMuertaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaMuertaSprite.getWidth(),
                     gotaMuertaSprite.getHeight(), gotaMuertaSprite.getScaleX(), gotaMuertaSprite.getScaleY(), gotaSprite.getRotation());
 
-                this.game.batch.draw(gotafantasmaSprite, enki.getX() - 64, enki.getY() + volar);
-            if (!PAUSE){
-            volar++;
+            this.game.batch.draw(gotafantasmaSprite, enki.getX() - 64, enki.getY() + volar);
+            if (!PAUSE) {
+                volar++;
             }
         }
 
@@ -192,16 +193,16 @@ public class PuasScreen extends InputAdapter implements Screen{
         debugRenderer = new Box2DDebugRenderer();
 
         //Boton de Pausa
-        buttonPause.addListener(new ClickListener(){
+        buttonPause.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 pauseGame();
             }
         });
-        buttonRegresar.addListener(new ClickListener(){
+        buttonRegresar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
             }
         });
 
@@ -211,17 +212,17 @@ public class PuasScreen extends InputAdapter implements Screen{
         FixtureDef fixtureDefIzq = new FixtureDef();
         FixtureDef fixtureDefDer = new FixtureDef();
         FixtureDef fixtureDefPiso = new FixtureDef();
-        groundDef.position.set(new Vector2(0,0));
+        groundDef.position.set(new Vector2(0, 0));
         groundDef.type = BodyDef.BodyType.StaticBody;
         ground = world.createBody(groundDef);
 
         //definicion borde Izquierdo
-        groundEdge.set(-1 * WORLD_TO_BOX,-35 * WORLD_TO_BOX,-1 * WORLD_TO_BOX, camera.viewportHeight * WORLD_TO_BOX);
+        groundEdge.set(-1 * WORLD_TO_BOX, -35 * WORLD_TO_BOX, -1 * WORLD_TO_BOX, camera.viewportHeight * WORLD_TO_BOX);
         fixtureDefIzq.shape = groundEdge;
         fixtureDefIzq.density = 0;
         ground.createFixture(fixtureDefIzq);
         fixtureDefIzq.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefIzq.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefIzq.filter.maskBits = FigureId.BIT_PUAS | FigureId.BIT_HOJA | FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
 
         //definicion Piso
@@ -232,16 +233,16 @@ public class PuasScreen extends InputAdapter implements Screen{
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
         fixtureDefPiso.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefPiso.filter.maskBits = FigureId.BIT_PUAS | FigureId.BIT_HOJA | FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefPiso).setUserData("borde_piso");
 
         //definicion borde Derecho
-        groundEdge.set((camera.viewportWidth+1) * WORLD_TO_BOX, -35*WORLD_TO_BOX, (camera.viewportWidth+1)*WORLD_TO_BOX, camera.viewportHeight*WORLD_TO_BOX);
+        groundEdge.set((camera.viewportWidth + 1) * WORLD_TO_BOX, -35 * WORLD_TO_BOX, (camera.viewportWidth + 1) * WORLD_TO_BOX, camera.viewportHeight * WORLD_TO_BOX);
         fixtureDefDer.shape = groundEdge;
         fixtureDefDer.density = 0;
         ground.createFixture(fixtureDefDer);
         fixtureDefDer.filter.categoryBits = FigureId.BIT_BORDE;
-        fixtureDefDer.filter.maskBits = FigureId.BIT_PUAS|FigureId.BIT_HOJA|FigureId.BIT_GOTA;
+        fixtureDefDer.filter.maskBits = FigureId.BIT_PUAS | FigureId.BIT_HOJA | FigureId.BIT_GOTA;
         ground.createFixture(fixtureDefDer).setUserData("borde_der");
 
         groundEdge.dispose();
@@ -252,7 +253,7 @@ public class PuasScreen extends InputAdapter implements Screen{
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
-        table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
+        table.add(buttonPause).size(140, 40).padTop(-160).padLeft(450).row();
         table.add(buttonRegresar).size(140, 40).padTop(-30).padBottom(250).padLeft(450).row();
         table.add(texto).size(20, 20).padTop(-30).padBottom(250).padLeft(450);
         table.setFillParent(true);
@@ -268,7 +269,7 @@ public class PuasScreen extends InputAdapter implements Screen{
 
     @Override
     public void pause() {
-         pauseGame();
+        pauseGame();
     }
 
     @Override
@@ -282,17 +283,17 @@ public class PuasScreen extends InputAdapter implements Screen{
         skin.dispose();
         gotaImage.dispose();
         puasImg.dispose();
-       // backgroundImage.dispose();
+        // backgroundImage.dispose();
         gotaMuertaImage.dispose();
         gotaFantasmaImage.dispose();
         escuchadorColision.setMuerta(false);
     }
 
-    public void pauseGame(){
-        if(PAUSE){
+    public void pauseGame() {
+        if (PAUSE) {
             PAUSE = false;
             buttonPause.setText("Pausa");
-        }else{
+        } else {
             PAUSE = true;
             buttonPause.setText("Atrás");
         }

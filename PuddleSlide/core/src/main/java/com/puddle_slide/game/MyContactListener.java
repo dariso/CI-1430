@@ -26,15 +26,16 @@ public class MyContactListener implements ContactListener {
     float posMuertaX;
     float posMuertaY;
 
-    public MyContactListener(SoundControl sonido){
+    public MyContactListener(SoundControl sonido) {
         this.sonido = sonido;
 
     }
-    public static MyContactListener getInstancia(SoundControl sonido){
 
-        if(uniqueInstance == null){
-            synchronized (MyContactListener.class){
-                if(uniqueInstance == null){
+    public static MyContactListener getInstancia(SoundControl sonido) {
+
+        if (uniqueInstance == null) {
+            synchronized (MyContactListener.class) {
+                if (uniqueInstance == null) {
                     uniqueInstance = new MyContactListener(sonido);
                 }
             }
@@ -48,46 +49,46 @@ public class MyContactListener implements ContactListener {
         objetoB = contact.getFixtureB();
 
 
-        if(objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota" ){
+        if (objetoA.getUserData() == "gota" || objetoB.getUserData() == "gota") {
 
-            if(objetoB.getUserData() == "gota"){
+            if (objetoB.getUserData() == "gota") {
                 objetoContrario = contact.getFixtureA();
                 objetoGota = contact.getFixtureB();
-            }else{
+            } else {
                 objetoContrario = contact.getFixtureB();
                 objetoGota = contact.getFixtureA();
             }
 
             String contrario;
             contrario = (String) objetoContrario.getUserData();
-            if(contrario.equals("hoja")){
+            if (contrario.equals("hoja")) {
                 //  objetoGota.getBody().applyAngularImpulse(100,true);
                 sonido.sonidoGota();
 
-            }else if(contrario.equals("hojaBasica")){
-            }else if(contrario.equals("hongo")){
+            } else if (contrario.equals("hojaBasica")) {
+            } else if (contrario.equals("hongo")) {
 
                 impulso.x = 4 * objetoA.getBody().getMass();
                 impulso.y = 2 * objetoA.getBody().getMass();
 
                 //Para saber a que lado aplicar el impulso a la gota
-                if(objetoA.getBody().getPosition().x > objetoB.getBody().getPosition().x){
+                if (objetoA.getBody().getPosition().x > objetoB.getBody().getPosition().x) {
                     punto.x = objetoGota.getBody().getPosition().x;
                     punto.y = objetoGota.getBody().getPosition().y;
-                }else{
+                } else {
                     punto.x = -objetoGota.getBody().getPosition().x;
                     punto.y = -objetoGota.getBody().getPosition().y;
                 }
-                if(!muerta) {
+                if (!muerta) {
                     objetoGota.getBody().applyLinearImpulse(impulso.x, impulso.y, punto.x, punto.y, true);
                 }
                 sonido.sonidoHongo();
 
-            }else if(contrario.equals("manzana")){
+            } else if (contrario.equals("manzana")) {
                 sonido.sonidoGota();
-            }else if(contrario.equals("troncoIzq") || contrario.equals("troncoDer")){
+            } else if (contrario.equals("troncoIzq") || contrario.equals("troncoDer")) {
                 sonido.sonidoGota();
-            }else if(contrario.equals("puas")){
+            } else if (contrario.equals("puas")) {
                 muerta = true;
                 posMuertaX = objetoGota.getBody().getPosition().x;
                 posMuertaY = objetoGota.getBody().getPosition().y;
@@ -96,7 +97,7 @@ public class MyContactListener implements ContactListener {
         }
     }
 
-    public boolean contactoHoja(){
+    public boolean contactoHoja() {
         return contactoConHoja;
     }
 
@@ -114,19 +115,20 @@ public class MyContactListener implements ContactListener {
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
     }
-    public boolean getMuerta(){
+
+    public boolean getMuerta() {
         return this.muerta;
     }
 
-    public void setMuerta(boolean revive){
+    public void setMuerta(boolean revive) {
         this.muerta = revive;
     }
 
-    public float getMuertaX(){
+    public float getMuertaX() {
         return this.posMuertaX;
     }
 
-    public float getMuertaY(){
+    public float getMuertaY() {
         return this.posMuertaY;
     }
 }
