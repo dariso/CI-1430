@@ -33,6 +33,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 /**
  * Created by xia on 11/24/14.
@@ -52,23 +53,34 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     private Sprite gotafantasmaSprite;
     private Sprite gotaMuertaSprite;
     private Sprite hojaSprite;
+    private Sprite hojaSpriteEstrellitas1;
+    private Sprite hojaSpriteEstrellitas2;
     private Sprite ramaSprite;
     private Sprite hongo1Sprite;
     private Sprite puasSprite;
     private Sprite manzanaSprite;
+    private Sprite manzanaSpriteEstrellitas1;
+    private Sprite manzanaSpriteEstrellitas2;
     private Sprite troncoSprite;
-    private Sprite troncoTechoSprite;
+    private Sprite troncoSpriteEstrellitas1;
+    private Sprite troncoSpriteEstrellitas2;
     private Sprite troncoGrandeSprite;
     private Texture ramaImg;
     private Texture hongoImg;
     private Texture manzanaImg;
+    private Texture manzanaStarImg1;
+    private Texture manzanaStarImg2;
     private Texture troncoQuebradizoImg;
+    private Texture troncoQuebradizoStar1Img;
+    private Texture troncoQuebradizoStar2Img;
     private Texture troncoGrandeImg;
     private Texture gotaImage;
     private Texture gotaMuertaImage;
     private Texture gotaFantasmaImage;
     private Texture puasImg;
     private Texture hojaImg;
+    private Texture hojaStarImg1;
+    private Texture hojaStarImg2;
     private Texture backgroundImage;
     private static final float WORLD_TO_BOX = 0.01f;
     private static final float BOX_TO_WORLD = 100f;
@@ -81,6 +93,8 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     boolean PAUSE = false;
     float volar = (float) 0.01;
     MyContactListener escuchadorColision;
+
+    int espere;
 
     //Troncos Estructurales
     private TroncoQuebradizo tronco1;
@@ -135,10 +149,16 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
         hojaImg = new Texture(Gdx.files.internal("hoja2.png"));
+        hojaStarImg1 = new Texture(Gdx.files.internal("hoja2Brillante1.png"));
+        hojaStarImg2 = new Texture(Gdx.files.internal("hoja2Brillante2.png"));
         ramaImg = new Texture(Gdx.files.internal("RamaIzquierdaParaHojasAbajo.png"));
         hongoImg = new Texture(Gdx.files.internal("rsz_hongosnaranja2.png"));
         manzanaImg = new Texture(Gdx.files.internal("manzana.png"));
+        manzanaStarImg1 = new Texture(Gdx.files.internal("ManzanaBrillante1.png"));
+        manzanaStarImg2 = new Texture(Gdx.files.internal("ManzanaBrillante2.png"));
         troncoQuebradizoImg = new Texture(Gdx.files.internal("troncoQuebradizo.png"));
+        troncoQuebradizoStar1Img = new Texture(Gdx.files.internal("TroncoQuebradizoBrillante1.png"));
+        troncoQuebradizoStar2Img = new Texture(Gdx.files.internal("TroncoQuebradizoBrillante2.png"));
         troncoGrandeImg = new Texture(Gdx.files.internal("troncoDer.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondoMontanas.png"));
 
@@ -147,10 +167,16 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         gotafantasmaSprite = new Sprite(gotaFantasmaImage);
         puasSprite = new Sprite(puasImg);
         hojaSprite = new Sprite(hojaImg);
+        hojaSpriteEstrellitas1 = new Sprite(hojaStarImg1);
+        hojaSpriteEstrellitas2 = new Sprite(hojaStarImg2);
         ramaSprite = new Sprite(ramaImg);
         troncoSprite = new Sprite(troncoQuebradizoImg);
+        troncoSpriteEstrellitas1 = new Sprite(troncoQuebradizoStar1Img);
+        troncoSpriteEstrellitas2 = new Sprite(troncoQuebradizoStar2Img);
         hongo1Sprite = new Sprite(hongoImg);
         manzanaSprite = new Sprite(manzanaImg);
+        manzanaSpriteEstrellitas1 = new Sprite(manzanaStarImg1);
+        manzanaSpriteEstrellitas2 = new Sprite(manzanaStarImg2);
         troncoGrandeSprite = new Sprite(troncoGrandeImg);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
@@ -192,7 +218,17 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         //Pintar un tronco sin nada en esta posicion (camera.viewportWidth - 500) * WORLD_TO_BOX, (camera.viewportHeight - 175) * WORLD_TO_BOX
         this.game.batch.begin();
         this.game.batch.draw(backgroundImage, 0, 0);
-        paintSprite(hojaSprite, hoja);
+
+        if(0 <= espere && espere < 15 || PAUSE) {
+            paintSprite(hojaSprite, hoja);
+        }
+        if(15 <= espere && espere < 30 && !PAUSE) {
+            paintSprite(hojaSpriteEstrellitas1, hoja);
+        }
+        if(30 <= espere && espere <= 45 && !PAUSE) {
+            paintSprite(hojaSpriteEstrellitas2, hoja);
+        }
+
         paintSprite(ramaSprite, rama);
         paintSprite(hongo1Sprite, hongo1);
         paintSprite(troncoSprite, tronco1);
@@ -203,12 +239,33 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         paintSprite(troncoSprite, tronco6);
         paintSprite(troncoSprite, tronco7);
         paintSprite(troncoGrandeSprite, troncoGrande2);
-        paintSprite(troncoSprite,troncoSuspendido);
+
+        //Animacion estrellitas
+        if(0 <= espere && espere < 15 || PAUSE) {
+            paintSprite(troncoSprite, troncoSuspendido);
+        }
+        if(15 <= espere && espere < 30 && !PAUSE) {
+            paintSprite(troncoSpriteEstrellitas1, troncoSuspendido);
+        }
+        if(30 <= espere && espere <= 45 && !PAUSE) {
+            paintSprite(troncoSpriteEstrellitas2, troncoSuspendido);
+        }
+
         paintSprite(puasSprite, pua1);
         paintSprite(troncoSprite, tronco8);
         paintSprite(puasSprite, pua2);
         paintSprite(puasSprite, pua3);
-        paintSprite(manzanaSprite, manzana1);
+
+        if(0 <= espere && espere < 15 || PAUSE) {
+            paintSprite(manzanaSprite, manzana1);
+        }
+        if(15 <= espere && espere < 30 && !PAUSE) {
+            paintSprite(manzanaSpriteEstrellitas1, manzana1);
+        }
+        if(30 <= espere && espere <= 45 && !PAUSE) {
+            paintSprite(manzanaSpriteEstrellitas2, manzana1);
+        }
+
         paintSprite(troncoSprite, tronco8);
         paintSprite(troncoSprite, tronco9);
         paintSprite(troncoSprite, tronco10);
@@ -220,13 +277,19 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         }else{
             paintSprite(gotaMuertaSprite, enki);
             this.game.batch.draw(gotafantasmaSprite, enki.getX()-64, enki.getY() + volar);
-            volar++;
+            if(!PAUSE)
+                volar++;
         }
         this.game.batch.draw(troncoGrandeImg, (camera.viewportWidth - 500), (camera.viewportHeight - 175));
 
 
 
         this.game.batch.end();
+
+        if(espere == 45){
+            espere = 0;
+        }
+        espere++;
 
         stage.act();
         stage.draw();
