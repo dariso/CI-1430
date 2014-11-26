@@ -299,7 +299,7 @@ public class GameScreen extends InputAdapter implements Screen {
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
         //Creacion del hongo
-        hongo = new Hongo(world, hongoSprite.getX(), hongoSprite.getY(), 259, 250);
+        hongo = new Hongo(world, hongoSprite.getX(), hongoSprite.getY(), 259, 250, false);
 
         //Creacion de la manzana
         manzana = new Manzana(world, manzanaSprite.getX(), manzanaSprite.getY(), manzanaSprite.getWidth(), manzanaSprite.getHeight());

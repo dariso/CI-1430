@@ -3,6 +3,7 @@ package com.puddle_slide.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,19 +11,24 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleSorter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
+import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -50,7 +56,14 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     private Sprite gotaMuertaSprite;
     private Sprite hojaSprite;
     private Sprite ramaSprite;
+    private Sprite hongo1Sprite;
+    private Sprite troncoQuebradizoSprite;
+    private Sprite troncoTecho1;
+    private Sprite troncoTecho2;
+    private Sprite troncoTecho3;
     private Texture ramaImg;
+    private Texture hongoImg;
+    private Texture troncoQuebradizoImg;
     private Texture gotaImage;
     private Texture gotaMuertaImage;
     private Texture gotaFantasmaImage;
@@ -63,9 +76,6 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     //Objetos del mundo
     private World world;
     private Box2DDebugRenderer debugRenderer;
-    private float vel = 10;
-    private float deltaAcumulado = 0;
-    private float acumuladorCamara = 0;
     private Body ground;
     private Gota enki;
     boolean PAUSE = false;
@@ -95,7 +105,7 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     private Tronco troncoGrande1;
 
     //Inicio (hoja y rama)
-    private Hoja hoja;
+    private HojaBasica hoja;
     private Rama rama;
 
     //Objetos intensos
@@ -128,8 +138,9 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     private Manzana manzana3;
 
     //Joints
-    private MouseJoint dragJoint;
+    private MouseJoint mouseJoint;
     private MouseJoint resorteJoint;
+    private DistanceJoint hojaRamaJoint;
     private DistanceJoint troncoTecho1_joint1;
     private DistanceJoint troncoTecho1_joint2;
     private DistanceJoint troncoTecho2_joint1;
@@ -146,7 +157,9 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         gotaFantasmaImage =  new Texture (Gdx.files.internal("fantasmita.png"));
         gotaMuertaImage = new Texture(Gdx.files.internal("gotaM.png"));
         hojaImg = new Texture(Gdx.files.internal("hoja2.png"));
-        ramaImg = new Texture(Gdx.files.internal("ramaIzquierdaAbajo.png"));
+        ramaImg = new Texture(Gdx.files.internal("RamaIzquierdaParaHojasAbajo.png"));
+        hongoImg = new Texture(Gdx.files.internal("rsz_hongosnaranja2.png"));
+        troncoQuebradizoImg = new Texture(Gdx.files.internal("troncoQuebradizo.png"));
         backgroundImage = new Texture(Gdx.files.internal("fondoMontanas.png"));
 
         gotaSprite = new Sprite(gotaImage);
@@ -155,6 +168,8 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         puasSprite = new Sprite(puasImg);
         hojaSprite = new Sprite(hojaImg);
         ramaSprite = new Sprite(ramaImg);
+        troncoQuebradizoSprite = new Sprite(troncoQuebradizoImg);
+        hongo1Sprite = new Sprite(hongoImg);
 
         filehandle = Gdx.files.internal("skins/menuSkin.json");
         textura = new TextureAtlas(Gdx.files.internal("skins/menuSkin.pack"));
@@ -178,7 +193,7 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         if (!PAUSE) {
             camera.update();
             debugRenderer.render(world, cameraCopy.scl(BOX_TO_WORLD));
-            world.step(1 / 60f, 6, 2);
+            world.step(1 / 45f, 6, 2);
 
         }
         this.actualizarSprites();
@@ -199,13 +214,11 @@ public class Seccion1Screen extends InputAdapter implements Screen {
 
         //Dibuja los sprites
         this.game.batch.begin();
-        this.game.batch.draw(backgroundImage, 0, -camera.viewportHeight*2);
+       // this.game.batch.draw(backgroundImage, 0, 0);
         if(!escuchadorColision.getMuerta()) {
-            this.game.batch.draw(gotaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaSprite.getWidth(),
-                    gotaSprite.getHeight(), gotaSprite.getScaleX(), gotaSprite.getScaleY(), gotaSprite.getRotation());
+            paintSprite(gotaSprite, enki);
         }else{
-            this.game.batch.draw(gotaMuertaSprite, gotaSprite.getX(), gotaSprite.getY(), enki.getOrigen().x, enki.getOrigen().y, gotaMuertaSprite.getWidth(),
-                    gotaMuertaSprite.getHeight(), gotaMuertaSprite.getScaleX(), gotaMuertaSprite.getScaleY(), gotaSprite.getRotation());
+            paintSprite(gotaMuertaSprite, enki);
             this.game.batch.draw(gotafantasmaSprite, enki.getX()-64, enki.getY() + volar);
             volar++;
         }
@@ -220,7 +233,8 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     }
 
     public void paintSprite(Sprite sprite, ObjetoJuego objeto){
-        
+        this.game.batch.draw(sprite, sprite.getX(), sprite.getY(), objeto.getOrigen().x, objeto.getOrigen().y, sprite.getWidth(),
+                sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
     }
 
     @Override
@@ -228,6 +242,14 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         world = new World(new Vector2(0, -9.8f), true);
         world.setContactListener(this.escuchadorColision);
         debugRenderer = new Box2DDebugRenderer();
+
+        //manejo de multiples input processors
+        //primero se llama al procesador que responde a los objetos del juego
+        //si este retorna falso, el input lo debe manejar el del UI ya que se toco un boton
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(this);
+        Gdx.input.setInputProcessor(multiplexer);
 
         //Boton de Pausa
         buttonPause.addListener(new ClickListener(){
@@ -244,13 +266,61 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         });
 
 
-
+        gotaSprite.setPosition((camera.viewportWidth - 920) * WORLD_TO_BOX, (camera.viewportHeight - 100) * WORLD_TO_BOX);
+        hojaSprite.setPosition((camera.viewportWidth - 940) * WORLD_TO_BOX, (camera.viewportHeight - 250) * WORLD_TO_BOX);
+        ramaSprite.setPosition((0 - ramaSprite.getWidth()/2) * WORLD_TO_BOX, (camera.viewportHeight - ramaSprite.getHeight()/2) * WORLD_TO_BOX );
+        hongo1Sprite.setPosition((camera.viewportWidth - 810) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX);
 
         //Creacion de la gota
         enki = new Gota(world, gotaSprite.getX(), gotaSprite.getY(), gotaSprite.getWidth());
 
         //Creacion de la hoja
-        hoja = new Hoja(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
+        hoja = new HojaBasica(world, hojaSprite.getX(), hojaSprite.getY(), hojaSprite.getWidth(), hojaSprite.getHeight());
+
+        //Creacion de la rama
+        rama = new Rama(world, ramaSprite.getX(), ramaSprite.getY(), ramaSprite.getWidth(), ramaSprite.getHeight(), 2);
+
+        //Creacion de hongos
+        hongo1 = new Hongo(world, hongo1Sprite.getX(), hongo1Sprite.getY(), hongo1Sprite.getWidth() * 2, hongo1Sprite.getHeight() * 2, true);
+
+        /**Creacion de troncos estructurales**/
+
+        //Tronco inclinado
+        tronco1 = new TroncoQuebradizo(world,(camera.viewportWidth - 900) * WORLD_TO_BOX, (camera.viewportHeight - 250) * WORLD_TO_BOX,
+                troncoQuebradizoSprite.getWidth()/3, troncoQuebradizoSprite.getHeight()/3, 100, false);
+        //Primer tronco vertical
+        tronco2 = new TroncoQuebradizo(world, (camera.viewportWidth - 810) * WORLD_TO_BOX, (camera.viewportHeight - 330) * WORLD_TO_BOX,
+                troncoQuebradizoSprite.getWidth()/3, troncoQuebradizoSprite.getHeight()/3, 40, false);
+        //Primer tronco horizontal
+        tronco3 = new TroncoQuebradizo(world, (camera.viewportWidth - 810) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX,
+                troncoQuebradizoSprite.getWidth()/3, troncoQuebradizoSprite.getHeight()/3, 0, false);
+        //Segundo tronco vertical
+        tronco4 = new TroncoQuebradizo(world, (camera.viewportWidth - 680) * WORLD_TO_BOX, (camera.viewportHeight - 330) * WORLD_TO_BOX,
+                troncoQuebradizoSprite.getWidth()/3, troncoQuebradizoSprite.getHeight(), 40, false);
+        //Segundo tronco horizontal
+        tronco5 = new TroncoQuebradizo(world, (camera.viewportWidth - 680) * WORLD_TO_BOX, (camera.viewportHeight - 450) * WORLD_TO_BOX,
+                troncoQuebradizoSprite.getWidth()/2, troncoQuebradizoSprite.getHeight()/2, 0, false);
+        //Tercer tronco vertical
+        tronco6 = new TroncoQuebradizo(world, (camera.viewportWidth - 500) * WORLD_TO_BOX, (camera.viewportHeight - 330) * WORLD_TO_BOX,
+                troncoQuebradizoSprite.getWidth()/3, troncoQuebradizoSprite.getHeight()/3, 40, false);
+
+        //Definicion del joint entre la hoja y la rama
+        DistanceJointDef jointDef = new DistanceJointDef();
+        jointDef.localAnchorA.set(rama.getRamaBody().getLocalPoint(new Vector2(0.8320f, 6.4319f)));
+        jointDef.localAnchorB.set(hoja.getHojaBody().getLocalPoint(new Vector2(0.9920f, 6.4319f)));
+        jointDef.bodyA = rama.getRamaBody();
+        jointDef.bodyB = hoja.getHojaBody();
+        jointDef.length = 0.05f;
+
+        hojaRamaJoint = (DistanceJoint) world.createJoint(jointDef);
+
+        //MouseJoint para resorte de hoja
+        MouseJointDef md = new MouseJointDef();
+        md.bodyA = rama.getRamaBody();
+        md.bodyB = hoja.getHojaBody();
+        md.maxForce = 500 * hoja.getHojaBody().getMass();
+        md.target.set(hoja.getX()*WORLD_TO_BOX, hoja.getY()*WORLD_TO_BOX);
+        resorteJoint = (MouseJoint) world.createJoint(md);
 
         //Definicion de Bordes de Pantalla de Juego
         EdgeShape groundEdge = new EdgeShape();
@@ -272,7 +342,7 @@ public class Seccion1Screen extends InputAdapter implements Screen {
         ground.createFixture(fixtureDefIzq).setUserData("borde_izq");
 
         //definicion Piso
-        groundEdge.set(-180 * WORLD_TO_BOX, -1 * WORLD_TO_BOX, -camera.viewportWidth * 2 * WORLD_TO_BOX, -1 * WORLD_TO_BOX);
+        groundEdge.set(-180 * WORLD_TO_BOX, -1 * WORLD_TO_BOX, camera.viewportWidth * WORLD_TO_BOX, -1 * WORLD_TO_BOX);
         fixtureDefPiso.shape = groundEdge;
         fixtureDefPiso.density = 0;
         ground.createFixture(fixtureDefPiso);
@@ -291,11 +361,7 @@ public class Seccion1Screen extends InputAdapter implements Screen {
 
         groundEdge.dispose();
 
-        table.add(buttonPause).size(140,40).padTop(-160).padLeft(450).row();
-        table.add(buttonRegresar).size(140,40).padTop(-30).padBottom(250).padLeft(450);
-        table.setFillParent(true);
-        stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
+
 
     }
 
@@ -312,6 +378,60 @@ public class Seccion1Screen extends InputAdapter implements Screen {
     @Override
     public void resume() {
 
+    }
+
+    //Para el arrastre de objetos de juego
+    private Vector3 tmp = new Vector3();
+    private Vector2 tmp2 = new Vector2();
+
+    private QueryCallback queryCallback = new QueryCallback() {
+
+        @Override
+        public boolean reportFixture(Fixture fixture) {
+
+            if (fixture.getBody() == hoja.getHojaBody()) {
+                MouseJointDef md = new MouseJointDef();
+                md.bodyA = ground;
+                md.bodyB = fixture.getBody();
+                md.collideConnected = true;
+                md.maxForce = 1000 * fixture.getBody().getMass();
+                md.target.set(tmp.x, tmp.y);
+                mouseJoint = (MouseJoint) world.createJoint(md);
+                fixture.getBody().setAwake(true);
+            }
+            return false;
+        }
+    };
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        System.out.println("X = " + tmp.x + " Y = " + tmp.y);
+        camera.unproject(tmp.set(screenX, screenY, 0));
+        tmp.x *= WORLD_TO_BOX;
+        tmp.y *= WORLD_TO_BOX;
+        world.QueryAABB(queryCallback, tmp.x, tmp.y, tmp.x, tmp.y);
+        return true;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if (mouseJoint == null)
+            return false;
+        camera.unproject(tmp.set(screenX, screenY, 0));
+        tmp.x *= WORLD_TO_BOX;
+        tmp.y *= WORLD_TO_BOX;
+        mouseJoint.setTarget(tmp2.set(tmp.x, tmp.y));
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (mouseJoint == null)
+            return false;
+
+        world.destroyJoint(mouseJoint);
+        mouseJoint = null;
+        return true;
     }
 
     @Override
