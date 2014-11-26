@@ -286,7 +286,6 @@ public class Seccion1Screen extends InputAdapter implements Screen {
 
         hongo2 = new Hongo(world, (camera.viewportWidth - 400) * WORLD_TO_BOX, 0, hongo1Sprite.getWidth() * 2, hongo1Sprite.getHeight() * 2, true);
 
-
         //Creacion de puas
         pua1 = new Puas(world, (camera.viewportWidth - 630) * WORLD_TO_BOX, (camera.viewportHeight - 420) * WORLD_TO_BOX, puasSprite.getWidth()/2,
                puasSprite.getHeight()/2, false);
